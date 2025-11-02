@@ -11,3 +11,9 @@ const add1 = (a,b)=>{
 }
 
 add1(10,20);
+
+
+//self invoking function
+(()=>{
+    console.log("This is a self-invoking function");
+})()
