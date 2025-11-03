@@ -16,4 +16,13 @@ add1(10,20);
 //self invoking function
 (()=>{
     console.log("This is a self-invoking function");
-})()
+})();
+
+// Callback Functions
+function num(n, callback) {
+    return callback(n);
+}
+​
+const double = (n) => n * 2;
+​
+console.log(num(5, double));
