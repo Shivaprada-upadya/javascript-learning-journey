@@ -26,3 +26,8 @@ function num(n, callback) {
 const double = (n) => n * 2;
 ​
 console.log(num(5, double));
+
+// Function Expression
+const multiply = function(x, y) {
+    return x * y;
+};
