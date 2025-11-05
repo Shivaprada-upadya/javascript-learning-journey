@@ -31,3 +31,6 @@ console.log(num(5, double));
 const multiply = function(x, y) {
     return x * y;
 };
+
+// Using the function expression
+console.log(multiply(4, 5)); // Output: 20
