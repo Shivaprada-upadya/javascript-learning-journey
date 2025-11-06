@@ -34,3 +34,8 @@ const multiply = function(x, y) {
 
 // Using the function expression
 console.log(multiply(4, 5)); // Output: 20
+
+// imediately Invoked Function Expression (IIFE)
+(function() {
+    console.log("This is an IIFE");
+})();
