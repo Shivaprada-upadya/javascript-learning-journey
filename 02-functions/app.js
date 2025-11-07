@@ -39,3 +39,7 @@ console.log(multiply(4, 5)); // Output: 20
 (function() {
     console.log("This is an IIFE");
 })();
+
+// arrow function with implicit return
+const square = n => n * n;
+console.log(square(6)); // Output: 36
