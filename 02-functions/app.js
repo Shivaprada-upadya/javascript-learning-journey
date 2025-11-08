@@ -43,3 +43,22 @@ console.log(multiply(4, 5)); // Output: 20
 // arrow function with implicit return
 const square = n => n * n;
 console.log(square(6)); // Output: 36
+
+// promise-based function
+function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const data = { id: 1, name: "John Doe" };
+            resolve(data);
+        }, 2000);
+    });
+}
+
+// Using the promise-based function
+fetchData()
+    .then(data => {
+        console.log("Data fetched:", data);
+    })
+    .catch(error => {
+        console.error("Error fetching data:", error);
+    });
