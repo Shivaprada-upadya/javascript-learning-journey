@@ -62,3 +62,13 @@ fetchData()
     .catch(error => {
         console.error("Error fetching data:", error);
     });
+
+// Async/Await function
+async function getData() {
+    try {
+        const data = await fetchData();
+        console.log("Async/Await Data fetched:", data);
+    } catch (error) {
+        console.error("Error fetching data with Async/Await:", error);
+    }
+}
