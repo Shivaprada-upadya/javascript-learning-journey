@@ -72,3 +72,15 @@ async function getData() {
         console.error("Error fetching data with Async/Await:", error);
     }
 }
+
+// Using the async/await function
+getData();  
+
+// Recursive Function
+function factorial(n) {
+    if (n === 0) {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}       
+console.log(factorial(5)); // Output: 120   
