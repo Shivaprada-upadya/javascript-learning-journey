@@ -84,3 +84,12 @@ function factorial(n) {
     return n * factorial(n - 1);
 }       
 console.log(factorial(5)); // Output: 120   
+
+//  Higher-Order Function
+function operateOnNumbers(a, b, operation) {
+    return operation(a, b);
+}           
+const sum = (x, y) => x + y;
+const product = (x, y) => x * y;        
+console.log(operateOnNumbers(3, 4, sum));      // Output: 7 
+console.log(operateOnNumbers(3, 4, product));  // Output: 12
