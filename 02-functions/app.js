@@ -93,3 +93,10 @@ const sum = (x, y) => x + y;
 const product = (x, y) => x * y;        
 console.log(operateOnNumbers(3, 4, sum));      // Output: 7 
 console.log(operateOnNumbers(3, 4, product));  // Output: 12
+
+// Function with Default Parameters
+function greet(name = "Guest") {
+    console.log(`Hello, ${name}!`);
+}   
+greet();           // Output: Hello, Guest!
+greet("Alice");    // Output: Hello, Alice!
