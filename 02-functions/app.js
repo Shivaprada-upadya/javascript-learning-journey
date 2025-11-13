@@ -100,3 +100,13 @@ function greet(name = "Guest") {
 }   
 greet();           // Output: Hello, Guest!
 greet("Alice");    // Output: Hello, Alice!
+
+// Closure Example
+function outerFunction(outerVariable) {
+    return function innerFunction(innerVariable) {  
+        console.log(`Outer Variable: ${outerVariable}`);
+        console.log(`Inner Variable: ${innerVariable}`);
+    }
+}
+const newFunction = outerFunction("outside");
+newFunction("inside");
