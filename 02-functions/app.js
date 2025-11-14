@@ -110,3 +110,9 @@ function outerFunction(outerVariable) {
 }
 const newFunction = outerFunction("outside");
 newFunction("inside");
+
+// Function with Rest Parameters
+function sumAll(...numbers) {
+    return numbers.reduce((acc, curr) => acc + curr, 0);
+}   
+console.log(sumAll(1, 2, 3, 4, 5)); // Output: 15
