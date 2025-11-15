@@ -116,3 +116,10 @@ function sumAll(...numbers) {
     return numbers.reduce((acc, curr) => acc + curr, 0);
 }   
 console.log(sumAll(1, 2, 3, 4, 5)); // Output: 15
+
+//  Function with Spread Operator
+function displayColors(color1, color2, color3) {
+    console.log(`Colors: ${color1}, ${color2}, ${color3}`);
+}   
+const colors = ["Red", "Green", "Blue"];
+displayColors(...colors); // Output: Colors: Red, Green, Blue   
