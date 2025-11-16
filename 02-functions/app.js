@@ -123,3 +123,10 @@ function displayColors(color1, color2, color3) {
 }   
 const colors = ["Red", "Green", "Blue"];
 displayColors(...colors); // Output: Colors: Red, Green, Blue   
+
+// Function with Object Destructuring
+function printUser({ name, age }) {
+    console.log(`Name: ${name}, Age: ${age}`);
+}
+const user = { name: "Bob", age: 30 };
+printUser(user); // Output: Name: Bob, Age: 30
