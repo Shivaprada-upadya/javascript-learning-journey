@@ -130,3 +130,10 @@ function printUser({ name, age }) {
 }
 const user = { name: "Bob", age: 30 };
 printUser(user); // Output: Name: Bob, Age: 30
+
+//   Function with Array Destructuring
+function printCoordinates([x, y]) {
+    console.log(`X: ${x}, Y: ${y}`);
+}
+const coordinates = [10, 20];
+printCoordinates(coordinates); // Output: X: 10, Y: 20
