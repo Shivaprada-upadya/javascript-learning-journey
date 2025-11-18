@@ -137,3 +137,18 @@ function printCoordinates([x, y]) {
 }
 const coordinates = [10, 20];
 printCoordinates(coordinates); // Output: X: 10, Y: 20
+
+// Function with Callback and Error Handling
+function fetchDataWithCallback(callback) {
+    setTimeout(() => {
+        const data = { id: 2, name: "Jane Doe" };
+        callback(null, data);
+    }, 1000);
+}
+fetchDataWithCallback((error, data) => {
+    if (error) {
+        console.error("Error fetching data:", error);
+    } else {    
+        console.log("Data fetched with callback:", data);
+    }
+});
