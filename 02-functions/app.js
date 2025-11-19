@@ -152,3 +152,13 @@ fetchDataWithCallback((error, data) => {
         console.log("Data fetched with callback:", data);
     }
 });
+
+// Function with Error Handling using Try/Catch
+function riskyOperation() {
+    try {
+        throw new Error("Something went wrong!");
+    } catch (error) {
+        console.error("Caught an error:", error.message);
+    }
+}
+riskyOperation();
