@@ -162,3 +162,15 @@ function riskyOperation() {
     }
 }
 riskyOperation();
+
+// Function with Method Definition in Object
+const calculator = {
+    add: function(a, b) {
+        return a + b;
+    },
+    subtract: function(a, b) {
+        return a - b;
+    }
+};
+console.log(calculator.add(10, 5));
+console.log(calculator.subtract(10, 5)); 
