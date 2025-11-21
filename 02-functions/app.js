@@ -174,3 +174,19 @@ const calculator = {
 };
 console.log(calculator.add(10, 5));
 console.log(calculator.subtract(10, 5)); 
+
+//  Function with Method Definition using Shorthand Syntax
+const advancedCalculator = {
+    multiply(a, b) {
+        return a * b;
+    },
+    divide(a, b) {
+        if (b === 0) {
+            throw new Error("Division by zero is not allowed.");
+        }
+        return a / b;
+    }
+
+};
+console.log(advancedCalculator.multiply(10, 5));
+console.log(advancedCalculator.divide(10, 2));
