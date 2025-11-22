@@ -190,3 +190,15 @@ const advancedCalculator = {
 };
 console.log(advancedCalculator.multiply(10, 5));
 console.log(advancedCalculator.divide(10, 2));
+
+//      Function with Generator
+function* idGenerator() {
+    let id = 1;
+    while (true) {
+        yield id++;
+    }
+}
+const gen = idGenerator();
+console.log(gen.next().value); // Output: 1
+console.log(gen.next().value); // Output: 2
+console.log(gen.next().value); // Output: 3
