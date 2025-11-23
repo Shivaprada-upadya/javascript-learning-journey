@@ -202,3 +202,22 @@ const gen = idGenerator();
 console.log(gen.next().value); // Output: 1
 console.log(gen.next().value); // Output: 2
 console.log(gen.next().value); // Output: 3
+
+// Function with Memoization
+function memoizedFactorial() {
+    const cache = {};
+    return function factorial(n) {
+        if (n in cache) {
+            return cache[n];
+        }
+        if (n === 0) {
+            return 1;
+        }
+        const result = n * factorial(n - 1);
+        cache[n] = result;
+        return result;
+    }
+}
+const factorialMemo = memoizedFactorial();
+console.log(factorialMemo(5)); // Output: 120
+console.log(factorialMemo(6)); // Output: 720 (computed using cached value for 5)
