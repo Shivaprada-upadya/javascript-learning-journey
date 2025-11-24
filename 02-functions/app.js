@@ -221,3 +221,13 @@ function memoizedFactorial() {
 const factorialMemo = memoizedFactorial();
 console.log(factorialMemo(5)); // Output: 120
 console.log(factorialMemo(6)); // Output: 720 (computed using cached value for 5)
+
+// Function with Currying
+function curryAdd(a) {
+    return function(b) {
+        return a + b;
+    }
+}
+const addFive = curryAdd(5);
+console.log(addFive(10)); // Output: 15
+console.log(addFive(20)); // Output: 25
