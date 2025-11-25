@@ -231,3 +231,13 @@ function curryAdd(a) {
 const addFive = curryAdd(5);
 console.log(addFive(10)); // Output: 15
 console.log(addFive(20)); // Output: 25
+
+// Function with Partial Application
+function partialMultiply(a, b) {
+    return function(c) {
+        return a * b * c;
+    }
+}
+const multiplyByTwoAndThree = partialMultiply(2, 3);
+console.log(multiplyByTwoAndThree(4));
+
