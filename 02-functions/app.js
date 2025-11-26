@@ -241,3 +241,16 @@ function partialMultiply(a, b) {
 const multiplyByTwoAndThree = partialMultiply(2, 3);
 console.log(multiplyByTwoAndThree(4));
 
+// Output: 24
+console.log(multiplyByTwoAndThree(5)); // Output: 30
+// Function with Type Checking
+function safeAdd(a, b) {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+        throw new Error("Both arguments must be numbers.");
+    }
+    return a + b;
+}
+console.log(safeAdd(10, 20)); // Output: 30
+//console.log(safeAdd(10, "20")); // Throws Error: Both arguments must be numbers.
+
+
