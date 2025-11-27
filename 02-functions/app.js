@@ -253,4 +253,13 @@ function safeAdd(a, b) {
 console.log(safeAdd(10, 20)); // Output: 30
 //console.log(safeAdd(10, "20")); // Throws Error: Both arguments must be numbers.
 
+// Function with Logging
+function loggedMultiply(a, b) {
+    const result = a * b;
+    console.log(`Multiplying ${a} and ${b} gives ${result}`);
+    return result;
+}
+loggedMultiply(4, 5); // Output: Multiplying 4 and 5 gives 20
+
+
 
