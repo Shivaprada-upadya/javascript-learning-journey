@@ -261,5 +261,22 @@ function loggedMultiply(a, b) {
 }
 loggedMultiply(4, 5); // Output: Multiplying 4 and 5 gives 20
 
+// Function with Debouncing
+function debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    }
+}
+const debouncedFunction = debounce(() => {
+    console.log("Debounced function executed");
+}, 1000);
+debouncedFunction();
+debouncedFunction();
+debouncedFunction(); // Only the last call will execute after 1 second
+
 
 
