@@ -278,5 +278,33 @@ debouncedFunction();
 debouncedFunction();
 debouncedFunction(); // Only the last call will execute after 1 second
 
+// Function with Throttling
+function throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function(...args) {
+        if (!lastRan) {
+            func.apply(this, args);
+            lastRan = Date.now();
+        } else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(() => {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(this, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    }
+}
+const throttledFunction = throttle(() => {
+    console.log("Throttled function executed");
+}, 2000);
+throttledFunction();
+throttledFunction();
+throttledFunction(); // Only the first call will execute immediately, others will be ignored within 2 seconds
+
+
+
 
 
