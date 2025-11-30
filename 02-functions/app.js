@@ -304,7 +304,12 @@ throttledFunction();
 throttledFunction();
 throttledFunction(); // Only the first call will execute immediately, others will be ignored within 2 seconds
 
-
+//  Function with Event Handling
+function handleClick(event) {
+    console.log("Button clicked!", event);
+}
+document.getElementById("myButton").addEventListener("click", handleClick);
+// Make sure to have a button with id "myButton" in your HTML for the above line to work.
 
 
 
