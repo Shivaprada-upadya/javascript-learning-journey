@@ -311,5 +311,24 @@ function handleClick(event) {
 document.getElementById("myButton").addEventListener("click", handleClick);
 // Make sure to have a button with id "myButton" in your HTML for the above line to work.
 
+//  Function with Recursion and Memoization
+function memoizedFibonacci() {
+    const cache = {};
+    return function fibonacci(n) {
+        if (n in cache) {
+            return cache[n];
+        }
+        if (n <= 1) {
+            return n;
+        }
+        const result = fibonacci(n - 1) + fibonacci(n - 2);
+        cache[n] = result;
+        return result;
+    }
+}
+const fibonacci = memoizedFibonacci();
+console.log(fibonacci(10)); // Output: 55
+console.log(fibonacci(15)); // Output: 610 (computed using cached values)
 
+    
 
