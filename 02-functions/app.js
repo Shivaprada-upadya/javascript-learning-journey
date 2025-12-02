@@ -330,5 +330,17 @@ const fibonacci = memoizedFibonacci();
 console.log(fibonacci(10)); // Output: 55
 console.log(fibonacci(15)); // Output: 610 (computed using cached values)
 
+//      Function with Async Recursion
+async function asyncFactorial(n) {
+    if (n === 0) {
+        return 1;
+    }
+    const result = await asyncFactorial(n - 1);
+    return n * result;
+}
+asyncFactorial(5).then(result => {
+    console.log("Async Factorial of 5:", result); // Output: 120
+});
+
     
 
