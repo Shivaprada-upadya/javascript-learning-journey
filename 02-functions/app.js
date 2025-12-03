@@ -342,5 +342,39 @@ asyncFactorial(5).then(result => {
     console.log("Async Factorial of 5:", result); // Output: 120
 });
 
+//  Function with Error-First Callback
+function readFileCallback(filename, callback) {
+    setTimeout(() => {
+        if (filename !== "validFile.txt") {
+            return callback(new Error("File not found"), null);
+        }
+        const data = "File content";
+        callback(null, data);
+    }
+    , 1000);
+}
+readFileCallback("invalidFile.txt", (error, data) => {
+    if (error) {
+        console.error("Error reading file:", error.message);
+    }
+    else {
+        console.log("File data:", data);
+    }
+});
+
+readFileCallback("validFile.txt", (error, data) => {
+    if (error) {
+        console.error("Error reading file:", error.message);
+    }
+    else {
+        console.log("File data:", data);
+    }
+
+});
+// Output: File data: File content
+    
+
+
+
     
 
