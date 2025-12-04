@@ -373,7 +373,36 @@ readFileCallback("validFile.txt", (error, data) => {
 });
 // Output: File data: File content
     
+// Function with Promise-based Error Handling
+function readFilePromise(filename) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (filename !== "validFile.txt") {
+                return reject(new Error("File not found"));
+            }
+            const data = "File content";
+            resolve(data);
+        }, 1000);
+    });
+}
+readFilePromise("invalidFile.txt")
+    .then(data => {
+        console.log("File data:", data);
+    })
+    .catch(error => {
+        console.error("Error reading file:", error.message);
+    });
 
+readFilePromise("validFile.txt")
+
+    .then(data => {
+        console.log("File data:", data);
+    }
+    )
+    .catch(error => {
+        console.error("Error reading file:", error.message);
+    });
+// Output: File data: File content
 
 
     
