@@ -404,6 +404,19 @@ readFilePromise("validFile.txt")
     });
 // Output: File data: File content
 
-
+// Function with Async/Await Error Handling
+async function
+readFileAsync(filename) {
+    try {
+        const data = await readFile
+        Promise(filename);
+        console.log("File data:", data);
+    } catch (error) {
+        console.error("Error reading file:", error.message);
+    }
+}
+readFileAsync("invalidFile.txt");
+readFileAsync("validFile.txt");
+// Output: File data: File content
     
 
