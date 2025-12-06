@@ -418,5 +418,27 @@ readFileAsync(filename) {
 readFileAsync("invalidFile.txt");
 readFileAsync("validFile.txt");
 // Output: File data: File content
+
+//  Function with Custom Error Class
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+function riskyFunction() {
+    throw new CustomError("This is a custom error message.");
+}
+try {
+    riskyFunction();
+} catch (error) {
+    if (error instanceof CustomError) {
+        console.error("Caught a CustomError:", error.message);
+    }
+    else {
+        console.error("Caught an unexpected error:", error);
+    }
+}
+// Output: Caught a CustomError: This is a custom error message.
     
 
