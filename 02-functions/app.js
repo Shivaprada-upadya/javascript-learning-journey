@@ -441,4 +441,13 @@ try {
 }
 // Output: Caught a CustomError: This is a custom error message.
     
+// Function with Function.prototype.bind
+const person = {
+    name: "Charlie",
+    greet: function(greeting) {
+        console.log(`${greeting}, my name is ${this.name}`);
+    }
+};
+const greetPerson = person.greet.bind(person);
+greetPerson("Hello"); // Output: Hello, my name is Charlie
 
