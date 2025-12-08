@@ -451,3 +451,8 @@ const person = {
 const greetPerson = person.greet.bind(person);
 greetPerson("Hello"); // Output: Hello, my name is Charlie
 
+// Function with Function.prototype.call
+const anotherPerson = {
+    name: "Dave"
+};
+person.greet.call(anotherPerson, "Hi"); // Output: Hi, my name is Dave
