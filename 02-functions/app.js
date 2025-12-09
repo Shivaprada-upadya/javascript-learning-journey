@@ -456,3 +456,6 @@ const anotherPerson = {
     name: "Dave"
 };
 person.greet.call(anotherPerson, "Hi"); // Output: Hi, my name is Dave
+
+//  Function with Function.prototype.apply
+person.greet.apply(anotherPerson, ["Hey"]); // Output: Hey, my name is Dave
