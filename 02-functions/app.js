@@ -459,3 +459,14 @@ person.greet.call(anotherPerson, "Hi"); // Output: Hi, my name is Dave
 
 //  Function with Function.prototype.apply
 person.greet.apply(anotherPerson, ["Hey"]); // Output: Hey, my name is Dave
+
+// Function with Function Composition
+function compose(f, g) {
+    return function(x) {
+        return f(g(x));
+    }
+}
+const addTwo = x => x + 2;
+const multiplyByThree = x => x * 3;
+const addThenMultiply = compose(multiplyByThree, addTwo);
+console.log(addThenMultiply(5)); // Output: 21 ((5 + 2) * 3)
