@@ -470,3 +470,12 @@ const addTwo = x => x + 2;
 const multiplyByThree = x => x * 3;
 const addThenMultiply = compose(multiplyByThree, addTwo);
 console.log(addThenMultiply(5)); // Output: 21 ((5 + 2) * 3)
+
+// Function with Tail Recursion
+function tailRecursiveFactorial(n, accumulator = 1) {
+    if (n === 0) {
+        return accumulator;
+    }
+    return tailRecursiveFactorial(n - 1, n * accumulator);
+}
+console.log(tailRecursiveFactorial(5)); // Output: 120
