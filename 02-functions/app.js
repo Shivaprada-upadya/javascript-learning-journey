@@ -480,4 +480,9 @@ function tailRecursiveFactorial(n, accumulator = 1) {
 }
 console.log(tailRecursiveFactorial(5)); // Output: 120
 
-//  
+//      Function with Variadic Parameters
+function variadicSum(...args) {
+    return args.reduce((acc, curr) => acc + curr, 0);
+}
+console.log(variadicSum(1, 2, 3, 4, 5)); // Output: 15
+console.log(variadicSum(10, 20)); // Output: 30
