@@ -479,3 +479,5 @@ function tailRecursiveFactorial(n, accumulator = 1) {
     return tailRecursiveFactorial(n - 1, n * accumulator);
 }
 console.log(tailRecursiveFactorial(5)); // Output: 120
+
+//  
