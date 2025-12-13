@@ -486,3 +486,15 @@ function variadicSum(...args) {
 }
 console.log(variadicSum(1, 2, 3, 4, 5)); // Output: 15
 console.log(variadicSum(10, 20)); // Output: 30
+
+// Function with Named Parameters using Object
+function createUser({ name, age, email }) {
+    return {
+        name,
+        age,
+        email
+    };
+}
+const newUser = createUser({ name: "Eve", age: 28, email: "eve@example.com" });
+console.log(newUser); // Output: { name: 'Eve', age: 28, email: 'eve@example.com' }
+
