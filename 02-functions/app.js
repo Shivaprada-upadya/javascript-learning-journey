@@ -498,3 +498,20 @@ function createUser({ name, age, email }) {
 const newUser = createUser({ name: "Eve", age: 28, email: "eve@example.com" });
 console.log(newUser); // Output: { name: 'Eve', age: 28, email: 'eve@example.com' }
 
+// Function with Function Overloading Simulation
+function overloadedFunction() {
+    if (arguments.length === 1) {
+        return `One argument: ${arguments[0]}`;
+    }
+    else if (arguments.length === 2) {
+        return `Two arguments: ${arguments[0]}, ${arguments[1]}`;
+    }
+    else {
+        return `No arguments or more than two arguments`;
+    }
+}
+console.log(overloadedFunction(10)); // Output: One argument: 10
+console.log(overloadedFunction(10, 20)); // Output: Two arguments: 10, 20
+console.log(overloadedFunction()); // Output: No arguments or more than two arguments
+
+
