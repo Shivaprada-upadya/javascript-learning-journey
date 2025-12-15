@@ -514,4 +514,15 @@ console.log(overloadedFunction(10)); // Output: One argument: 10
 console.log(overloadedFunction(10, 20)); // Output: Two arguments: 10, 20
 console.log(overloadedFunction()); // Output: No arguments or more than two arguments
 
+// Function with Side Effects
+let counter = 0;
+function incrementCounter() {
+    counter++;
+    console.log("Counter:", counter);
+}
+incrementCounter(); // Output: Counter: 1
+incrementCounter(); // Output: Counter: 2
+incrementCounter(); // Output: Counter: 3
+
+
 
