@@ -524,5 +524,14 @@ incrementCounter(); // Output: Counter: 1
 incrementCounter(); // Output: Counter: 2
 incrementCounter(); // Output: Counter: 3
 
+// Pure Function Example
+function pureAdd(a, b) {
+    return a + b;
+}
+console.log(pureAdd(3, 4)); // Output: 7
+console.log(pureAdd(3, 4)); // Output: 7
+console.log(pureAdd(5, 6)); // Output: 11
+    
+
 
 
