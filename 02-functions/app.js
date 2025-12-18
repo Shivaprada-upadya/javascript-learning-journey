@@ -554,6 +554,17 @@ emitter.on("greet", (name) => {
     console.log(`Hello, ${name}!`);
 });
 emitter.emit("greet", "Frank"); // Output: Hello, Frank!
+
+// Function with Function.prototype.toString
+function sampleFunction() {
+    return "This is a sample function.";
+}
+console.log(sampleFunction.toString());
+// Output: function sampleFunction() {
+//             return "This is a sample function.";
+//         }
+
+
     
 
 
