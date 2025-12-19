@@ -564,7 +564,11 @@ console.log(sampleFunction.toString());
 //             return "This is a sample function.";
 //         }
 
-
+//  Function with Function Length Property
+function funcWithThreeParams(a, b, c) {
+    return a + b + c;
+}
+console.log(funcWithThreeParams.length); // Output: 3
     
 
 
