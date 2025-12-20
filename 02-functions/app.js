@@ -570,5 +570,11 @@ function funcWithThreeParams(a, b, c) {
 }
 console.log(funcWithThreeParams.length); // Output: 3
     
+// Function with Function Name Property
+function namedFunction() {
+    return "This function has a name.";
+}
+console.log(namedFunction.name); // Output: namedFunction
+
 
 
