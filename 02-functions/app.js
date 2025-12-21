@@ -576,5 +576,10 @@ function namedFunction() {
 }
 console.log(namedFunction.name); // Output: namedFunction
 
-
+// Function with Function.prototype.apply for Array Manipulation
+function findMaxInArray(arr) {
+    return Math.max.apply(null, arr);
+}
+const numbersArray = [3, 5, 1, 8, 2];
+console.log(findMaxInArray(numbersArray)); // Output: 8
 
