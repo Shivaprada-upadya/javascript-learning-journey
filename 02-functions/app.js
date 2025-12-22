@@ -583,3 +583,9 @@ function findMaxInArray(arr) {
 const numbersArray = [3, 5, 1, 8, 2];
 console.log(findMaxInArray(numbersArray)); // Output: 8
 
+// Function with Function.prototype.call for Array Manipulation
+function findMinInArray(arr) {
+    return Math.min.call(null, ...arr);
+}
+const numsArray = [7, 4, 9, 2, 6];
+console.log(findMinInArray(numsArray)); // Output: 2
