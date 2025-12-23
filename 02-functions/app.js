@@ -589,3 +589,11 @@ function findMinInArray(arr) {
 }
 const numsArray = [7, 4, 9, 2, 6];
 console.log(findMinInArray(numsArray)); // Output: 2
+
+//  Function with Function.prototype.bind for Partial Application
+function power(base, exponent) {
+    return Math.pow(base, exponent);
+}
+const square = power.bind(null, undefined, 2);
+console.log(square(5)); // Output: 25
+console.log(square(10)); // Output: 100
