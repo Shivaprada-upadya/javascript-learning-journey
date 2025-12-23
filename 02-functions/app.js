@@ -597,3 +597,14 @@ function power(base, exponent) {
 const square = power.bind(null, undefined, 2);
 console.log(square(5)); // Output: 25
 console.log(square(10)); // Output: 100
+
+//  Function with Function.prototype.apply for Method Borrowing
+const arrayLikeObject = {
+    0: "a",
+    1: "b",
+    2: "c",
+    length: 3
+};
+const toArray = Array.prototype.slice.apply(arrayLikeObject);
+console.log(toArray); // Output: ['a', 'b', 'c']
+
