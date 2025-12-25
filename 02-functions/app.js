@@ -608,3 +608,14 @@ const arrayLikeObject = {
 const toArray = Array.prototype.slice.apply(arrayLikeObject);
 console.log(toArray); // Output: ['a', 'b', 'c']
 
+//  Function with Function.prototype.call for Method Borrowing
+const anotherArrayLikeObject = {
+    0: 1,
+    1: 2,
+    2: 3,
+    length: 3
+};
+const toArrayUsingCall = Array.prototype.slice.call(anotherArrayLikeObject);
+console.log(toArrayUsingCall); // Output: [1, 2, 3]
+
+
