@@ -618,4 +618,15 @@ const anotherArrayLikeObject = {
 const toArrayUsingCall = Array.prototype.slice.call(anotherArrayLikeObject);
 console.log(toArrayUsingCall); // Output: [1, 2, 3]
 
+// Function with Function.prototype.bind for Event Handling
+const button = {
+    label: "Submit",
+    click: function() {
+        console.log(`Button ${this.label} clicked!`);
+    }
+};
+const boundClick = button.click.bind(button);
+boundClick(); // Output: Button Submit clicked!
+
+
 
