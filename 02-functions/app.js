@@ -628,5 +628,13 @@ const button = {
 const boundClick = button.click.bind(button);
 boundClick(); // Output: Button Submit clicked!
 
+// Function with Function.prototype.toString for Debugging
+function debugFunction() {
+    return "Debugging function.";
+}
+console.log(debugFunction.toString());
+// Output: function debugFunction() {
+//             return "Debugging function.";
+//         }
 
 
