@@ -637,4 +637,19 @@ console.log(debugFunction.toString());
 //             return "Debugging function.";
 //         }
 
+//  Function with Function Length Property for Validation
+function validateParams(a, b, c) {
+    if (arguments.length !== validateParams.length) {
+        throw new Error(`Expected ${validateParams.length} arguments, but got ${arguments.length}`);
+    }
+    return true;
+}
+try {
+    validateParams(1, 2); // Throws Error
+}
+catch (error) {
+    console.error(error.message); // Output: Expected 3 arguments, but got 2
+}
+console.log(validateParams(1, 2, 3)); // Output: true
+
 
