@@ -652,4 +652,10 @@ catch (error) {
 }
 console.log(validateParams(1, 2, 3)); // Output: true
 
+//  Function with Function Name Property for Logging
+function logFunctionName() {
+    console.log(`Function name is: ${logFunctionName.name}`);
+}
+logFunctionName(); // Output: Function name is: logFunctionName
+
 
