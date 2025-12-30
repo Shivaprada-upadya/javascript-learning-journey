@@ -658,4 +658,17 @@ function logFunctionName() {
 }
 logFunctionName(); // Output: Function name is: logFunctionName
 
+//  Function with Recursion Depth Limiting
+function limitedDepthFactorial(n, depth = 0, maxDepth = 10) {
+    if (depth > maxDepth) {
+        throw new Error("Maximum recursion depth exceeded");
+    }
+    if (n === 0) {
+        return 1;
+    }
+    return n * limitedDepthFactorial(n - 1, depth + 1, maxDepth);
+}
+console.log(limitedDepthFactorial(5)); // Output: 120
+//console.log(limitedDepthFactorial(15)); // Throws Error: Maximum recursion depth exceeded
+
 
