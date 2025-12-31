@@ -671,4 +671,17 @@ function limitedDepthFactorial(n, depth = 0, maxDepth = 10) {
 console.log(limitedDepthFactorial(5)); // Output: 120
 //console.log(limitedDepthFactorial(15)); // Throws Error: Maximum recursion depth exceeded
 
+// Function with Async/Await and Timeout
+function timeoutPromise(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function fetchDataWithTimeout() {
+    console.log("Fetching data...");
+    await timeoutPromise(2000);
+    console.log("Data fetched after timeout.");
+}
+fetchDataWithTimeout();
+// Output: Fetching data...
+//         Data fetched after timeout.
+
 
