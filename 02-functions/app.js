@@ -684,4 +684,16 @@ fetchDataWithTimeout();
 // Output: Fetching data...
 //         Data fetched after timeout.
 
-
+//  Function with Callback and Timeout
+function fetchDataWithCallbackAndTimeout(callback) {
+    console.log("Fetching data...");
+    setTimeout(() => {
+        callback("Data fetched after timeout.");
+    }, 2000);
+}
+fetchDataWithCallbackAndTimeout((data) => {
+    console.log(data);
+}
+);
+// Output: Fetching data...
+//         Data fetched after timeout.
