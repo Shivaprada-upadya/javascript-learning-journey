@@ -697,3 +697,20 @@ fetchDataWithCallbackAndTimeout((data) => {
 );
 // Output: Fetching data...
 //         Data fetched after timeout.
+
+// Function with Promise and Timeout
+function fetchDataWithPromiseAndTimeout() {
+    console.log("Fetching data...");
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("Data fetched after timeout.");
+        }, 2000);
+    });
+}
+fetchDataWithPromiseAndTimeout().then((data) => {
+    console.log(data);
+}
+);
+// Output: Fetching data...
+//         Data fetched after timeout.
+
