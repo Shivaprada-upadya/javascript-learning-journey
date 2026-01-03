@@ -714,3 +714,21 @@ fetchDataWithPromiseAndTimeout().then((data) => {
 // Output: Fetching data...
 //         Data fetched after timeout.
 
+//  Function with Event Listener and Timeout
+function setupButtonWithTimeout() {
+    const button = document.getElementById("timeoutButton");
+    button.addEventListener("click", () => {
+        console.log("Button clicked, starting timeout...");
+        setTimeout(() => {
+            console.log("Timeout completed after button click.");
+        }
+        , 2000);
+    }
+    );
+}
+setupButtonWithTimeout();
+// Make sure to have a button with id "timeoutButton" in your HTML for the above line to work.
+// Output on button click: Button clicked, starting timeout...
+//                         Timeout completed after button click.
+    
+
