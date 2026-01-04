@@ -732,3 +732,15 @@ setupButtonWithTimeout();
 //                         Timeout completed after button click.
     
 
+//  Function with Debounced Event Listener
+function setupDebouncedButton() {
+    const button = document.getElementById("debounceButton");
+    const debouncedClick = debounce(() => {
+        console.log("Debounced button click executed.");
+    }
+    , 1000);
+    button.addEventListener("click", debouncedClick);
+}
+setupDebouncedButton();
+// Make sure to have a button with id "debounceButton" in your HTML for the above line to work.
+// Output: Debounced button click executed. (only once if clicked multiple times within 1 second)
