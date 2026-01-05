@@ -744,3 +744,18 @@ function setupDebouncedButton() {
 setupDebouncedButton();
 // Make sure to have a button with id "debounceButton" in your HTML for the above line to work.
 // Output: Debounced button click executed. (only once if clicked multiple times within 1 second)
+
+// Function with Throttled Event Listener
+function setupThrottledButton() {
+    const button = document.getElementById("throttleButton");
+    const throttledClick = throttle(() => {
+        console.log("Throttled button click executed.");
+    }
+    , 2000);
+    button.addEventListener("click", throttledClick);
+}
+
+setupThrottledButton();
+
+// Make sure to have a button with id "throttleButton" in your HTML for the above line to work.
+// Output: Throttled button click executed. (only once every 2 seconds if clicked multiple times)
