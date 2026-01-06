@@ -759,3 +759,23 @@ setupThrottledButton();
 
 // Make sure to have a button with id "throttleButton" in your HTML for the above line to work.
 // Output: Throttled button click executed. (only once every 2 seconds if clicked multiple times)
+
+//  Function with Recursive Timeout
+function recursiveTimeout(count) {
+    if (count <= 0) {
+        console.log("Recursive timeout completed.");
+        return;
+    }
+    console.log(`Timeout count: ${count}`);
+    setTimeout(() => {
+        recursiveTimeout(count - 1);
+    }
+    , 1000);
+}
+recursiveTimeout(5);
+// Output: Timeout count: 5
+//         Timeout count: 4
+//         Timeout count: 3
+//         Timeout count: 2
+//         Timeout count: 1
+//         Recursive timeout completed.
