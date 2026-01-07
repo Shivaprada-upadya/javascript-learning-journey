@@ -779,3 +779,17 @@ recursiveTimeout(5);
 //         Timeout count: 2
 //         Timeout count: 1
 //         Recursive timeout completed.
+
+// Function with Async/Await and Recursive Timeout
+async function asyncRecursiveTimeout(count) {
+    if (count <= 0) {
+        console.log("Async recursive timeout completed.");
+        return;
+    }
+    console.log(`Timeout count: ${count}`);
+    await timeoutPromise(1000);
+    await asyncRecursiveTimeout(count - 1);
+}   
+asyncRecursiveTimeout(5);
+// Output: Timeout count: 5
+//         Timeout count: 4
