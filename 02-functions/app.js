@@ -821,3 +821,22 @@ promiseRecursiveTimeout(5);
 //         Timeout count: 1
 //         Promise recursive timeout completed.
 
+// Function with Event Listener and Recursive Timeout
+function setupButtonWithRecursiveTimeout() {
+    const button = document.getElementById("recursiveTimeoutButton");
+    button.addEventListener("click", () => {
+        console.log("Button clicked, starting recursive timeout...");
+        recursiveTimeout(5);
+    }
+    );
+}
+setupButtonWithRecursiveTimeout();
+// Make sure to have a button with id "recursiveTimeoutButton" in your HTML for the above line to work.
+// Output on button click: Button clicked, starting recursive timeout...
+//                         Timeout count: 5
+//                         Timeout count: 4
+//                         Timeout count: 3
+//                         Timeout count: 2
+//                         Timeout count: 1
+//                         Recursive timeout completed.
+
