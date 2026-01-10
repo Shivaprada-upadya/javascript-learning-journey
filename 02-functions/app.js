@@ -840,3 +840,24 @@ setupButtonWithRecursiveTimeout();
 //                         Timeout count: 1
 //                         Recursive timeout completed.
 
+//  Function with Currying and Timeout
+function curryWithTimeout(a) {
+    return function(b) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a + b);
+            }
+            , 1000);
+        });
+    }
+}
+const addWithTimeout = curryWithTimeout(5);
+addWithTimeout(10).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 15
+}
+);
+addWithTimeout(20).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 25
+}
+);
+
