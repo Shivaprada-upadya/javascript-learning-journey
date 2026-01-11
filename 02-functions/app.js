@@ -861,3 +861,24 @@ addWithTimeout(20).then((result) => {
 }
 );
 
+// Function with Partial Application and Timeout
+function partialWithTimeout(a, b) {
+    return function(c) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a * b * c);
+            }
+            , 1000);
+        }
+    });
+    }       
+const multiplyWithTimeout = partialWithTimeout(2, 3);
+multiplyWithTimeout(4).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 24
+}
+);  
+multiplyWithTimeout(5).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 30
+}
+);
+
