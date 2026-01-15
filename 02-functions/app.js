@@ -945,5 +945,33 @@ debouncedFunctionWithTimeout();
 debouncedFunctionWithTimeout();
 debouncedFunctionWithTimeout(); // Only the last call will execute after 1 second
 
+//  Function with Throttling and Timeout
+function throttleWithTimeout(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function(...args) {
+        if (!lastRan) {
+            func.apply(this, args);
+            lastRan = Date.now();
+        }
+        else {
+            clearTimeout(lastFunc);
+            lastFunc = setTimeout(() => {
+                if ((Date.now() - lastRan) >= limit) {
+                    func.apply(this, args);
+                    lastRan = Date.now();
+                }
+            }, limit - (Date.now() - lastRan));
+        }
+    }
+}
+const throttledFunctionWithTimeout = throttleWithTimeout(() => {
+    console.log("Throttled function executed after timeout");
+}
+, 2000);
+throttledFunctionWithTimeout();
+throttledFunctionWithTimeout();
+throttledFunctionWithTimeout(); // Only the first call will execute immediately, others will be ignored within 2 seconds
+
 
 
