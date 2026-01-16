@@ -973,5 +973,16 @@ throttledFunctionWithTimeout();
 throttledFunctionWithTimeout();
 throttledFunctionWithTimeout(); // Only the first call will execute immediately, others will be ignored within 2 seconds
 
-
+// Function with Event Handling and Timeout
+function handleClickWithTimeout(event) {
+    console.log("Button clicked!", event);
+    setTimeout(() => {
+        console.log("Timeout after button click.");
+    }
+    , 1000);
+}
+document.getElementById("myTimeoutButton").addEventListener("click", handleClickWithTimeout);
+// Make sure to have a button with id "myTimeoutButton" in your HTML for the above line to work.
+// Output on button click: Button clicked! [object MouseEvent]
+//                         Timeout after button click.
 
