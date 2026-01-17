@@ -986,3 +986,25 @@ document.getElementById("myTimeoutButton").addEventListener("click", handleClick
 // Output on button click: Button clicked! [object MouseEvent]
 //                         Timeout after button click.
 
+//  Function with Recursion and Timeout
+function factorialWithTimeout(n) {
+    return new Promise((resolve) => {
+        if (n === 0) {
+            return resolve(1);
+        }
+        factorialWithTimeout(n - 1).then((result) => {
+            setTimeout(() => {
+                resolve(n * result);
+            }
+            , 1000);
+        }
+        );
+    }
+    );
+}
+factorialWithTimeout(5).then((result) => {
+    console.log("Factorial with timeout:", result); // Output: Factorial with timeout: 120
+}
+);
+// Output with 1 second delay between each multiplication step
+
