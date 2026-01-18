@@ -1008,3 +1008,29 @@ factorialWithTimeout(5).then((result) => {
 );
 // Output with 1 second delay between each multiplication step
 
+//  Function with Higher-Order Function and Timeout
+function operateOnNumbersWithTimeout(a, b, operation) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(operation(a, b));
+        }
+        , 1000);
+    }
+    );
+}
+const sumWithTimeout = (x, y) => x + y;
+const productWithTimeout = (x, y) => x * y;
+operateOnNumbersWithTimeout(3, 4, sumWithTimeout).then((result) => {
+    console.log("Sum with timeout:", result); // Output: Sum with timeout: 7
+}
+);
+operateOnNumbersWithTimeout(3, 4, productWithTimeout).then((result) => {
+    console.log("Product with timeout:", result); // Output: Product with timeout: 12
+}
+);
+
+
+
+
+
+
