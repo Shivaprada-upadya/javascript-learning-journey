@@ -1029,6 +1029,25 @@ operateOnNumbersWithTimeout(3, 4, productWithTimeout).then((result) => {
 }
 );
 
+//  Function with Default Parameters and Timeout
+function greetWithTimeout(name = "Guest") {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Hello, ${name}!`);
+        }
+        , 1000);
+    }
+    );
+}
+greetWithTimeout().then((message) => {
+    console.log(message); // Output: Hello, Guest!
+}
+);
+greetWithTimeout("Alice").then((message) => {
+    console.log(message); // Output: Hello, Alice!
+}
+);
+
 
 
 
