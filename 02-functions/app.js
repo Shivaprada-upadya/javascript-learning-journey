@@ -1049,6 +1049,25 @@ greetWithTimeout("Alice").then((message) => {
 );
 
 
+// Function with Closure and Timeout
+function outerFunctionWithTimeout(outerVariable) {
+    return function innerFunctionWithTimeout(innerVariable) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(`Outer Variable: ${outerVariable}, Inner Variable: ${innerVariable}`);
+            }
+            , 1000);
+        }
+        );
+    }
+}
+const newFunctionWithTimeout = outerFunctionWithTimeout("outside");
+newFunctionWithTimeout("inside").then((message) => {
+    console.log(message); // Output: Outer Variable: outside, Inner Variable: inside
+}
+);
+
+
 
 
 
