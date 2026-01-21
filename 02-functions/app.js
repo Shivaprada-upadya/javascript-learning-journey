@@ -1067,6 +1067,26 @@ newFunctionWithTimeout("inside").then((message) => {
 }
 );
 
+//  Function with Rest Parameters and Timeout
+function sumAllWithTimeout(...numbers) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const result = numbers.reduce((acc, curr) => acc + curr, 0);
+            resolve(result);
+        }
+        , 1000);
+    }
+    );
+}
+sumAllWithTimeout(1, 2, 3, 4, 5).then((result) => {
+    console.log("Sum with timeout:", result); // Output: Sum with timeout: 15
+}
+);
+sumAllWithTimeout(10, 20).then((result) => {
+    console.log("Sum with timeout:", result); // Output: Sum with timeout: 30
+}
+);
+
 
 
 
