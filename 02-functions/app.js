@@ -1087,6 +1087,23 @@ sumAllWithTimeout(10, 20).then((result) => {
 }
 );
 
+//  Function with Spread Operator and Timeout
+function displayColorsWithTimeout(color1, color2, color3) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Colors: ${color1}, ${color2}, ${color3}`);
+        }
+        , 1000);
+    }
+    );
+}
+const colorsWithTimeout = ["Red", "Green", "Blue"];
+displayColorsWithTimeout(...colorsWithTimeout).then((message) => {
+    console.log(message); // Output: Colors: Red, Green, Blue
+}
+);
+
+
 
 
 
