@@ -1103,9 +1103,21 @@ displayColorsWithTimeout(...colorsWithTimeout).then((message) => {
 }
 );
 
+//  Function with Object Destructuring and Timeout
+function printUserWithTimeout({ name, age }) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Name: ${name}, Age: ${age}`);
+        }
+        , 1000);
+    }
+    );
+}
 
-
-
-
+const userWithTimeout = { name: "Bob", age: 30 };
+printUserWithTimeout(userWithTimeout).then((message) => {
+    console.log(message); // Output: Name: Bob, Age: 30
+}
+);  
 
 
