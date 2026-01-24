@@ -1120,4 +1120,21 @@ printUserWithTimeout(userWithTimeout).then((message) => {
 }
 );  
 
+//  Function with Array Destructuring and Timeout
+function printCoordinatesWithTimeout([x, y]) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`X: ${x}, Y: ${y}`);
+        }
+        , 1000);
+    }   
+    );
+}
+const coordinatesWithTimeout = [10, 20];
+printCoordinatesWithTimeout(coordinatesWithTimeout).then((message) => {
+    console.log(message); // Output: X: 10, Y: 20
+}
+);
+
+
 
