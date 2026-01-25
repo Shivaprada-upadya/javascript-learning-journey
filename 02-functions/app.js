@@ -1136,5 +1136,21 @@ printCoordinatesWithTimeout(coordinatesWithTimeout).then((message) => {
 }
 );
 
-
+// Function with Callback and Error Handling with Timeout
+function fetchDataWithCallbackAndTimeoutError(callback) {
+    setTimeout(() => {
+        const data = { id: 2, name: "Jane Doe" };
+        callback(null, data);
+    }
+    , 1000);
+}
+fetchDataWithCallbackAndTimeoutError((error, data) => {
+    if (error) {
+        console.error("Error fetching data:", error);
+    } else {
+        console.log("Data fetched with callback:", data);
+    }
+}
+);
+// Output: Data fetched with callback: { id: 2, name: 'Jane Doe' }
 
