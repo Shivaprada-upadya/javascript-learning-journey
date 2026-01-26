@@ -1154,3 +1154,27 @@ fetchDataWithCallbackAndTimeoutError((error, data) => {
 );
 // Output: Data fetched with callback: { id: 2, name: 'Jane Doe' }
 
+//  Function with Error Handling using Try/Catch with Timeout
+function riskyOperationWithTimeout() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            try {
+                throw new Error("Something went wrong!");
+            } catch (error) {
+                reject(error);
+            }
+        }
+        , 1000);
+    }
+    );
+}
+riskyOperationWithTimeout()
+    .then(() => {
+        console.log("Operation succeeded.");
+    })
+    .catch((error) => {
+        console.error("Caught an error:", error.message);
+    }
+    );
+// Output: Caught an error: Something went wrong!
+
