@@ -1178,3 +1178,32 @@ riskyOperationWithTimeout()
     );
 // Output: Caught an error: Something went wrong!
 
+//  Function with Method Definition in Object with Timeout
+const calculatorWithTimeout = {
+    add: function(a, b) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a + b);
+            }
+            , 1000);
+        }
+        );
+    },
+    subtract: function(a, b) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a - b);
+            }
+            , 1000);
+        }
+        );
+    }
+};
+calculatorWithTimeout.add(10, 5).then((result) => {
+    console.log(result); // Output: 15
+}
+);
+calculatorWithTimeout.subtract(10, 5).then((result) => {
+    console.log(result); // Output: 5
+}
+);
