@@ -1207,3 +1207,33 @@ calculatorWithTimeout.subtract(10, 5).then((result) => {
     console.log(result); // Output: 5
 }
 );
+
+//  Function with Method Definition using Shorthand Syntax with Timeout
+const calculatorWithTimeoutShorthand = {
+    add(a, b) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a + b);
+            }
+            , 1000);
+        }
+        );
+    },
+    subtract(a, b) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(a - b);
+            }
+            , 1000);
+        }
+        );
+    }
+};
+calculatorWithTimeoutShorthand.add(10, 5).then((result) => {
+    console.log(result); // Output: 15
+}
+);
+calculatorWithTimeoutShorthand.subtract(10, 5).then((result) => {
+    console.log(result); // Output: 5
+}
+);
