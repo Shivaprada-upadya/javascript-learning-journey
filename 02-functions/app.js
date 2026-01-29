@@ -1237,3 +1237,31 @@ calculatorWithTimeoutShorthand.subtract(10, 5).then((result) => {
     console.log(result); // Output: 5
 }
 );
+
+//      Function with Generator and Timeout
+function* idGeneratorWithTimeout() {
+    let id = 1;
+    while (true) {
+        yield new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(id++);
+            }
+            , 1000);
+        });
+    }
+}
+const genWithTimeout = idGeneratorWithTimeout();
+genWithTimeout.next().value.then((value) => {
+    console.log(value); // Output: 1
+}
+);
+genWithTimeout.next().value.then((value) => {
+    console.log(value); // Output: 2
+}
+);
+genWithTimeout.next().value.then((value) => {
+
+    console.log(value); // Output: 3
+}
+);
+
