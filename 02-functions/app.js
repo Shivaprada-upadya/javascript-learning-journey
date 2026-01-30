@@ -1265,3 +1265,33 @@ genWithTimeout.next().value.then((value) => {
 }
 );
 
+//  Function with Memoization and Timeout
+
+function memoizeWithTimeout(fn, timeout = 1000) {
+    const cache = new Map();
+    return function(...args) {
+        const key = JSON.stringify(args);
+        if (cache.has(key)) {
+            return cache.get(key);
+        }
+        const result = fn(...args);
+        cache.set(key, result);
+        setTimeout(() => {
+            cache.delete(key);
+        }, timeout);
+        return result;
+    };
+}
+
+const slowFunctionWithTimeout = memoizeWithTimeout((x) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(x * 2);
+        }, 1000);
+    });
+});
+
+slowFunctionWithTimeout(5).then((result) => {
+    console.log(result); // Output: 10
+}
+);
