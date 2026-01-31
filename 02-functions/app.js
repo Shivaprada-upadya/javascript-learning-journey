@@ -1295,3 +1295,27 @@ slowFunctionWithTimeout(5).then((result) => {
     console.log(result); // Output: 10
 }
 );
+
+// Subsequent call within timeout period retrieves from cache
+slowFunctionWithTimeout(5).then((result) => {
+    console.log(result); // Output: 10 (from cache)
+}
+);
+// Call after timeout period recomputes the result
+setTimeout(() => {
+    slowFunctionWithTimeout(5).then((result) => {
+        console.log(result); // Output: 10 (recomputed)
+    }
+    );
+}, 1500);
+
+const multiplyByTwoAndThree = partialWithTimeout(2, 3);
+multiplyByTwoAndThree(5).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 30
+}
+);
+multiplyByTwoAndThree(6).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 36
+}
+);
+        
