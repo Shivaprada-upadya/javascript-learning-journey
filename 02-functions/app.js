@@ -1318,4 +1318,30 @@ multiplyByTwoAndThree(6).then((result) => {
     console.log("Result after timeout:", result); // Output: Result after timeout: 36
 }
 );
-        
+
+// Function with Type Checking and Timeout
+function safeAddWithTimeout(a, b) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (typeof a !== 'number' || typeof b !== 'number') {
+                return reject(new Error("Both arguments must be numbers."));
+            }
+            resolve(a + b);
+        }, 1000);
+    }
+    );
+}
+safeAddWithTimeout(10, 20).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 30
+}
+).catch((error) => {
+    console.error("Error:", error.message);
+}
+);
+safeAddWithTimeout(10, "20").then((result) => {
+    console.log("Result after timeout:", result);
+}
+).catch((error) => {
+    console.error("Error:", error.message); // Output: Error: Both arguments must be numbers.
+}
+);
