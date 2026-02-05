@@ -1410,3 +1410,31 @@ const throttledFunctionWithTimeout = throttleWithTimeout(() => {
 throttledFunctionWithTimeout();
 throttledFunctionWithTimeout();
 throttledFunctionWithTimeout(); // Only the first call will execute immediately, others will be ignored within 2 seconds
+
+// Function with Callback-based Error Handling
+function readFileCallback(filename, callback) {
+    setTimeout(() => {
+        if (filename !== "validFile.txt") {
+            return callback(new Error("File not found"), null);
+        }
+        const data = "File content";
+        callback(null, data);
+    }, 1000);
+}
+readFileCallback("invalidFile.txt", (error, data) => {
+    if (error) {
+        console.error("Error reading file:", error.message);
+    }
+    else {
+        console.log("File data:", data);
+    }
+});
+readFileCallback("validFile.txt", (error, data) => {
+    if (error) {
+        console.error("Error reading file:", error.message);
+    }
+    else {
+        console.log("File data:", data);
+    }
+});
+// Output: File data: File content
