@@ -1471,5 +1471,16 @@ readFilePromise("validFile.txt")
 );
 // Output: File data: File content
 
-
-
+//  Function with Async/Await and Error Handling
+async function readFileAsync(filename) {
+    try {
+        const data = await readFilePromise(filename);
+        console.log("File data:", data);
+    }
+    catch (error) {
+        console.error("Error reading file:", error.message);
+    }
+}
+readFileAsync("invalidFile.txt"); // Output: Error reading file: File not found
+readFileAsync("validFile.txt"); // Output: File data: File content
+    
