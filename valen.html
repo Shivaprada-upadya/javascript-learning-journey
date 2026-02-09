@@ -1,0 +1,1852 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For you--->💖  </title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(-45deg, #ffeef8, #ffe0f0, #ffd4ea, #ffb3d9);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        touch-action: manipulation;
+      }
+
+      .typewriter-message {
+        max-width: 90vw;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Floating background hearts */
+      .bg-heart {
+        position: fixed;
+        font-size: clamp(30px, 5vw, 60px);
+        opacity: 0.1;
+        pointer-events: none;
+        animation: floatBackground 20s infinite ease-in-out;
+      }
+
+      @keyframes floatBackground {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-50px) rotate(10deg);
+        }
+      }
+
+      /* Progress bar */
+      .progress-container {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 500px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 25px;
+        padding: 15px 20px;
+        box-shadow: 0 5px 20px rgba(255, 20, 147, 0.3);
+        z-index: 10000;
+      }
+
+      .progress-text {
+        color: #d63384;
+        font-weight: 700;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        margin-bottom: 8px;
+        text-align: center;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #ffe0f0;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff69b4, #ff1493);
+        border-radius: 10px;
+        transition: width 0.5s ease;
+        width: 0%;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .progress-fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shimmer 2s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* Mystery box */
+      .mystery-box {
+        position: fixed;
+        font-size: clamp(60px, 10vw, 100px);
+        cursor: pointer;
+        z-index: 1001;
+        animation: mysterySpin 4s ease-in-out infinite;
+        filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1));
+        transition: all 0.3s ease;
+      }
+
+      .mystery-box:hover {
+        transform: scale(1.3);
+        filter: drop-shadow(0 0 50px rgba(255, 215, 0, 1));
+      }
+
+      @keyframes mysterySpin {
+        0%,
+        100% {
+          transform: rotateY(0deg) scale(1);
+        }
+        50% {
+          transform: rotateY(180deg) scale(1.1);
+        }
+      }
+
+      .mystery-label {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 215, 0, 0.9);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        font-weight: 700;
+        white-space: nowrap;
+        animation: labelFloat 2s ease-in-out infinite;
+      }
+
+      @keyframes labelFloat {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(-5px);
+        }
+      }
+
+      /* Fortune cookie */
+      .fortune-cookie {
+        position: fixed;
+        font-size: clamp(50px, 8vw, 80px);
+        cursor: pointer;
+        z-index: 1001;
+        animation: cookieBounce 2s ease-in-out infinite;
+        filter: drop-shadow(0 0 20px rgba(255, 140, 0, 0.8));
+      }
+
+      .fortune-cookie:hover {
+        transform: scale(1.2) rotate(15deg);
+      }
+
+      @keyframes cookieBounce {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(5deg);
+        }
+      }
+
+      /* Treasure chest */
+      .treasure-chest {
+        position: fixed;
+        font-size: clamp(60px, 10vw, 100px);
+        cursor: pointer;
+        z-index: 1001;
+        animation: chestShake 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 25px rgba(184, 134, 11, 0.9));
+      }
+
+      @keyframes chestShake {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-3deg);
+        }
+        75% {
+          transform: rotate(3deg);
+        }
+      }
+
+      /* Spinning wheel */
+      .wheel-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        z-index: 3000;
+        animation: wheelReveal 0.5s ease-out forwards;
+      }
+
+      @keyframes wheelReveal {
+        to {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .progress-container {
+          top: 10px;
+          padding: 10px;
+        }
+      }
+
+      .wheel {
+        width: clamp(250px, 60vw, 350px);
+        height: clamp(250px, 60vw, 350px);
+        border-radius: 50%;
+        background: conic-gradient(
+          from 0deg,
+          #ff69b4 0deg 90deg,
+          #ff1493 90deg 180deg,
+          #c71585 180deg 270deg,
+          #ffd700 270deg 360deg
+        );
+        border: 10px solid white;
+        box-shadow: 0 0 40px rgba(255, 20, 147, 0.6);
+        position: relative;
+        cursor: pointer;
+        transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      }
+
+      .wheel-pointer {
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 40px;
+        filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+      }
+
+      .wheel-text {
+        position: absolute;
+        color: white;
+        font-weight: 700;
+        font-size: clamp(0.8rem, 2vw, 1rem);
+      }
+
+      .spin-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: #ff1493;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 50%;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .spin-button:hover {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      /* Scratch card */
+      .scratch-card {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        z-index: 3000;
+        animation: cardReveal 0.5s ease-out forwards;
+      }
+
+      @keyframes cardReveal {
+        to {
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+
+      .scratch-canvas {
+        border: 10px solid white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      /* Achievement popup */
+      .achievement {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        padding: 20px 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        z-index: 5000;
+        animation:
+          achievementSlide 0.5s ease-out,
+          achievementGlow 2s ease-in-out infinite;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      @keyframes achievementSlide {
+        from {
+          transform: translateX(400px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes achievementGlow {
+        0%,
+        100% {
+          box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+        50% {
+          box-shadow: 0 10px 40px rgba(255, 215, 0, 0.9);
+        }
+      }
+
+      .achievement-icon {
+        font-size: 40px;
+      }
+
+      .achievement-text {
+        color: #8b4513;
+        font-weight: 700;
+      }
+
+      .achievement-title {
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+      }
+
+      .achievement-desc {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      /* Puzzle piece */
+      .puzzle-piece {
+        position: fixed;
+        width: clamp(60px, 10vw, 80px);
+        height: clamp(60px, 10vw, 80px);
+        background: linear-gradient(135deg, #ff69b4, #ff1493);
+        border-radius: 10px;
+        cursor: pointer;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(30px, 5vw, 40px);
+        box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        animation: puzzleFloat 3s ease-in-out infinite;
+        transition: all 0.3s ease;
+      }
+
+      .puzzle-piece:hover {
+        transform: scale(1.2) rotate(10deg);
+      }
+
+      @keyframes puzzleFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+      }
+
+      /* Clue note */
+      .clue-note {
+        position: fixed;
+        background: #fffacd;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 3000;
+        max-width: 80%;
+        animation: noteReveal 0.5s ease-out;
+        transform-origin: top center;
+        border: 2px dashed #ff1493;
+      }
+
+      @keyframes noteReveal {
+        from {
+          transform: translateY(-50px) rotateX(-90deg);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0) rotateX(0);
+          opacity: 1;
+        }
+      }
+
+      .clue-text {
+        color: #8b4513;
+        font-size: clamp(1rem, 2.5vw, 1.3rem);
+        font-weight: 600;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      /* Particle system */
+      .particle {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        background: radial-gradient(circle, #ff69b4, transparent);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: particleFloat 3s ease-out forwards;
+        opacity: 0.7;
+      }
+
+      @keyframes particleFloat {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-300px) scale(0);
+          opacity: 0;
+        }
+      }
+
+      .container {
+        text-align: center;
+        padding: clamp(20px, 5vw, 60px);
+        max-width: 100vw;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .screen {
+        display: none;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        animation: screenSlide 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+
+      .screen.active {
+        display: flex;
+      }
+
+      @keyframes screenSlide {
+        from {
+          opacity: 0;
+          transform: scale(0.8) rotateX(20deg);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) rotateX(0deg);
+        }
+      }
+
+      h1 {
+        font-size: clamp(2rem, 8vw, 5rem);
+        color: #ff1493;
+        margin-bottom: clamp(20px, 4vh, 50px);
+        text-shadow:
+          0 0 10px rgba(255, 20, 147, 0.5),
+          0 0 20px rgba(255, 20, 147, 0.3),
+          2px 2px 4px rgba(255, 20, 147, 0.2);
+        animation: textGlow 2s ease-in-out infinite;
+        line-height: 1.2;
+        padding: 0 20px;
+      }
+
+      @keyframes textGlow {
+        0%,
+        100% {
+          text-shadow:
+            0 0 10px rgba(255, 20, 147, 0.5),
+            0 0 20px rgba(255, 20, 147, 0.3),
+            2px 2px 4px rgba(255, 20, 147, 0.2);
+        }
+        50% {
+          text-shadow:
+            0 0 20px rgba(255, 20, 147, 0.8),
+            0 0 40px rgba(255, 20, 147, 0.5),
+            2px 2px 4px rgba(255, 20, 147, 0.3);
+        }
+      }
+
+      button {
+        background: linear-gradient(
+          135deg,
+          #ff69b4 0%,
+          #ff1493 50%,
+          #c71585 100%
+        );
+        color: white;
+        border: none;
+        padding: clamp(15px, 3vh, 25px) clamp(35px, 8vw, 60px);
+        font-size: clamp(1.1rem, 3vw, 1.8rem);
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow:
+          0 10px 30px rgba(255, 20, 147, 0.4),
+          inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        font-weight: 700;
+        margin: 10px;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 1px;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s,
+          height 0.6s;
+      }
+
+      button:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      button:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow:
+          0 15px 40px rgba(255, 20, 147, 0.6),
+          inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      button:active {
+        transform: translateY(-2px) scale(1.02);
+      }
+
+      .typewriter-message {
+        font-size: clamp(1.3rem, 4vw, 2.5rem);
+        color: #d63384;
+        margin: clamp(20px, 5vh, 40px) 0;
+        min-height: clamp(80px, 15vh, 150px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        text-align: center;
+        padding: 0 clamp(20px, 5vw, 60px);
+        line-height: 1.5;
+        position: relative;
+      }
+
+      .typewriter-message::after {
+        content: "|";
+        animation: blink 0.7s infinite;
+        margin-left: 5px;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      .buttons-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(15px, 3vw, 30px);
+        flex-wrap: wrap;
+        margin-top: clamp(30px, 6vh, 60px);
+        position: relative;
+        width: 100%;
+        padding: 0 20px;
+      }
+
+      #yesBtn {
+        z-index: 10;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      #noBtn {
+        background: linear-gradient(135deg, #cccccc 0%, #999999 100%);
+        position: fixed;
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 5;
+      }
+
+      .celebration-message {
+        background: rgba(255, 255, 255, 0.95);
+        padding: clamp(30px, 8vw, 80px);
+        border-radius: 40px;
+        box-shadow:
+          0 20px 60px rgba(255, 20, 147, 0.4),
+          inset 0 0 30px rgba(255, 182, 193, 0.3);
+        max-width: 90%;
+        animation: celebrationPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        backdrop-filter: blur(10px);
+        position: relative;
+      }
+
+      @keyframes celebrationPop {
+        0% {
+          transform: scale(0) rotate(-180deg);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 1;
+        }
+      }
+
+      .celebration-message h1 {
+        font-size: clamp(2rem, 6vw, 4rem);
+        margin-bottom: clamp(15px, 3vh, 30px);
+        animation: rainbow 3s linear infinite;
+      }
+
+      @keyframes rainbow {
+        0% {
+          color: #ff1493;
+        }
+        25% {
+          color: #ff69b4;
+        }
+        50% {
+          color: #ff1493;
+        }
+        75% {
+          color: #c71585;
+        }
+        100% {
+          color: #ff1493;
+        }
+      }
+
+      .celebration-message p {
+        font-size: clamp(1.1rem, 3vw, 1.8rem);
+        color: #d63384;
+        margin-top: clamp(15px, 3vh, 25px);
+        line-height: 1.6;
+      }
+
+      .intro-emoji {
+        font-size: clamp(60px, 15vw, 120px);
+        animation: bounce 1s ease-in-out infinite;
+        margin-bottom: 30px;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-5deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      .music-control {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        z-index: 10000;
+        transition: all 0.3s ease;
+        animation: musicPulse 2s ease-in-out infinite;
+      }
+
+      .music-control:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(255, 20, 147, 0.6);
+      }
+
+      @keyframes musicPulse {
+        0%,
+        100% {
+          box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+        50% {
+          box-shadow: 0 5px 30px rgba(255, 20, 147, 0.8);
+        }
+      }
+
+      .music-control.muted {
+        background: linear-gradient(135deg, #999 0%, #666 100%);
+        animation: none;
+      }
+
+      .hint-button {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        background: linear-gradient(135deg, #ffd700, #ffed4e);
+        color: #8b4513;
+        border: none;
+        padding: 15px 25px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 700;
+        box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+        z-index: 10000;
+        transition: all 0.3s ease;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+      }
+
+      .hint-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+      }
+
+      @keyframes fireworkExplode {
+        0% {
+          transform: translate(0, 0);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty));
+          opacity: 0;
+        }
+      }
+
+      .firework {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: #ff69b4;
+        border-radius: 50%;
+        pointer-events: none;
+        animation: fireworkExplode 1s ease-out forwards;
+      }
+
+      .close-overlay {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 20, 147, 0.9);
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+
+      .close-overlay:hover {
+        transform: scale(1.2) rotate(90deg);
+        background: #c71585;
+      }
+
+      @media (max-width: 768px) {
+        .music-control,
+        .hint-button {
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
+          bottom: 20px;
+        }
+
+        .hint-button {
+          padding: 12px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+      <source src="./stuck-with-you_lncQ8Rzp.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Celebration Music -->
+    <audio id="celebrationMusic" loop>
+      <source src="./boyfriend_gridlfriend.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- Music Control Button -->
+    <button class="music-control" id="musicToggle" onclick="toggleMusic()">
+      🎵
+    </button>
+
+    <div class="container">
+      <!-- Intro Screen -->
+      <div class="screen active intro" id="introScreen">
+        <div class="intro-emoji">💌</div>
+        <h1>Hey Kanna, I made this for you ❤️</h1>
+        <button onclick="initApp()">Open It 💌</button>
+      </div>
+
+      <!-- Typewriter Messages Screen -->
+      <div class="screen" id="messagesScreen">
+        <div class="typewriter-message" id="typewriterText"></div>
+      </div>
+
+      <!-- Question Screen -->
+      <div class="screen" id="questionScreen">
+        <h1>Will you be my Valentine? 💖</h1>
+        <div class="buttons-container">
+          <button id="yesBtn" onclick="celebrate()">YES ❤️</button>
+          <button id="noBtn">NO</button>
+        </div>
+      </div>
+
+      <!-- Celebration Screen -->
+      <div class="screen" id="celebrationScreen">
+        <div class="celebration-message">
+          <h1>You just made my heart the happiest ❤️</h1>
+          <p>✨ This Valentine's Day is going to be amazing! ✨</p>
+          <p>💕 I can't wait to celebrate with you! 💕</p>
+          <p style="margin-top: 30px; font-size: 1.2rem">
+            🎮 Start finding treasures & unlocking surprises! 🎁
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Valentine's Day Curiosity-Driven Interactive Experience
+      // Complete game-like system with achievements, progress tracking, and surprises
+
+      const messages = [
+        "You make ordinary days feel special.",
+        "Your smile is my favorite notification.",
+        "Life feels lighter with you in it.",
+        "So I have one important question…",
+      ];
+
+      const achievements = [
+        {
+          id: "first_mystery",
+          icon: "🎁",
+          title: "Mystery Solver!",
+          desc: "Opened your first mystery box!",
+        },
+        {
+          id: "fortune_seeker",
+          icon: "🥠",
+          title: "Fortune Seeker!",
+          desc: "Discovered a fortune cookie!",
+        },
+        {
+          id: "treasure_hunter",
+          icon: "💎",
+          title: "Treasure Hunter!",
+          desc: "Found the treasure chest!",
+        },
+        {
+          id: "lucky_spin",
+          icon: "🎰",
+          title: "Lucky Spinner!",
+          desc: "Won the wheel of love!",
+        },
+        {
+          id: "puzzle_master",
+          icon: "🧩",
+          title: "Puzzle Master!",
+          desc: "Collected all puzzle pieces!",
+        },
+        {
+          id: "scratch_winner",
+          icon: "🎫",
+          title: "Scratch Winner!",
+          desc: "Revealed a secret message!",
+        },
+        {
+          id: "explorer",
+          icon: "🗺️",
+          title: "Explorer!",
+          desc: "Found 5 different treasures!",
+        },
+        {
+          id: "completionist",
+          icon: "👑",
+          title: "Completionist!",
+          desc: "Unlocked everything!",
+        },
+      ];
+
+      const fortuneMessages = [
+        "Your love story is just beginning... 💕",
+        "Adventure awaits you both... 🌟",
+        "Happiness multiplies when shared... 🎊",
+        "Love is the greatest treasure... 💎",
+        "Together you're unstoppable... 💪❤️",
+        "Every day with you is a gift... 🎁",
+      ];
+
+      const treasureReveals = [
+        "💖 A heart full of love for you!",
+        "🌹 The most beautiful rose in the garden!",
+        "💍 A promise of forever!",
+        "🎵 Our song playing on repeat!",
+        "📸 Memories we'll create together!",
+        "🌟 You light up my world!",
+      ];
+
+      const wheelPrizes = [
+        "A Thousand Kisses! 💋",
+        "Dinner Date! 🍽️",
+        "Movie Marathon! 🎬",
+        "Weekend Getaway! ✈️",
+      ];
+
+      const scratchSecrets = [
+        "You're my favorite person in the whole world! 🌍",
+        "I fall for you more every day! 📈💕",
+        "Your smile is my daily dose of happiness! 😊",
+        "Together we can conquer anything! 🏆",
+        "You make ordinary moments extraordinary! ✨",
+        "My heart beats only for you! 💓",
+      ];
+
+      const clueMessages = [
+        "🔍 Hint: Look for the golden glow...",
+        "🗺️ Clue: Fortune favors the curious...",
+        "💡 Tip: Treasures hide in unexpected places...",
+        "🎯 Secret: Click everything that sparkles!",
+        "🌟 Mystery: Good things come to those who explore...",
+      ];
+
+      let currentMessageIndex = 0;
+      let currentCharIndex = 0;
+      let isMusicPlaying = false;
+      let celebrationActive = false;
+
+      // Progress tracking
+      let progress = {
+        mysteryBoxes: 0,
+        fortuneCookies: 0,
+        treasures: 0,
+        wheelSpins: 0,
+        puzzlePieces: 0,
+        scratchCards: 0,
+        totalItems: 0,
+        unlockedAchievements: new Set(),
+      };
+
+      const totalPossibleItems = 15; // Total items to discover
+
+      // Music control
+      function toggleMusic() {
+        const bgMusic = document.getElementById("bgMusic");
+        const celebMusic = document.getElementById("celebrationMusic");
+        const toggle = document.getElementById("musicToggle");
+
+        if (isMusicPlaying) {
+          bgMusic.pause();
+          celebMusic.pause();
+          toggle.innerHTML = "🔇";
+          toggle.classList.add("muted");
+          isMusicPlaying = false;
+        } else {
+          if (celebrationActive) {
+            celebMusic.play().catch((e) => console.log("Music error:", e));
+          } else {
+            bgMusic.play().catch((e) => console.log("Music error:", e));
+          }
+          toggle.innerHTML = "🎵";
+          toggle.classList.remove("muted");
+          isMusicPlaying = true;
+        }
+      }
+
+      function playMusic() {
+        const music = document.getElementById("bgMusic");
+        const toggle = document.getElementById("musicToggle");
+
+        music
+          .play()
+          .then(() => {
+            isMusicPlaying = true;
+            toggle.innerHTML = "🎵";
+            toggle.classList.remove("muted");
+          })
+          .catch((e) => {
+            console.log("Music autoplay prevented");
+            isMusicPlaying = false;
+            toggle.innerHTML = "🔇";
+            toggle.classList.add("muted");
+          });
+      }
+
+      function switchToCelebrationMusic() {
+        const bgMusic = document.getElementById("bgMusic");
+        const celebMusic = document.getElementById("celebrationMusic");
+
+        let volume = 1;
+        const fadeOut = setInterval(() => {
+          if (volume > 0) {
+            volume -= 0.1;
+            bgMusic.volume = Math.max(0, volume);
+          } else {
+            clearInterval(fadeOut);
+            bgMusic.pause();
+            bgMusic.currentTime = 0;
+
+            celebMusic.volume = 0;
+            celebMusic
+              .play()
+              .then(() => {
+                let celebVolume = 0;
+                const fadeIn = setInterval(() => {
+                  if (celebVolume < 1) {
+                    celebVolume += 0.1;
+                    celebMusic.volume = Math.min(1, celebVolume);
+                  } else {
+                    clearInterval(fadeIn);
+                  }
+                }, 100);
+              })
+              .catch((e) => console.log("Celebration music error:", e));
+          }
+        }, 100);
+      }
+
+      // Progress bar management
+      function updateProgress() {
+        const progressPercent =
+          (progress.totalItems / totalPossibleItems) * 100;
+        const progressBar = document.querySelector(".progress-fill");
+        const progressText = document.querySelector(".progress-text");
+
+        if (progressBar) {
+          progressBar.style.width = progressPercent + "%";
+        }
+
+        if (progressText) {
+          progressText.textContent = `🎮 Progress: ${progress.totalItems}/${totalPossibleItems} Treasures Found! ⭐`;
+        }
+
+        // Check for achievements
+        checkAchievements();
+
+        // Celebrate completion
+        if (
+          progress.totalItems >= totalPossibleItems &&
+          !progress.unlockedAchievements.has("completionist")
+        ) {
+          unlockAchievement("completionist");
+          createMassiveCelebration();
+        }
+      }
+
+      function createProgressBar() {
+        const progressContainer = document.createElement("div");
+        progressContainer.className = "progress-container";
+        progressContainer.innerHTML = `
+        <div class="progress-text">🎮 Progress: 0/${totalPossibleItems} Treasures Found! ⭐</div>
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+    `;
+        document.body.appendChild(progressContainer);
+      }
+
+      // Achievement system
+      function unlockAchievement(achievementId) {
+        if (progress.unlockedAchievements.has(achievementId)) return;
+
+        progress.unlockedAchievements.add(achievementId);
+        const achievement = achievements.find((a) => a.id === achievementId);
+
+        if (achievement) {
+          showAchievementPopup(achievement);
+        }
+      }
+
+      function showAchievementPopup(achievement) {
+        const popup = document.createElement("div");
+        popup.className = "achievement";
+        popup.innerHTML = `
+        <div class="achievement-icon">${achievement.icon}</div>
+        <div class="achievement-text">
+            <div class="achievement-title">Achievement Unlocked!</div>
+            <div class="achievement-title">${achievement.title}</div>
+            <div class="achievement-desc">${achievement.desc}</div>
+        </div>
+    `;
+        document.body.appendChild(popup);
+
+        createFireworksBurst(window.innerWidth - 100, window.innerHeight - 100);
+
+        setTimeout(() => {
+          popup.style.animation = "achievementSlide 0.5s ease-out reverse";
+          setTimeout(() => popup.remove(), 500);
+        }, 4000);
+      }
+
+      function checkAchievements() {
+        if (progress.mysteryBoxes >= 1) unlockAchievement("first_mystery");
+        if (progress.fortuneCookies >= 1) unlockAchievement("fortune_seeker");
+        if (progress.treasures >= 1) unlockAchievement("treasure_hunter");
+        if (progress.wheelSpins >= 1) unlockAchievement("lucky_spin");
+        if (progress.puzzlePieces >= 3) unlockAchievement("puzzle_master");
+        if (progress.scratchCards >= 1) unlockAchievement("scratch_winner");
+        if (progress.totalItems >= 5) unlockAchievement("explorer");
+      }
+
+      // Mystery Box
+      function createMysteryBox() {
+        const box = document.createElement("div");
+        box.className = "mystery-box";
+        box.innerHTML = "🎁";
+        box.style.left = Math.random() * (window.innerWidth - 120) + "px";
+        box.style.top = Math.random() * (window.innerHeight - 120) + "px";
+
+        const label = document.createElement("div");
+        label.className = "mystery-label";
+        label.textContent = "??? Mystery ???";
+        box.appendChild(label);
+
+        box.onclick = function () {
+          progress.mysteryBoxes++;
+          progress.totalItems++;
+          updateProgress();
+
+          createFireworksBurst(
+            parseFloat(this.style.left) + 50,
+            parseFloat(this.style.top) + 50,
+          );
+
+          showMysteryReveal();
+          this.remove();
+
+          // Spawn next mystery box after delay
+          setTimeout(createMysteryBox, 10000);
+        };
+
+        document.body.appendChild(box);
+
+        setTimeout(() => {
+          if (box.parentNode) {
+            box.remove();
+            createMysteryBox();
+          }
+        }, 8000);
+      }
+
+      function showMysteryReveal() {
+        const reveals = [
+          { type: "fortune", action: createFortuneCookie },
+          { type: "wheel", action: showSpinningWheel },
+          { type: "scratch", action: showScratchCard },
+          { type: "puzzle", action: createPuzzlePiece },
+        ];
+
+        const reveal = reveals[Math.floor(Math.random() * reveals.length)];
+
+        setTimeout(() => {
+          reveal.action();
+        }, 500);
+      }
+
+      // Fortune Cookie
+      function createFortuneCookie() {
+        const cookie = document.createElement("div");
+        cookie.className = "fortune-cookie";
+        cookie.innerHTML = "🥠";
+        cookie.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        cookie.style.top = Math.random() * (window.innerHeight - 100) + "px";
+
+        cookie.onclick = function () {
+          progress.fortuneCookies++;
+          progress.totalItems++;
+          updateProgress();
+
+          crackCookie(this);
+          this.remove();
+        };
+
+        document.body.appendChild(cookie);
+      }
+
+      function crackCookie(cookieElement) {
+        const fortune =
+          fortuneMessages[Math.floor(Math.random() * fortuneMessages.length)];
+
+        createFireworksBurst(
+          parseFloat(cookieElement.style.left) + 40,
+          parseFloat(cookieElement.style.top) + 40,
+        );
+
+        showClueNote(
+          fortune,
+          cookieElement.style.left,
+          cookieElement.style.top,
+        );
+      }
+
+      // Treasure Chest
+      function createTreasureChest() {
+        const chest = document.createElement("div");
+        chest.className = "treasure-chest";
+        chest.innerHTML = "📦";
+        chest.style.left = Math.random() * (window.innerWidth - 120) + "px";
+        chest.style.top = Math.random() * (window.innerHeight - 120) + "px";
+
+        chest.onclick = function () {
+          progress.treasures++;
+          progress.totalItems++;
+          updateProgress();
+
+          openTreasure(this);
+          this.remove();
+
+          setTimeout(createTreasureChest, 15000);
+        };
+
+        document.body.appendChild(chest);
+      }
+
+      function openTreasure(chestElement) {
+        const reveal =
+          treasureReveals[Math.floor(Math.random() * treasureReveals.length)];
+
+        for (let i = 0; i < 30; i++) {
+          setTimeout(() => {
+            createParticle(
+              parseFloat(chestElement.style.left) + 50,
+              parseFloat(chestElement.style.top) + 50,
+            );
+          }, i * 50);
+        }
+
+        setTimeout(() => {
+          showClueNote(reveal, chestElement.style.left, chestElement.style.top);
+        }, 500);
+      }
+
+      // Spinning Wheel
+      function showSpinningWheel() {
+        const container = document.createElement("div");
+        container.className = "wheel-container";
+
+        const wheel = document.createElement("div");
+        wheel.className = "wheel";
+
+        const pointer = document.createElement("div");
+        pointer.className = "wheel-pointer";
+        pointer.innerHTML = "👇";
+
+        const spinBtn = document.createElement("button");
+        spinBtn.className = "spin-button";
+        spinBtn.textContent = "SPIN!";
+
+        const closeBtn = document.createElement("button");
+        closeBtn.className = "close-overlay";
+        closeBtn.textContent = "✕";
+        closeBtn.onclick = () => container.remove();
+
+        let spinning = false;
+        spinBtn.onclick = () => {
+          if (spinning) return;
+          spinning = true;
+
+          const spins = 5 + Math.random() * 3;
+          const extraDegrees = Math.random() * 360;
+          const totalRotation = spins * 360 + extraDegrees;
+
+          wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+          setTimeout(() => {
+            progress.wheelSpins++;
+            progress.totalItems++;
+            updateProgress();
+
+            const prize = wheelPrizes[Math.floor(extraDegrees / 90)];
+            showClueNote(`🎉 You won: ${prize}`, "50%", "50%");
+
+            setTimeout(() => container.remove(), 3000);
+          }, 3000);
+        };
+
+        wheel.appendChild(spinBtn);
+        container.appendChild(pointer);
+        container.appendChild(wheel);
+        container.appendChild(closeBtn);
+        document.body.appendChild(container);
+      }
+
+      // Scratch Card
+      function showScratchCard() {
+        const container = document.createElement("div");
+        container.className = "scratch-card";
+
+        const canvas = document.createElement("canvas");
+        canvas.className = "scratch-canvas";
+        const isMobile = window.innerWidth < 500;
+        canvas.width = isMobile ? window.innerWidth * 0.85 : 300;
+        canvas.height = isMobile ? 180 : 200;
+        const w = canvas.width;
+        const h = canvas.height;
+
+        const ctx = canvas.getContext("2d");
+
+        // Background message
+        ctx.fillStyle = "#ff69b4";
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 16px Arial";
+        ctx.textAlign = "center";
+        const secret =
+          scratchSecrets[Math.floor(Math.random() * scratchSecrets.length)];
+        wrapText(ctx, secret, w / 2, h / 2 - 20, w - 40, 25);
+
+        // Scratch layer
+        ctx.fillStyle = "#c0c0c0";
+        ctx.fillRect(0, 0, w, h);
+        ctx.fillStyle = "#888";
+        ctx.font = "bold 20px Arial";
+        ctx.fillText("Scratch Me! 🎫", w / 2, h / 2);
+
+        let scratchedPercent = 0;
+        let isScratching = false;
+
+        const scratch = (x, y) => {
+          ctx.globalCompositeOperation = "destination-out";
+          ctx.beginPath();
+          ctx.arc(x, y, 20, 0, Math.PI * 2);
+          ctx.fill();
+
+          scratchedPercent += 0.5;
+          let scratchRevealed = false;
+
+          if (scratchedPercent >= 60 && !scratchRevealed) {
+            scratchRevealed = true;
+            progress.scratchCards++;
+            progress.totalItems++;
+            updateProgress();
+          }
+        };
+
+        canvas.addEventListener("mousedown", (e) => {
+          isScratching = true;
+          const rect = canvas.getBoundingClientRect();
+          scratch(e.clientX - rect.left, e.clientY - rect.top);
+        });
+
+        canvas.addEventListener("mousemove", (e) => {
+          if (isScratching) {
+            const rect = canvas.getBoundingClientRect();
+            scratch(e.clientX - rect.left, e.clientY - rect.top);
+          }
+        });
+
+        canvas.addEventListener("mouseup", () => {
+          isScratching = false;
+        });
+
+        // Touch support
+        canvas.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          isScratching = true;
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+        });
+
+        canvas.addEventListener("touchmove", (e) => {
+          e.preventDefault();
+          if (isScratching) {
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            scratch(touch.clientX - rect.left, touch.clientY - rect.top);
+          }
+        });
+
+        canvas.addEventListener("touchend", () => {
+          isScratching = false;
+        });
+
+        const closeBtn = document.createElement("button");
+        closeBtn.className = "close-overlay";
+        closeBtn.textContent = "✕";
+        closeBtn.onclick = () => container.remove();
+
+        container.appendChild(canvas);
+        container.appendChild(closeBtn);
+        document.body.appendChild(container);
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(" ");
+        let line = "";
+        let testLine = "";
+        let lineArray = [];
+
+        for (let n = 0; n < words.length; n++) {
+          testLine = line + words[n] + " ";
+          const metrics = ctx.measureText(testLine);
+          const testWidth = metrics.width;
+
+          if (testWidth > maxWidth && n > 0) {
+            lineArray.push(line);
+            line = words[n] + " ";
+          } else {
+            line = testLine;
+          }
+        }
+        lineArray.push(line);
+
+        for (let k = 0; k < lineArray.length; k++) {
+          ctx.fillText(lineArray[k], x, y + k * lineHeight);
+        }
+      }
+
+      // Puzzle Pieces
+      function createPuzzlePiece() {
+        const piece = document.createElement("div");
+        piece.className = "puzzle-piece";
+        const emojis = ["🧩", "🎯", "⭐", "💎", "🔑"];
+        piece.innerHTML = emojis[progress.puzzlePieces % emojis.length];
+        piece.style.left = Math.random() * (window.innerWidth - 100) + "px";
+        piece.style.top = Math.random() * (window.innerHeight - 100) + "px";
+
+        piece.onclick = function () {
+          progress.puzzlePieces++;
+          progress.totalItems++;
+          updateProgress();
+
+          createFireworksBurst(
+            parseFloat(this.style.left) + 40,
+            parseFloat(this.style.top) + 40,
+          );
+
+          this.remove();
+        };
+
+        document.body.appendChild(piece);
+      }
+
+      // Clue/Message Display
+      function showClueNote(message, left, top) {
+        const note = document.createElement("div");
+        note.className = "clue-note";
+        note.style.left = typeof left === "string" ? left : left + "px";
+        note.style.top = typeof top === "string" ? top : top + "px";
+        if (typeof left === "string") {
+          note.style.transform = "translate(-50%, -50%)";
+        }
+
+        note.innerHTML = `<div class="clue-text">${message}</div>`;
+        document.body.appendChild(note);
+
+        setTimeout(() => {
+          note.style.animation = "noteReveal 0.5s ease-out reverse";
+          setTimeout(() => note.remove(), 500);
+        }, 3000);
+      }
+
+      // Hint System
+      function createHintButton() {
+        const hintBtn = document.createElement("button");
+        hintBtn.className = "hint-button";
+        hintBtn.innerHTML = "💡 Hint";
+        hintBtn.onclick = showHint;
+        document.body.appendChild(hintBtn);
+      }
+
+      function showHint() {
+        const hint =
+          clueMessages[Math.floor(Math.random() * clueMessages.length)];
+        showClueNote(hint, "50%", "30%");
+      }
+
+      // Particle Effects
+      function createParticle(x, y) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        particle.style.left = x + "px";
+        particle.style.top = y + "px";
+        particle.style.setProperty("--tx", (Math.random() - 0.5) * 100 + "px");
+        particle.style.setProperty("--ty", (Math.random() - 0.5) * 100 + "px");
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 3000);
+      }
+
+      function createFireworksBurst(x, y) {
+        const count = window.innerWidth < 600 ? 12 : 20;
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 * i) / count;
+
+          const velocity = 150;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+
+          const particle = document.createElement("div");
+          particle.className = "firework";
+          particle.style.left = x + "px";
+          particle.style.top = y + "px";
+          particle.style.setProperty("--tx", tx + "px");
+          particle.style.setProperty("--ty", ty + "px");
+          particle.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+          document.body.appendChild(particle);
+
+          setTimeout(() => particle.remove(), 1000);
+        }
+      }
+
+      function createMassiveCelebration() {
+        const fireworkCount = window.innerWidth < 600 ? 40 : 100;
+        for (let i = 0; i < fireworkCount; i++) {
+          setTimeout(() => {
+            createFireworksBurst(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight,
+            );
+          }, i * 100);
+        }
+
+        showClueNote(
+          "🏆 YOU FOUND EVERYTHING! YOU'RE AMAZING! 🏆",
+          "50%",
+          "50%",
+        );
+      }
+
+      function initApp() {
+        const bgMusic = document.getElementById("bgMusic");
+        const toggle = document.getElementById("musicToggle");
+
+        bgMusic
+          .play()
+          .then(() => {
+            isMusicPlaying = true;
+            toggle.innerHTML = "🎵";
+            toggle.classList.remove("muted");
+          })
+          .catch((err) => {
+            console.log("User interaction needed:", err);
+          });
+
+        startExperience(); // continue your flow
+      }
+
+      // Main Experience Flow
+      function startExperience() {
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            createParticle(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight,
+            );
+          }, i * 50);
+        }
+
+        setTimeout(() => {
+          showScreen("messagesScreen");
+          typeMessage();
+        }, 500);
+      }
+
+      function typeMessage() {
+        if (currentMessageIndex >= messages.length) {
+          setTimeout(() => {
+            showScreen("questionScreen");
+            initNoButton();
+          }, 1500);
+          return;
+        }
+
+        const message = messages[currentMessageIndex];
+        const element = document.getElementById("typewriterText");
+
+        if (currentCharIndex < message.length) {
+          element.textContent = message.substring(0, currentCharIndex + 1);
+          currentCharIndex++;
+
+          if (Math.random() > 0.7) {
+            createParticle(
+              window.innerWidth / 2 + (Math.random() - 0.5) * 200,
+              window.innerHeight / 2,
+            );
+          }
+
+          setTimeout(typeMessage, 50);
+        } else {
+          currentCharIndex = 0;
+          currentMessageIndex++;
+          setTimeout(typeMessage, 2000);
+        }
+      }
+
+      function showScreen(screenId) {
+        document.querySelectorAll(".screen").forEach((screen) => {
+          screen.classList.remove("active");
+        });
+        document.getElementById(screenId).classList.add("active");
+      }
+
+      let noBtnAttempts = 0;
+      function initNoButton() {
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+
+        positionNoButton();
+
+        noBtn.addEventListener("mouseenter", handleNoButtonHover);
+        
+
+        function handleNoButtonHover(e) {
+          handleNoButtonEscape();
+          noBtnAttempts++;
+
+          const newScale = 1 + noBtnAttempts * 0.1;
+          yesBtn.style.transform = `scale(${newScale})`;
+
+          moveNoButton();
+
+          createFireworksBurst(
+            noBtn.getBoundingClientRect().left + noBtn.offsetWidth / 2,
+            noBtn.getBoundingClientRect().top + noBtn.offsetHeight / 2,
+          );
+        }
+      }
+
+      // Mobile proximity detection
+document.addEventListener("touchmove", function (e) {
+  const noBtn = document.getElementById("noBtn");
+  if (!noBtn) return;
+
+  const touch = e.touches[0];
+  const rect = noBtn.getBoundingClientRect();
+
+  const distance = Math.sqrt(
+    Math.pow(touch.clientX - (rect.left + rect.width / 2), 2) +
+    Math.pow(touch.clientY - (rect.top + rect.height / 2), 2)
+  );
+
+  // If finger gets close → run away
+  if (distance < 120) {
+    handleNoButtonEscape();
+  }
+}, { passive: true });
+
+function handleNoButtonEscape() {
+  const yesBtn = document.getElementById("yesBtn");
+  noBtnAttempts++;
+
+  const newScale = 1 + noBtnAttempts * 0.1;
+  yesBtn.style.transform = `scale(${newScale})`;
+
+  moveNoButton();
+
+  createFireworksBurst(
+    Math.random() * window.innerWidth,
+    Math.random() * window.innerHeight
+  );
+}
+
+
+
+      function positionNoButton() {
+        const noBtn = document.getElementById("noBtn");
+        const yesBtn = document.getElementById("yesBtn");
+        const yesBtnRect = yesBtn.getBoundingClientRect();
+
+        noBtn.style.position = "fixed";
+        noBtn.style.left = yesBtnRect.right + 30 + "px";
+        noBtn.style.top = yesBtnRect.top + "px";
+      }
+
+      function moveNoButton() {
+        const noBtn = document.getElementById("noBtn");
+        const btnRect = noBtn.getBoundingClientRect();
+        const yesBtn = document.getElementById("yesBtn");
+        const yesBtnRect = yesBtn.getBoundingClientRect();
+
+        const bottomSafe = 140; // space for music button
+        let newX, newY;
+        let attempts = 0;
+
+        do {
+          newX = Math.random() * (window.innerWidth - btnRect.width - 20) + 10;
+          newY =
+            Math.random() * (window.innerHeight - btnRect.height - bottomSafe);
+
+          attempts++;
+        } while (
+          attempts < 10 &&
+          isNearYesButton(newX, newY, yesBtnRect, btnRect)
+        );
+
+        noBtn.style.left = newX + "px";
+        noBtn.style.top = newY + "px";
+        noBtn.style.transform = `rotate(${Math.random() * 360}deg)`;
+      }
+
+      function isNearYesButton(x, y, yesBtnRect, noBtnRect) {
+        const distance = Math.sqrt(
+          Math.pow(x - yesBtnRect.left, 2) + Math.pow(y - yesBtnRect.top, 2),
+        );
+        return distance < 200;
+      }
+
+      function celebrate() {
+        celebrationActive = true;
+        showScreen("celebrationScreen");
+
+        if (isMusicPlaying) {
+          switchToCelebrationMusic();
+        }
+
+        // Initialize game elements
+        createProgressBar();
+        createHintButton();
+
+        // Initial celebration
+        for (let i = 0; i < 50; i++) {
+          setTimeout(() => {
+            createFireworksBurst(
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerHeight,
+            );
+          }, i * 100);
+        }
+
+        // Start spawning interactive elements
+        setTimeout(() => {
+          createMysteryBox();
+          createMysteryBox();
+        }, 3000);
+
+        setTimeout(() => {
+          createTreasureChest();
+        }, 6000);
+
+        setTimeout(() => {
+          createFortuneCookie();
+        }, 9000);
+
+        setTimeout(() => {
+          createPuzzlePiece();
+        }, 12000);
+
+        // Show initial hint
+        setTimeout(() => {
+          showClueNote(
+            "🎮 Click on everything that appears to unlock surprises! 🎁",
+            "50%",
+            "20%",
+          );
+        }, 2000);
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        // Background hearts
+        const emojis = ["💕", "💖", "💗", "💝", "❤️", "💘"];
+        for (let i = 0; i < 15; i++) {
+          const heart = document.createElement("div");
+          heart.className = "bg-heart";
+          heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.top = Math.random() * 100 + "vh";
+          heart.style.animationDelay = Math.random() * 5 + "s";
+          heart.style.animationDuration = Math.random() * 10 + 15 + "s";
+          document.body.appendChild(heart);
+        }
+      });
+    </script>
+  </body>
+</html>
