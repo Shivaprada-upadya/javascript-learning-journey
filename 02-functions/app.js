@@ -1484,3 +1484,58 @@ async function readFileAsync(filename) {
 readFileAsync("invalidFile.txt"); // Output: Error reading file: File not found
 readFileAsync("validFile.txt"); // Output: File data: File content
     
+//  Function with Custom Error Class
+class CustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CustomError";
+    }
+}
+function throwCustomError() {
+    throw new CustomError("This is a custom error message.");
+}
+try {
+    throwCustomError();
+}
+catch (error) {
+    if (error instanceof CustomError) {
+        console.log("Caught a custom error:", error.message);
+    } else {
+        console.log("Caught an error:", error.message);
+    }
+}
+// Output: Caught a custom error: This is a custom error message.
+
+//  Function with Multiple Catch Blocks (Simulated with If Statements)
+function simulateMultipleCatch(error) {
+    if (error instanceof TypeError) {
+        console.error("Caught a TypeError:", error.message);
+    }
+    else if (error instanceof ReferenceError) {
+        console.error("Caught a ReferenceError:", error.message);
+    }
+    else {
+        console.error("Caught an unknown error:", error.message);
+    }
+}
+try {
+    throw new TypeError("This is a type error.");
+}
+catch (error) {
+    simulateMultipleCatch(error);
+}
+try {
+    throw new ReferenceError("This is a reference error.");
+}
+catch (error) {
+    simulateMultipleCatch(error);
+}
+try {
+    throw new Error("This is a general error.");
+}
+catch (error) {
+    simulateMultipleCatch(error);
+}
+// Output: Caught a TypeError: This is a type error.
+//         Caught a ReferenceError: This is a reference error.
+//         Caught an unknown error: This is a general error.
