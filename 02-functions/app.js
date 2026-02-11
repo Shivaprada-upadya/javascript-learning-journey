@@ -1539,3 +1539,20 @@ catch (error) {
 // Output: Caught a TypeError: This is a type error.
 //         Caught a ReferenceError: This is a reference error.
 //         Caught an unknown error: This is a general error.
+
+//  Function with Finally Block
+function functionWithFinally() {
+    try {
+        console.log("Executing try block.");
+        throw new Error("An error occurred.");
+    }   catch (error) {
+        console.error("Caught an error:", error.message);
+    }   finally {
+        console.log("Executing finally block.");
+    }
+}
+functionWithFinally();
+// Output: Executing try block.
+//         Caught an error: An error occurred.
+//         Executing finally block.
+
