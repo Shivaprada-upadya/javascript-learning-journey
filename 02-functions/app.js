@@ -1556,4 +1556,35 @@ functionWithFinally();
 //         Caught an error: An error occurred.
 //         Executing finally block.
 
-//  
+//  Function with Nested Try/Catch
+function nestedTryCatch() {
+    try {
+        console.log("Outer try block.");
+        try {
+            console.log("Inner try block.");
+            throw new Error("Error in inner try block.");
+        } catch (innerError) {
+            console.error("Caught inner error:", innerError.message);
+            throw new Error("Error rethrown from inner catch.");
+        }
+    } catch (outerError) {
+        console.error("Caught outer error:", outerError.message);
+    }
+}
+nestedTryCatch();
+// Output: Outer try block.
+//         Inner try block.
+//         Caught inner error: Error in inner try block.
+//         Caught outer error: Error rethrown from inner catch.
+
+
+
+
+
+
+
+
+
+
+
+
