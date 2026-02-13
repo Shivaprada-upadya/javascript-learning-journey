@@ -1577,6 +1577,25 @@ nestedTryCatch();
 //         Caught inner error: Error in inner try block.
 //         Caught outer error: Error rethrown from inner catch.
 
+//  Function with Error Propagation
+function levelOne() {
+    levelTwo();
+}
+function levelTwo() {
+    levelThree();
+}
+function levelThree() {
+    throw new Error("Error in level three.");
+}
+try {
+    levelOne();
+}
+catch (error) {
+    console.error("Caught an error:", error.message);
+}
+// Output: Caught an error: Error in level three.
+    
+
 
 
 
