@@ -1594,7 +1594,19 @@ catch (error) {
     console.error("Caught an error:", error.message);
 }
 // Output: Caught an error: Error in level three.
-    
+
+
+//  Function with Error Logging
+function errorLoggingFunction() {
+    try {
+        throw new Error("An error to log.");
+    } catch (error) {
+        console.error("Logged error:", error.message);
+    }
+}
+errorLoggingFunction();
+// Output: Logged error: An error to log.
+
 
 
 
