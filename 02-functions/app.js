@@ -1607,6 +1607,23 @@ function errorLoggingFunction() {
 errorLoggingFunction();
 // Output: Logged error: An error to log.
 
+//  Function with Error Rethrowing
+function errorRethrowingFunction() {
+    try {
+        throw new Error("Initial error.");
+    } catch (error) {
+        console.error("Caught error:", error.message);
+        throw new Error("Rethrown error.");
+    }
+}
+try {
+    errorRethrowingFunction();
+}
+catch (error) {
+    console.error("Caught rethrown error:", error.message);
+}
+// Output: Caught error: Initial error.
+//         Caught rethrown error: Rethrown error.
 
 
 
