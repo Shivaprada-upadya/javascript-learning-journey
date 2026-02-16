@@ -1625,6 +1625,18 @@ catch (error) {
 // Output: Caught error: Initial error.
 //         Caught rethrown error: Rethrown error.
 
+//  Function with Asynchronous Error Handling
+async function asyncErrorHandlingFunction() {
+    try {
+        await new Promise((_, reject) => reject(new Error("Async error occurred.")));
+    } catch (error) {
+        console.error("Caught async error:", error.message);
+    }
+}
+asyncErrorHandlingFunction();
+// Output: Caught async error: Async error occurred.
+
+
 
 
 
