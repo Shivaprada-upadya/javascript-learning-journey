@@ -1636,6 +1636,20 @@ async function asyncErrorHandlingFunction() {
 asyncErrorHandlingFunction();
 // Output: Caught async error: Async error occurred.
 
+//  Function with Error Handling in Event Listeners
+function setupErrorHandlingButton() {
+    const button = document.getElementById("errorHandlingButton");
+    button.addEventListener("click", () => {
+        try {
+            throw new Error("Error in event listener.");
+        } catch (error) {
+            console.error("Caught error in event listener:", error.message);
+        }
+    });
+}
+setupErrorHandlingButton();
+// Make sure to have a button with id "errorHandlingButton" in your HTML for the above line to work.
+// Output on button click: Caught error in event listener: Error in event listener.
 
 
 
