@@ -1652,6 +1652,40 @@ setupErrorHandlingButton();
 // Output on button click: Caught error in event listener: Error in event listener.
 
 
+// Function with Error Handling in Promises 
+function promiseWithErrorHandling() {
+    return new Promise((_, reject) => {
+        reject(new Error("Promise error occurred."));
+    });
+}
+promiseWithErrorHandling()
+    .then(() => {
+        console.log("Promise resolved successfully.");
+    })
+    .catch((error) => {
+        console.error("Caught promise error:", error.message);
+    });
+// Output: Caught promise error: Promise error occurred.
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
