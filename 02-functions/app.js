@@ -1666,11 +1666,17 @@ promiseWithErrorHandling()
         console.error("Caught promise error:", error.message);
     });
 // Output: Caught promise error: Promise error occurred.
-    
 
-
-
-
+//  Function with Error Handling in Async/Await
+async function asyncFunctionWithErrorHandling() {
+    try {
+        await Promise.reject(new Error("Async/Await error occurred."));
+    } catch (error) {
+        console.error("Caught async/await error:", error.message);
+    }
+}
+asyncFunctionWithErrorHandling();
+// Output: Caught async/await error: Async/Await error occurred.
 
 
 
