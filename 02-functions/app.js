@@ -1679,8 +1679,19 @@ asyncFunctionWithErrorHandling();
 // Output: Caught async/await error: Async/Await error occurred.
 
 
-
-
+//  Function with Error Handling in Generators
+function* generatorWithErrorHandling() {
+    try {
+        yield 1;
+        throw new Error("Error in generator.");
+    } catch (error) {
+        console.error("Caught error in generator:", error.message);
+        yield 2;
+    }
+}
+const gen = generatorWithErrorHandling();
+console.log(gen.next().value); // Output: 1
+console.log(gen.next().value); // Output: 2
 
 
 
