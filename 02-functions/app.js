@@ -1693,6 +1693,25 @@ const gen = generatorWithErrorHandling();
 console.log(gen.next().value); // Output: 1
 console.log(gen.next().value); // Output: 2
 
+//  Function with Error Handling in Higher-Order Functions
+function higherOrderFunctionWithErrorHandling(fn) {
+    return function(...args) {
+        try {
+            return fn(...args);
+        } catch (error) {
+            console.error("Caught error in higher-order function:", error.message);
+        }
+    }
+}
+const safeFunction = higherOrderFunctionWithErrorHandling((x) => {
+    if (x < 0) {
+        throw new Error("Negative value not allowed.");
+    }
+    return x * 2;
+});
+console.log(safeFunction(5)); // Output: 10
+console.log(safeFunction(-5)); // Output: Caught error in higher-order function: Negative value not allowed.
+    
 
 
 
