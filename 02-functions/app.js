@@ -1712,6 +1712,20 @@ const safeFunction = higherOrderFunctionWithErrorHandling((x) => {
 console.log(safeFunction(5)); // Output: 10
 console.log(safeFunction(-5)); // Output: Caught error in higher-order function: Negative value not allowed.
     
+//  Function with Error Handling in Object Methods
+const objWithErrorHandling = {
+    methodWithError() {
+        try {
+            throw new Error("Error in object method.");
+        } catch (error) {
+            console.error("Caught error in object method:", error.message);
+        }
+    }
+};
+objWithErrorHandling.methodWithError();
+// Output: Caught error in object method: Error in object method.
+
+
 
 
 
