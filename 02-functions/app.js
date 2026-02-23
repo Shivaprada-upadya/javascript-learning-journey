@@ -1725,6 +1725,21 @@ const objWithErrorHandling = {
 objWithErrorHandling.methodWithError();
 // Output: Caught error in object method: Error in object method.
 
+//  Function with Error Handling in Class Methods
+class MyClassWithErrorHandling {
+    methodWithError() {
+        try {
+            throw new Error("Error in class method.");
+        } catch (error) {
+            console.error("Caught error in class method:", error.message);
+        }
+    }
+}
+const myClassInstance = new MyClassWithErrorHandling();
+myClassInstance.methodWithError();
+// Output: Caught error in class method: Error in class method.
+
+
 
 
 
