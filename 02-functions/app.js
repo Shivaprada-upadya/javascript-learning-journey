@@ -1739,6 +1739,26 @@ const myClassInstance = new MyClassWithErrorHandling();
 myClassInstance.methodWithError();
 // Output: Caught error in class method: Error in class method.
 
+//  Function with Error Handling in Async Iterators
+async function* asyncIteratorWithErrorHandling() {
+    try {
+        yield 1;
+        throw new Error("Error in async iterator.");
+    } catch (error) {
+        console.error("Caught error in async iterator:", error.message);
+        yield 2;
+    }
+}
+(async () => {
+    const asyncGen = asyncIteratorWithErrorHandling();
+    console.log(await asyncGen.next()); // Output: { value: 1, done: false }
+    console.log(await asyncGen.next()); // Output: Caught error in async iterator: Error in async iterator.
+    console.log(await asyncGen.next()); // Output: { value: 2, done: false }
+    console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
+})();
+
+
+
 
 
 
