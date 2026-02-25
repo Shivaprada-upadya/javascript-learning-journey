@@ -1757,6 +1757,18 @@ async function* asyncIteratorWithErrorHandling() {
     console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
 })();
 
+//  Function with Error Handling in Event Loop
+function eventLoopErrorHandling() {
+    setTimeout(() => {
+        try {
+            throw new Error("Error in event loop.");
+        } catch (error) {
+            console.error("Caught error in event loop:", error.message);
+        }
+    }, 1000);
+}
+eventLoopErrorHandling();
+// Output after 1 second: Caught error in event loop: Error in event loop.
 
 
 
