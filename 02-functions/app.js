@@ -1822,6 +1822,22 @@ self.addEventListener('message', (event) => {
 const worker = new Worker('worker.js');
 worker.postMessage('throwError'); // This will trigger the error handling in the worker
 
+//  Function with Error Handling in Service Workers
+// Note: This code should be placed in a service worker file (e.g., service-worker.js) and registered in the main thread.
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        fetch(event.request).catch(error => {
+            console.error("Caught error in service worker fetch:", error.message);
+            return new Response("Service is currently unavailable.", {
+                status: 503,
+                statusText: "Service Unavailable"
+            });
+        })
+    );
+});
+
+
+
 
 
 
