@@ -1854,6 +1854,26 @@ socket.addEventListener('error', (error) => {
     console.error("Caught WebSocket error:", error.message);
 });
 
+//  Function with Error Handling in Fetch API
+function fetchDataWithErrorHandling(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+        })
+        .catch(error => {
+            console.error("Caught error in fetch:", error.message);
+        });
+}
+fetchDataWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+fetchDataWithErrorHandling("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
+// Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
+
 
 
 
