@@ -1911,8 +1911,24 @@ fetchDataWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Va
 fetchDataWithPromiseChain("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
 // Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
 
-
-
+// Function with Error Handling in Async Generators
+async function* asyncGeneratorWithErrorHandling() {
+    try {
+        yield 1;
+        throw new Error("Error in async generator.");
+    } catch (error) {
+        console.error("Caught error in async generator:", error.message);
+        yield 2;
+    }
+}
+(async () => {
+    const asyncGen = asyncGeneratorWithErrorHandling();
+    console.log(await asyncGen.next()); // Output: { value: 1, done: false }
+    console.log(await asyncGen.next()); // Output: Caught error in async generator: Error in async generator.
+    console.log(await asyncGen.next()); // Output: { value: 2, done: false }
+    console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
+})();
+    
 
 
 
