@@ -1976,6 +1976,19 @@ socket.addEventListener('error', (error) => {
     console.error("Caught WebSocket error:", error.message);
 });
     
+//  Function with Error Handling in Timers
+function timerWithErrorHandling() {
+    setTimeout(() => {
+        try {
+            throw new Error("Error in timer.");
+        } catch (error) {
+            console.error("Caught error in timer:", error.message);
+        }
+    }, 1000);
+}
+timerWithErrorHandling();
+// Output after 1 second: Caught error in timer: Error in timer.
+
 
 
 
