@@ -2022,6 +2022,23 @@ fetchWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1"); // Valid
 fetchWithErrorHandling("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
 // Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
 
+//  Function with Error Handling in Async/Await
+async function fetchDataAsyncWithErrorHandling(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+    } catch (error) {
+        console.error("Caught error in async fetch:", error.message);
+    }
+}
+fetchDataAsyncWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+fetchDataAsyncWithErrorHandling("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
+// Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
+
 
 
 
