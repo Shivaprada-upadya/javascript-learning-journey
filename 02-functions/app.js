@@ -2039,6 +2039,29 @@ fetchDataAsyncWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1");
 fetchDataAsyncWithErrorHandling("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
 // Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
 
+//  Function with Error Handling in Promise Chains
+function fetchDataWithPromiseChain(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+        })
+        .catch(error => {
+            console.error("Caught error in promise chain:", error.message);
+        });
+}
+fetchDataWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+fetchDataWithPromiseChain("https://jsonplaceholder.typicode.com/invalid-url"); // Invalid URL
+// Output: Fetched data: { userId: 1, id: 1, title: '...', body: '...' }
+
+
+
+
 
 
 
