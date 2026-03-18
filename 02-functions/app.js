@@ -2091,7 +2091,24 @@ function timerWithErrorHandling() {
 timerWithErrorHandling();
 // Output after 1 second: Caught error in timer: Error in timer.
 
-
+// Function with Error Handling in Async Generators
+async function* asyncGeneratorWithErrorHandling() {
+    try {
+        yield 1;
+        throw new Error("Error in async generator.");
+    } catch (error) {
+        console.error("Caught error in async generator:", error.message);
+        yield 2;
+    }
+}
+(async () => {
+    const asyncGen = asyncGeneratorWithErrorHandling();
+    console.log(await asyncGen.next()); // Output: { value: 1, done: false }
+    console.log(await asyncGen.next()); // Output: Caught error in async generator: Error in async generator.
+    console.log(await asyncGen.next()); // Output: { value: 2, done: false }
+    console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
+})();
+    
 
 
 
