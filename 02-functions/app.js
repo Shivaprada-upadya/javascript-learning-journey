@@ -2253,6 +2253,24 @@ function eventLoopErrorHandling() {
 eventLoopErrorHandling();
 // Output after 1 second: Caught error in event loop: Error in event loop.
 
+//  Function with Error Handling in Web APIs
+function fetchWithErrorHandling(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+        })
+        .catch(error => {
+            console.error("Caught error in fetch:", error.message);
+        });
+}
+fetchWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
 
 
 
