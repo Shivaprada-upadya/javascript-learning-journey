@@ -2325,6 +2325,22 @@ async function* asyncGeneratorWithErrorHandling() {
 }
 )();
     
+//  Function with Error Handling in Web Workers
+// Note: This code should be placed in a separate file (e.g., worker.js) and run in a web worker context.
+self.addEventListener('message', (event) => {
+    try {
+        if (event.data === 'throwError') {
+            throw new Error("Error in web worker.");
+        }
+        self.postMessage("Message processed successfully.");
+    } catch (error) {
+        self.postMessage(`Caught error in web worker: ${error.message}`);
+    }
+});
+// In the main thread, you would create a web worker and post messages to it:
+const worker = new Worker('worker.js');
+worker.postMessage('throwError'); // This will trigger the error handling in the worker
+
 
 
 
