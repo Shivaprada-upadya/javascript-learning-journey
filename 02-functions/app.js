@@ -2682,3 +2682,20 @@ self.addEventListener('fetch', (event) => {
     );
 });
 
+//  Function with Error Handling in WebSockets
+const socket2 = new WebSocket('ws://example.com/socket');
+socket2.addEventListener('open', () => {
+    console.log("WebSocket connection opened.");
+});
+socket2.addEventListener('message', (event) => {
+    try {
+        const data = JSON.parse(event.data);
+        console.log("Received data:", data);
+    } catch (error) {
+        console.error("Caught error in WebSocket message handling:", error.message);
+    }
+});
+socket2.addEventListener('error', (error) => {
+    console.error("Caught WebSocket error:", error.message);
+});
+
