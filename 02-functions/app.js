@@ -2699,3 +2699,21 @@ socket2.addEventListener('error', (error) => {
     console.error("Caught WebSocket error:", error.message);
 });
 
+//  Function with Error Handling in Fetch API
+function fetchWithErrorHandling(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+        })
+        .catch(error => {
+            console.error("Caught error in fetch:", error.message);
+        });
+}
+fetchWithErrorHandling("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
