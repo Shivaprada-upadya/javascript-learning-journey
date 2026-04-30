@@ -2768,4 +2768,20 @@ async function* asyncGeneratorWithErrorHandling() {
     console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
 })();
 
-
+//  Function with Logging and Timeout
+function loggedMultiplyWithTimeout(a, b) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const result = a * b;
+            console.log(`Multiplying ${a} and ${b} gives ${result}`);
+            resolve(result);
+        }
+        , 1000);
+    }
+    );
+}
+loggedMultiplyWithTimeout(4, 5).then((result) => {
+    console.log("Result after timeout:", result); // Output: Result after timeout: 20
+}
+);
+// Output: Multiplying 4 and 5 gives 20
