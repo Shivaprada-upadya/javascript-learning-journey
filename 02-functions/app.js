@@ -2785,3 +2785,20 @@ loggedMultiplyWithTimeout(4, 5).then((result) => {
 }
 );
 // Output: Multiplying 4 and 5 gives 20
+
+//  Function with Logging and Error Handling
+function loggedDivideWithErrorHandling(a, b) {
+    try {
+        if (b === 0) {
+            throw new Error("Division by zero is not allowed.");
+        }
+        const result = a / b;
+        console.log(`Dividing ${a} by ${b} gives ${result}`);
+        return result;
+    } catch (error) {
+        console.error("Caught error in division:", error.message);
+        return null;
+    }
+}
+loggedDivideWithErrorHandling(10, 2); // Output: Dividing 10 by 2 gives 5
+loggedDivideWithErrorHandling(10, 0); // Output: Caught error in division: Division by zero is not allowed.
