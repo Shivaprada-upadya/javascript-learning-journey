@@ -2802,3 +2802,21 @@ function loggedDivideWithErrorHandling(a, b) {
 }
 loggedDivideWithErrorHandling(10, 2); // Output: Dividing 10 by 2 gives 5
 loggedDivideWithErrorHandling(10, 0); // Output: Caught error in division: Division by zero is not allowed.
+
+
+//  Function with Logging and Async/Await
+async function loggedFetchWithAsyncAwait(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        return data;
+    } catch (error) {
+        console.error("Caught error in async fetch:", error.message);
+        return null;
+    }
+}
+loggedFetchWithAsyncAwait("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
