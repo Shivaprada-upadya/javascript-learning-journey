@@ -2898,4 +2898,19 @@ function loggedServiceWorker() {
 }
 loggedServiceWorker();
 
+//  Function with Logging and WebSockets
+function loggedWebSocket() {
+    const socket = new WebSocket('ws://example.com/socket');
+    socket.addEventListener('open', () => {
+        console.log("WebSocket connection opened.");
+    });
+    socket.addEventListener('message', (event) => {
+        console.log("Received message:", event.data);
+    });
+    socket.addEventListener('error', (error) => {
+        console.error("Caught WebSocket error:", error.message);
+    });
+}
+loggedWebSocket();
+
 
