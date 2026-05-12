@@ -2973,3 +2973,21 @@ function loggedFetchWithPromiseChain(url) {
 }
 loggedFetchWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
 
+//  Function with Logging and Async Generators
+async function* loggedAsyncGenerator() {
+    console.log("Starting logged async generator...");
+    yield 1;
+    console.log("Yielded 1");
+    yield 2;
+    console.log("Yielded 2");
+    yield 3;
+    console.log("Yielded 3");
+}
+(async () => {
+    const asyncGen = loggedAsyncGenerator();
+    console.log(await asyncGen.next()); // Output: Starting logged async generator... Yielded 1 { value: 1, done: false }
+    console.log(await asyncGen.next()); // Output: Yielded 2 { value: 2, done: false }
+    console.log(await asyncGen.next()); // Output: Yielded 3 { value: 3, done: false }
+    console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
+})();
+
