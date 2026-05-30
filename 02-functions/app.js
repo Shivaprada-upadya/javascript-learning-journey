@@ -3269,6 +3269,18 @@ async function* loggedAsyncGenerator(url) {
     console.log(await asyncGen.next()); // Output: { value: undefined, done: true }
 })();
     
+//  Function with Logging and Timers
+function loggedTimer() {
+    console.log("Timer started.");
+    setTimeout(() => {
+        console.log("Timer finished after 2 seconds.");
+    }, 2000);
+}
+loggedTimer();
+// Output: Timer started. (immediately) Timer finished after 2 seconds. (after 2 seconds)
+    
+
+
 
 
 
