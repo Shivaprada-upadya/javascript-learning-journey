@@ -3531,6 +3531,23 @@ function loggedFetchWithPromiseChain(url) {
 }
 loggedFetchWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
 
+//  Function with Logging and Async Generators
+async function* loggedAsyncGenerator(url) {
+    console.log(`Starting logged async generator for ${url}...`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        yield data;
+    } catch (error) {
+        console.error("Caught error in logged async generator:", error.message);
+        yield null;
+    }
+}
+        
 
 
 
