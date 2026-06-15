@@ -3547,7 +3547,16 @@ async function* loggedAsyncGenerator(url) {
         yield null;
     }
 }
-        
+       
+//  Function with Logging and Timers
+function loggedTimer() {
+    console.log("Timer started.");
+    setTimeout(() => {
+        console.log("Timer finished after 2 seconds.");
+    }, 2000);
+}
+loggedTimer();
+
 
 
 
