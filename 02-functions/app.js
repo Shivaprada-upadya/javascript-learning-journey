@@ -3557,6 +3557,22 @@ function loggedTimer() {
 }
 loggedTimer();
 
+//  Function with Logging and Web Workers
+function loggedWebWorker() {
+    const worker = new Worker('worker.js');
+    console.log("Web worker created.");
+    worker.postMessage('start');
+    console.log("Message sent to web worker.");
+    worker.addEventListener('message', (event) => {
+        console.log("Message from worker:", event.data);
+    });
+    worker.addEventListener('error', (error) => {
+        console.error("Caught error in web worker:", error.message);
+    });
+}
+loggedWebWorker();
+
+
 
 
 
