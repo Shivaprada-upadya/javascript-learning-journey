@@ -3625,7 +3625,28 @@ function loggedFetch(url) {
             return null;
         });
 }
-loggedFetch("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+loggedFetch("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL name
+
+//  Function with Logging and Async/Await     
+async function loggedFetchWithAsyncAwait(url) {
+    console.log(`Starting async fetch for ${url}`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        return data;
+    }
+    catch (error) {
+        console.error("Caught error in async fetch:", error.message);
+        return null;
+    }
+}
+    
+    
+
 
 
 
