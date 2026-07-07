@@ -3915,6 +3915,29 @@ async function loggedFetchWithAsyncAwait(url) {
     }
 }
 loggedFetchWithAsyncAwait("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
+//  Function with Logging and Promise Chains
+function loggedFetchWithPromiseChain(url) {
+    console.log(`Starting fetch with promise chain for ${url}`);
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+            return data;
+        })
+        .catch(error => {
+            console.error("Caught error in promise chain:", error.message);
+            return null;
+        }
+    );
+}
+loggedFetchWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
     
+
 
 
