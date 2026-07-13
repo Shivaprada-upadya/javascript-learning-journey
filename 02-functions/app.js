@@ -4014,6 +4014,28 @@ function loggedWebSocket() {
 }
 loggedWebSocket();
 
+//  Function with Logging and Fetch API
+function loggedFetch(url) {
+    console.log(`Starting fetch for ${url}`);
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+            return data;
+        })
+        .catch(error => {
+            console.error("Caught error in fetch:", error.message);
+            return null;
+        });
+}
+loggedFetch("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
+
 
 
 
