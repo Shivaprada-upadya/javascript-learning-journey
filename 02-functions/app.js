@@ -4230,6 +4230,15 @@ async function* loggedAsyncGenerator(url) {
 }
 loggedAsyncGenerator("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
     
+//  Function with Logging and Timers
+function loggedTimer() {
+    console.log("Timer started.");
+    setTimeout(() => {
+        console.log("Timer finished after 2 seconds.");
+    }, 2000);
+}
+loggedTimer();
+    
     
 
 
