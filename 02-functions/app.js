@@ -4406,6 +4406,158 @@ function loggedServiceWorker() {
 }
 loggedServiceWorker();
     
+//  Function with Logging and WebSockets
+function loggedWebSocket() {
+    const socket = new WebSocket('ws://example.com/socket');
+    console.log("WebSocket connection initiated.");
+    socket.addEventListener('open', () => {
+        console.log("WebSocket connection opened.");
+    });
+    socket.addEventListener('message', (event) => {
+        console.log("Received message:", event.data);
+    });
+    socket.addEventListener('error', (error) => {
+        console.error("Caught WebSocket error:", error.message);
+    });
+}
+loggedWebSocket();
+    
+//  Function with Logging and Fetch API
+function loggedFetch(url) {
+    console.log(`Starting fetch for ${url}`);
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+            return data;
+        })
+        .catch(error => {
+            console.error("Caught error in fetch:", error.message);
+            return null;
+        });
+}
+loggedFetch("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+    
+//  Function with Logging and Async/Await
+async function loggedFetchWithAsyncAwait(url) {
+    console.log(`Starting async fetch for ${url}`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        return data;
+    } catch (error) {
+        console.error("Caught error in async fetch:", error.message);
+        return null;
+    }
+}
+loggedFetchWithAsyncAwait("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
+//  Function with Logging and Promise Chains
+function loggedFetchWithPromiseChain(url) {
+    console.log(`Starting fetch with promise chain for ${url}`);
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Fetched data:", data);
+            return data;
+        })
+        .catch(error => {
+            console.error("Caught error in promise chain:", error.message);
+            return null;
+        }
+    );
+}
+loggedFetchWithPromiseChain("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+    
+//  Function with Logging and Async Generators
+async function* loggedAsyncGenerator(url) {
+    console.log(`Starting logged async generator for ${url}...`);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("Fetched data:", data);
+        yield data;
+    } catch (error) {
+        console.error("Caught error in logged async generator:", error.message);
+        yield null;
+    }
+}
+loggedAsyncGenerator("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
+
+//  Function with Logging and Timers
+function loggedTimer() {
+    console.log("Timer started.");
+    setTimeout(() => {
+        console.log("Timer finished after 2 seconds.");
+    }, 2000);
+}
+loggedTimer();
+
+//  Function with Logging and Web Workers
+function loggedWebWorker() {
+    const worker = new Worker('worker.js');
+    console.log("Web worker created.");
+    worker.postMessage('start');
+    console.log("Message sent to web worker.");
+    worker.addEventListener('message', (event) => {
+        console.log("Message from worker:", event.data);
+    });
+    worker.addEventListener('error', (error) => {
+        console.error("Caught error in web worker:", error.message);
+    });
+}
+loggedWebWorker();
+    
+//  Function with Logging and Service Workers
+function loggedServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        console.log("Registering service worker...");
+        navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+                console.log("Service worker registered with scope:", registration.scope);
+            })
+            .catch(error => {
+                console.error("Caught error in service worker registration:", error.message);
+            });
+    } else {
+        console.log("Service workers are not supported in this browser.");
+    }
+}
+loggedServiceWorker();
+    
+//  Function with Logging and WebSockets
+function loggedWebSocket() {
+    const socket = new WebSocket('ws://example.com/socket');
+    console.log("WebSocket connection initiated.");
+    socket.addEventListener('open', () => {
+        console.log("WebSocket connection opened.");
+    });
+    socket.addEventListener('message', (event) => {
+        console.log("Received message:", event.data);
+    });
+    socket.addEventListener('error', (error) => {
+        console.error("Caught WebSocket error:", error.message);
+    });
+}
+loggedWebSocket();
+
 
 
 
