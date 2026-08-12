@@ -4661,6 +4661,23 @@ function loggedWebWorker() {
 }
 loggedWebWorker();
 
+//  Function with Logging and Service Workers
+function loggedServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        console.log("Registering service worker...");
+        navigator.serviceWorker.register('service-worker.js')
+            .then(registration => {
+                console.log("Service worker registered with scope:", registration.scope);
+            })
+            .catch(error => {
+                console.error("Caught error in service worker registration:", error.message);
+            });
+    } else {
+        console.log("Service workers are not supported in this browser.");
+    }
+}
+loggedServiceWorker();
+
 
 
 
