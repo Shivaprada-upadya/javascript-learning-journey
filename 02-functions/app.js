@@ -4732,7 +4732,18 @@ async function loggedFetchWithAsyncAwait(url) {
     }
 }
 loggedFetchWithAsyncAwait("https://jsonplaceholder.typicode.com/posts/1"); // Valid URL
-    
+
+//  Function with Async Recursion
+async function asyncFactorial(n) {
+    if (n === 0) {
+        return 1;
+    }
+    const result = await asyncFactorial(n - 1);
+    return n * result;
+}
+asyncFactorial(5).then(result => {
+    console.log("Async Factorial of 5:", result); // Output: 120
+});
 
 
 
