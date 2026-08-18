@@ -4745,6 +4745,23 @@ asyncFactorial(5).then(result => {
     console.log("Async Factorial of 5:", result); // Output: 120
 });
 
+//  Function with Logging and Async Recursion
+async function loggedAsyncFactorial(n) {
+    console.log(`Calculating factorial of ${n}`);
+    if (n === 0) {
+        console.log("Base case reached, returning 1");
+        return 1;
+    }
+    const result = await loggedAsyncFactorial(n - 1);
+    const finalResult = n * result;
+    console.log(`Factorial of ${n} is ${finalResult}`);
+    return finalResult;
+}
+loggedAsyncFactorial(5).then(result => {
+    console.log("Logged Async Factorial of 5:", result); // Output: 120
+});
+
+
 
 
 
