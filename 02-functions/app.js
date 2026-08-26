@@ -4888,6 +4888,28 @@ async function loggedAsyncFactorialWithErrorHandling(n) {
     }
 }
 
+//  Function with Logging and Async Recursion with Error Handling
+async function loggedAsyncFactorialWithErrorHandling(n) {
+    console.log(`Calculating factorial of ${n}`);
+    if (n < 0) {
+        throw new Error("Factorial is not defined for negative numbers");
+    }
+    if (n === 0) {
+        console.log("Base case reached, returning 1");
+        return 1;
+    }
+    try {
+        const result = await loggedAsyncFactorialWithErrorHandling(n - 1);
+        const finalResult = n * result;
+        console.log(`Factorial of ${n} is ${finalResult}`);
+        return finalResult;
+    } catch (error) {
+        console.error("Caught error in logged async factorial:", error.message);
+        return null;
+    }
+}
+
+
 
 
 
