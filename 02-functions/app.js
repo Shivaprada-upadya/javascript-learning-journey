@@ -5182,3 +5182,101 @@ async function loggedAsyncFactorialWithErrorHandling(n) {
     }
 }
 
+// 1. Simple function
+function greetUser(name) {
+    return `Hello, ${name}!`;
+}
+
+console.log(greetUser("Shivaprada"));
+
+
+// 2. Function with multiple parameters
+function addNumbers(a, b) {
+    return a + b;
+}
+
+console.log("Sum:", addNumbers(10, 20));
+
+
+// 3. Arrow function
+const multiplyNumbers = (a, b) => {
+    return a * b;
+};
+
+console.log("Multiplication:", multiplyNumbers(5, 4));
+
+
+// 4. Function with default parameter
+function calculateDiscount(price, discount = 10) {
+    return price - (price * discount / 100);
+}
+
+console.log("Final price:", calculateDiscount(1000));
+
+
+// 5. Higher-order function
+function calculate(a, b, operation) {
+    return operation(a, b);
+}
+
+const addition = (a, b) => a + b;
+const subtraction = (a, b) => a - b;
+
+console.log("Higher-order addition:", calculate(20, 10, addition));
+console.log("Higher-order subtraction:", calculate(20, 10, subtraction));
+
+
+// 6. Recursive function
+function countdown(n) {
+    if (n <= 0) {
+        console.log("Done!");
+        return;
+    }
+
+    console.log(n);
+    countdown(n - 1);
+}
+
+countdown(5);
+
+
+// 7. Async function with Promise
+async function fetchUserData() {
+    try {
+        const response = await Promise.resolve({
+            id: 101,
+            name: "Shivaprada"
+        });
+
+        console.log("User data:", response);
+    } catch (error) {
+        console.error("Error:", error.message);
+    }
+}
+
+fetchUserData();
+
+
+// 8. Function using rest parameters
+function calculateTotal(...numbers) {
+    return numbers.reduce((total, number) => total + number, 0);
+}
+
+console.log("Total:", calculateTotal(10, 20, 30, 40));
+
+
+// 9. Closure example
+function createCounter() {
+    let count = 0;
+
+    return function () {
+        count++;
+        return count;
+    };
+}
+
+const counter = createCounter();
+
+console.log("Counter:", counter());
+console.log("Counter:", counter());
+console.log("Counter:", counter());
