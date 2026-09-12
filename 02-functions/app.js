@@ -5280,3 +5280,75 @@ const counter = createCounter();
 console.log("Counter:", counter());
 console.log("Counter:", counter());
 console.log("Counter:", counter());
+
+// 10. Function expression
+const divideNumbers = function (a, b) {
+    if (b === 0) {
+        return "Cannot divide by zero";
+    }
+    return a / b;
+};
+
+console.log("Division:", divideNumbers(20, 5));
+
+
+// 11. Callback function
+function processUser(name, callback) {
+    const message = `Welcome, ${name}!`;
+    callback(message);
+}
+
+processUser("Shivaprada", function (message) {
+    console.log(message);
+});
+
+
+// 12. Function returning another function
+function createMultiplier(multiplier) {
+    return function (number) {
+        return number * multiplier;
+    };
+}
+
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+console.log("Double:", double(10));
+console.log("Triple:", triple(10));
+
+
+// 13. Array method with function
+const numbers = [1, 2, 3, 4, 5];
+
+const squares = numbers.map(function (number) {
+    return number * number;
+});
+
+console.log("Squares:", squares);
+
+
+// 14. Filter with function
+const ages = [12, 18, 25, 15, 30];
+
+const adults = ages.filter(function (age) {
+    return age >= 18;
+});
+
+console.log("Adults:", adults);
+
+
+// 15. Function with validation
+function checkPassword(password) {
+    if (typeof password !== "string") {
+        return "Password must be a string";
+    }
+
+    if (password.length < 8) {
+        return "Password must contain at least 8 characters";
+    }
+
+    return "Password is valid";
+}
+
+console.log(checkPassword("hello"));
+console.log(checkPassword("javascript123"));
