@@ -5352,3 +5352,109 @@ function checkPassword(password) {
 
 console.log(checkPassword("hello"));
 console.log(checkPassword("javascript123"));
+
+// 16. Function with multiple return values
+function getUserDetails() {
+    return {
+        name: "Shivaprada",
+        age: 22,
+        role: "Software Developer"
+    };
+}
+
+const user = getUserDetails();
+
+console.log("User Name:", user.name);
+console.log("User Age:", user.age);
+console.log("User Role:", user.role);
+
+
+// 17. Function using object parameter
+function displayUser(user) {
+    console.log(`Name: ${user.name}`);
+    console.log(`Age: ${user.age}`);
+}
+
+displayUser({
+    name: "Shivaprada",
+    age: 22
+});
+
+
+// 18. Function with destructuring
+function showProduct({ name, price }) {
+    console.log(`Product: ${name}`);
+    console.log(`Price: ₹${price}`);
+}
+
+showProduct({
+    name: "Laptop",
+    price: 50000
+});
+
+
+// 19. Arrow function with multiple parameters
+const calculateTotal = (price, quantity) => {
+    return price * quantity;
+};
+
+console.log("Total:", calculateTotal(500, 3));
+
+
+// 20. Arrow function with implicit return
+const cube = number => number * number * number;
+
+console.log("Cube:", cube(4));
+
+
+// 21. Function using reduce()
+const marks = [80, 75, 90, 85];
+
+const totalMarks = marks.reduce((total, mark) => {
+    return total + mark;
+}, 0);
+
+console.log("Total Marks:", totalMarks);
+
+
+// 22. Function to find maximum number
+function findMaximum(numbers) {
+    return Math.max(...numbers);
+}
+
+console.log("Maximum:", findMaximum([10, 50, 30, 90, 20]));
+
+
+// 23. Function to check even or odd
+function checkEvenOdd(number) {
+    if (number % 2 === 0) {
+        return "Even";
+    }
+
+    return "Odd";
+}
+
+console.log("Number is:", checkEvenOdd(15));
+
+
+// 24. Function with try-catch
+function divide(a, b) {
+    try {
+        if (b === 0) {
+            throw new Error("Cannot divide by zero");
+        }
+
+        return a / b;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+console.log("Result:", divide(10, 2));
+console.log("Result:", divide(10, 0));
+
+
+// 25. Immediately Invoked Function Expression (IIFE)
+(function () {
+    console.log("IIFE function executed immediately");
+})();
