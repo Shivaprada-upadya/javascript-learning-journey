@@ -5458,3 +5458,96 @@ console.log("Result:", divide(10, 0));
 (function () {
     console.log("IIFE function executed immediately");
 })();
+
+// 26. Function with rest parameters
+function calculateSum(...numbers) {
+    return numbers.reduce((total, number) => total + number, 0);
+}
+
+console.log("Sum:", calculateSum(10, 20, 30, 40));
+
+
+// 27. Function to find minimum number
+function findMinimum(numbers) {
+    return Math.min(...numbers);
+}
+
+console.log("Minimum:", findMinimum([10, 5, 30, 2, 20]));
+
+
+// 28. Function to reverse a string
+function reverseString(text) {
+    return text.split("").reverse().join("");
+}
+
+console.log("Reversed:", reverseString("JavaScript"));
+
+
+// 29. Function to count characters
+function countCharacters(text) {
+    return text.length;
+}
+
+console.log("Character count:", countCharacters("JavaScript"));
+
+
+// 30. Function to check palindrome
+function isPalindrome(text) {
+    const reversed = text.split("").reverse().join("");
+
+    return text === reversed;
+}
+
+console.log("Is Palindrome:", isPalindrome("madam"));
+console.log("Is Palindrome:", isPalindrome("hello"));
+
+
+// 31. Function to capitalize a string
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+console.log("Capitalized:", capitalize("javascript"));
+
+
+// 32. Function to calculate average
+function calculateAverage(numbers) {
+    const total = numbers.reduce((sum, number) => sum + number, 0);
+
+    return total / numbers.length;
+}
+
+console.log("Average:", calculateAverage([80, 70, 90, 60]));
+
+
+// 33. Function to remove duplicate values
+function removeDuplicates(numbers) {
+    return [...new Set(numbers)];
+}
+
+console.log(
+    "Unique numbers:",
+    removeDuplicates([1, 2, 2, 3, 4, 4, 5])
+);
+
+
+// 34. Function to find a user
+function findUser(users, name) {
+    return users.find(user => user.name === name);
+}
+
+const users = [
+    { name: "Rahul", age: 25 },
+    { name: "Priya", age: 23 },
+    { name: "Shivaprada", age: 22 }
+];
+
+console.log("Found User:", findUser(users, "Shivaprada"));
+
+
+// 35. Function to filter users by age
+function getAdults(users) {
+    return users.filter(user => user.age >= 18);
+}
+
+console.log("Adult Users:", getAdults(users));
