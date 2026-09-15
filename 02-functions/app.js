@@ -5551,3 +5551,129 @@ function getAdults(users) {
 }
 
 console.log("Adult Users:", getAdults(users));
+
+// 36. Function to check if array contains a value
+function containsValue(numbers, value) {
+    return numbers.includes(value);
+}
+
+console.log("Contains 30:", containsValue([10, 20, 30, 40], 30));
+
+
+// 37. Function to convert Celsius to Fahrenheit
+function celsiusToFahrenheit(celsius) {
+    return (celsius * 9 / 5) + 32;
+}
+
+console.log("Temperature:", celsiusToFahrenheit(30));
+
+
+// 38. Function to calculate discount
+function calculatePrice(price, discount = 10) {
+    return price - (price * discount / 100);
+}
+
+console.log("Final Price:", calculatePrice(1000));
+console.log("Final Price:", calculatePrice(1000, 20));
+
+
+// 39. Function to sort numbers
+function sortNumbers(numbers) {
+    return [...numbers].sort((a, b) => a - b);
+}
+
+console.log(
+    "Sorted Numbers:",
+    sortNumbers([50, 10, 40, 20, 30])
+);
+
+
+// 40. Function to get names from users
+function getUserNames(users) {
+    return users.map(user => user.name);
+}
+
+console.log(
+    "User Names:",
+    getUserNames([
+        { name: "Rahul", age: 25 },
+        { name: "Priya", age: 23 },
+        { name: "Shivaprada", age: 22 }
+    ])
+);
+
+
+// 41. Function to find user by ID
+function findUserById(users, id) {
+    return users.find(user => user.id === id);
+}
+
+const userList = [
+    { id: 1, name: "Rahul" },
+    { id: 2, name: "Priya" },
+    { id: 3, name: "Shivaprada" }
+];
+
+console.log("User:", findUserById(userList, 3));
+
+
+// 42. Function to update an object
+function updateUser(user, newName) {
+    return {
+        ...user,
+        name: newName
+    };
+}
+
+const oldUser = {
+    id: 1,
+    name: "Rahul",
+    age: 25
+};
+
+console.log(
+    "Updated User:",
+    updateUser(oldUser, "Rahul Kumar")
+);
+
+
+// 43. Function with optional parameter
+function greet(name, message = "Welcome") {
+    return `${message}, ${name}!`;
+}
+
+console.log(greet("Shivaprada"));
+console.log(greet("Shivaprada", "Good Evening"));
+
+
+// 44. Function to validate email
+function validateEmail(email) {
+    if (!email.includes("@")) {
+        return false;
+    }
+
+    return true;
+}
+
+console.log("Valid Email:", validateEmail("user@gmail.com"));
+console.log("Valid Email:", validateEmail("usergmail.com"));
+
+
+// 45. Function to create a simple API response
+function createResponse(success, data, message) {
+    return {
+        success: success,
+        data: data,
+        message: message
+    };
+}
+
+console.log(
+    createResponse(
+        true,
+        { id: 1, name: "Shivaprada" },
+        "User fetched successfully"
+    )
+);
+
+
