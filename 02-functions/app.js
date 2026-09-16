@@ -5677,3 +5677,142 @@ console.log(
 );
 
 
+// 46. Callback function
+function calculate(a, b, operation) {
+    return operation(a, b);
+}
+
+const addition = (a, b) => a + b;
+const subtraction = (a, b) => a - b;
+
+console.log("Addition:", calculate(20, 10, addition));
+console.log("Subtraction:", calculate(20, 10, subtraction));
+
+
+// 47. Function returning a Promise
+function getMessage() {
+    return new Promise((resolve) => {
+        resolve("Data received successfully");
+    });
+}
+
+getMessage().then(message => {
+    console.log("Message:", message);
+});
+
+
+// 48. Promise with delay
+function waitForMessage() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve("Message after 2 seconds");
+        }, 2000);
+    });
+}
+
+waitForMessage().then(message => {
+    console.log(message);
+});
+
+
+// 49. Async function
+async function showMessage() {
+    const message = await getMessage();
+    console.log("Async Message:", message);
+}
+
+showMessage();
+
+
+// 50. Async function with error handling
+async function fetchData() {
+    try {
+        const data = await getMessage();
+        console.log("Fetched:", data);
+    } catch (error) {
+        console.error("Error:", error.message);
+    }
+}
+
+fetchData();
+
+
+// 51. Promise rejection
+function checkNumber(number) {
+    return new Promise((resolve, reject) => {
+        if (number > 0) {
+            resolve("Number is positive");
+        } else {
+            reject(new Error("Number must be positive"));
+        }
+    });
+}
+
+checkNumber(10)
+    .then(result => console.log(result))
+    .catch(error => console.log("Error:", error.message));
+
+
+// 52. Async function with parameters
+async function calculateSquare(number) {
+    return number * number;
+}
+
+calculateSquare(8).then(result => {
+    console.log("Square:", result);
+});
+
+
+// 53. Multiple async operations
+async function getUserData() {
+    const name = await Promise.resolve("Shivaprada");
+    const role = await Promise.resolve("Software Developer");
+
+    return {
+        name,
+        role
+    };
+}
+
+getUserData().then(user => {
+    console.log("User Data:", user);
+});
+
+
+// 54. Promise.all()
+function getUserName() {
+    return Promise.resolve("Shivaprada");
+}
+
+function getUserRole() {
+    return Promise.resolve("Software Developer");
+}
+
+async function getCompleteUser() {
+    const [name, role] = await Promise.all([
+        getUserName(),
+        getUserRole()
+    ]);
+
+    console.log("Complete User:", {
+        name,
+        role
+    });
+}
+
+getCompleteUser();
+
+
+// 55. Async function with validation
+async function loginUser(username, password) {
+    if (!username || !password) {
+        throw new Error("Username and password are required");
+    }
+
+    return "Login successful";
+}
+
+loginUser("shivaprada", "12345678")
+    .then(result => console.log(result))
+    .catch(error => console.log("Login Error:", error.message));
+
