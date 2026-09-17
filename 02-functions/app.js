@@ -5816,3 +5816,149 @@ loginUser("shivaprada", "12345678")
     .then(result => console.log(result))
     .catch(error => console.log("Login Error:", error.message));
 
+
+// 56. Function with closure
+function createCounter() {
+    let count = 0;
+
+    return function () {
+        count++;
+        return count;
+    };
+}
+
+const counter = createCounter();
+
+console.log("Count:", counter());
+console.log("Count:", counter());
+console.log("Count:", counter());
+
+
+// 57. Function to create a greeting
+function createGreeting(greeting) {
+    return function (name) {
+        return `${greeting}, ${name}!`;
+    };
+}
+
+const sayHello = createGreeting("Hello");
+
+console.log(sayHello("Shivaprada"));
+
+
+// 58. Higher-order function
+function executeOperation(a, b, operation) {
+    return operation(a, b);
+}
+
+const multiply = (a, b) => a * b;
+
+console.log(
+    "Multiplication:",
+    executeOperation(10, 5, multiply)
+);
+
+
+// 59. Function composition
+function doubleNumber(number) {
+    return number * 2;
+}
+
+function addTen(number) {
+    return number + 10;
+}
+
+function compose(number) {
+    return addTen(doubleNumber(number));
+}
+
+console.log("Composed Result:", compose(5));
+
+
+// 60. Recursive countdown
+function countdown(number) {
+    if (number === 0) {
+        console.log("Done!");
+        return;
+    }
+
+    console.log(number);
+    countdown(number - 1);
+}
+
+countdown(5);
+
+
+// 61. Recursive sum
+function recursiveSum(number) {
+    if (number === 0) {
+        return 0;
+    }
+
+    return number + recursiveSum(number - 1);
+}
+
+console.log("Recursive Sum:", recursiveSum(5));
+
+
+// 62. Function to calculate factorial
+function factorial(number) {
+    if (number === 0 || number === 1) {
+        return 1;
+    }
+
+    return number * factorial(number - 1);
+}
+
+console.log("Factorial:", factorial(5));
+
+
+// 63. Function to check prime number
+function isPrime(number) {
+    if (number < 2) {
+        return false;
+    }
+
+    for (let i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i === 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+console.log("Is Prime:", isPrime(17));
+console.log("Is Prime:", isPrime(20));
+
+
+// 64. Function to calculate power
+function calculatePower(base, exponent) {
+    return base ** exponent;
+}
+
+console.log("Power:", calculatePower(2, 5));
+
+
+// 65. Function to safely parse JSON
+function parseJSON(jsonString) {
+    try {
+        return JSON.parse(jsonString);
+    } catch (error) {
+        return {
+            error: "Invalid JSON"
+        };
+    }
+}
+
+console.log(
+    "Parsed JSON:",
+    parseJSON('{"name":"Shivaprada","role":"Developer"}')
+);
+
+console.log(
+    "Invalid JSON:",
+    parseJSON("invalid json")
+);
+
+
