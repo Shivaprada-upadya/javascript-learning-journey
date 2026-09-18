@@ -5962,3 +5962,146 @@ console.log(
 );
 
 
+// 66. Function to generate a random number
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+console.log("Random Number:", generateRandomNumber(1, 100));
+
+
+// 67. Function to check if a number is positive, negative, or zero
+function checkNumberType(number) {
+    if (number > 0) {
+        return "Positive";
+    }
+
+    if (number < 0) {
+        return "Negative";
+    }
+
+    return "Zero";
+}
+
+console.log("Number Type:", checkNumberType(-10));
+console.log("Number Type:", checkNumberType(0));
+
+
+// 68. Function to calculate total using reduce
+function calculateTotalPrice(products) {
+    return products.reduce((total, product) => {
+        return total + product.price * product.quantity;
+    }, 0);
+}
+
+const products = [
+    { name: "Keyboard", price: 1000, quantity: 2 },
+    { name: "Mouse", price: 500, quantity: 1 },
+    { name: "Headphones", price: 1500, quantity: 1 }
+];
+
+console.log("Total Price:", calculateTotalPrice(products));
+
+
+// 69. Function to find the most expensive product
+function findMostExpensive(products) {
+    return products.reduce((highest, product) => {
+        return product.price > highest.price ? product : highest;
+    });
+}
+
+console.log("Most Expensive:", findMostExpensive(products));
+
+
+// 70. Function to group numbers
+function separateNumbers(numbers) {
+    return {
+        even: numbers.filter(number => number % 2 === 0),
+        odd: numbers.filter(number => number % 2 !== 0)
+    };
+}
+
+console.log(
+    "Separated Numbers:",
+    separateNumbers([1, 2, 3, 4, 5, 6])
+);
+
+
+// 71. Function to remove empty values
+function removeEmptyValues(values) {
+    return values.filter(value => value !== null && value !== undefined && value !== "");
+}
+
+console.log(
+    "Clean Values:",
+    removeEmptyValues(["JavaScript", "", null, "React", undefined, "Node.js"])
+);
+
+
+// 72. Function to convert array to object
+function arrayToObject(users) {
+    return users.reduce((result, user) => {
+        result[user.id] = user;
+        return result;
+    }, {});
+}
+
+const employees = [
+    { id: 1, name: "Rahul" },
+    { id: 2, name: "Priya" },
+    { id: 3, name: "Shivaprada" }
+];
+
+console.log("Users Object:", arrayToObject(employees));
+
+
+// 73. Function to create a delayed Promise
+function delay(milliseconds) {
+    return new Promise(resolve => {
+        setTimeout(resolve, milliseconds);
+    });
+}
+
+async function runTask() {
+    console.log("Task started");
+
+    await delay(1000);
+
+    console.log("Task completed after 1 second");
+}
+
+runTask();
+
+
+// 74. Function to safely access nested object data
+function getUserCity(user) {
+    return user?.address?.city ?? "City not available";
+}
+
+const userData = {
+    name: "Shivaprada",
+    address: {
+        city: "Bengaluru"
+    }
+};
+
+console.log("City:", getUserCity(userData));
+
+
+// 75. Function to create an API-style response
+function createApiResponse(status, data, message = "Success") {
+    return {
+        status,
+        data,
+        message,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "API Response:",
+    createApiResponse(
+        200,
+        { name: "Shivaprada", role: "Developer" }
+    )
+);
