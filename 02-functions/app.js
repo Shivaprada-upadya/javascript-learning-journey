@@ -6105,3 +6105,190 @@ console.log(
         { name: "Shivaprada", role: "Developer" }
     )
 );
+
+// 76. Function to search users
+function searchUsers(users, keyword) {
+    return users.filter(user =>
+        user.name.toLowerCase().includes(keyword.toLowerCase())
+    );
+}
+
+const teamMembers = [
+    { id: 1, name: "Rahul" },
+    { id: 2, name: "Priya" },
+    { id: 3, name: "Shivaprada" },
+    { id: 4, name: "Rohan" }
+];
+
+console.log("Search Result:", searchUsers(teamMembers, "ro"));
+
+
+// 77. Function to sort users by age
+function sortUsersByAge(users) {
+    return [...users].sort((a, b) => a.age - b.age);
+}
+
+const usersWithAge = [
+    { name: "Rahul", age: 28 },
+    { name: "Priya", age: 22 },
+    { name: "Shivaprada", age: 25 }
+];
+
+console.log("Sorted Users:", sortUsersByAge(usersWithAge));
+
+
+// 78. Function to find the oldest user
+function findOldestUser(users) {
+    return users.reduce((oldest, user) =>
+        user.age > oldest.age ? user : oldest
+    );
+}
+
+console.log("Oldest User:", findOldestUser(usersWithAge));
+
+
+// 79. Function to calculate total salary
+function calculateTotalSalary(employees) {
+    return employees.reduce((total, employee) => {
+        return total + employee.salary;
+    }, 0);
+}
+
+const employeesData = [
+    { name: "Rahul", salary: 30000 },
+    { name: "Priya", salary: 40000 },
+    { name: "Shivaprada", salary: 35000 }
+];
+
+console.log("Total Salary:", calculateTotalSalary(employeesData));
+
+
+// 80. Function to format currency
+function formatCurrency(amount) {
+    return new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR"
+    }).format(amount);
+}
+
+console.log("Formatted Price:", formatCurrency(25000));
+
+
+// 81. Function to validate required fields
+function validateUser(user) {
+    if (!user.name) {
+        return "Name is required";
+    }
+
+    if (!user.email) {
+        return "Email is required";
+    }
+
+    if (!user.password) {
+        return "Password is required";
+    }
+
+    return "User data is valid";
+}
+
+console.log(
+    validateUser({
+        name: "Shivaprada",
+        email: "user@gmail.com",
+        password: "12345678"
+    })
+);
+
+
+// 82. Function to debounce another function
+function debounce(callback, delay) {
+    let timer;
+
+    return function (...args) {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            callback(...args);
+        }, delay);
+    };
+}
+
+const search = debounce((keyword) => {
+    console.log("Searching for:", keyword);
+}, 1000);
+
+search("React");
+search("React Developer");
+
+
+// 83. Function to execute a task only once
+function once(callback) {
+    let executed = false;
+
+    return function (...args) {
+        if (!executed) {
+            executed = true;
+            return callback(...args);
+        }
+    };
+}
+
+const initializeApp = once(() => {
+    console.log("Application initialized");
+});
+
+initializeApp();
+initializeApp();
+
+
+// 84. Function to retry an async operation
+async function retryOperation(operation, attempts) {
+    for (let i = 1; i <= attempts; i++) {
+        try {
+            return await operation();
+        } catch (error) {
+            console.log(`Attempt ${i} failed`);
+
+            if (i === attempts) {
+                throw error;
+            }
+        }
+    }
+}
+
+async function testOperation() {
+    return "Operation successful";
+}
+
+retryOperation(testOperation, 3)
+    .then(result => console.log("Retry Result:", result))
+    .catch(error => console.log("Final Error:", error.message));
+
+
+// 85. Function to create a reusable API request handler
+async function handleRequest(requestFunction) {
+    try {
+        const result = await requestFunction();
+
+        return {
+            success: true,
+            data: result
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+
+async function getData() {
+    return {
+        id: 1,
+        name: "Shivaprada"
+    };
+}
+
+handleRequest(getData).then(response => {
+    console.log("Request Response:", response);
+});
