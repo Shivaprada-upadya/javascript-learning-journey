@@ -6292,3 +6292,215 @@ async function getData() {
 handleRequest(getData).then(response => {
     console.log("Request Response:", response);
 });
+
+// 86. Basic class
+class User {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    displayUser() {
+        console.log(`Name: ${this.name}, Age: ${this.age}`);
+    }
+}
+
+const user1 = new User("Shivaprada", 22);
+user1.displayUser();
+
+
+// 87. Class method
+class Calculator {
+    add(a, b) {
+        return a + b;
+    }
+
+    multiply(a, b) {
+        return a * b;
+    }
+}
+
+const calculator = new Calculator();
+
+console.log("Addition:", calculator.add(10, 20));
+console.log("Multiplication:", calculator.multiply(5, 4));
+
+
+// 88. Class with default values
+class Product {
+    constructor(name, price = 0) {
+        this.name = name;
+        this.price = price;
+    }
+
+    displayProduct() {
+        console.log(`Product: ${this.name}, Price: ₹${this.price}`);
+    }
+}
+
+const product1 = new Product("Keyboard", 1500);
+const product2 = new Product("Mouse");
+
+product1.displayProduct();
+product2.displayProduct();
+
+
+// 89. Class with method updating data
+class BankAccount {
+    constructor(owner, balance) {
+        this.owner = owner;
+        this.balance = balance;
+    }
+
+    deposit(amount) {
+        this.balance += amount;
+        return this.balance;
+    }
+
+    withdraw(amount) {
+        if (amount > this.balance) {
+            return "Insufficient balance";
+        }
+
+        this.balance -= amount;
+        return this.balance;
+    }
+}
+
+const account = new BankAccount("Shivaprada", 5000);
+
+console.log("After Deposit:", account.deposit(2000));
+console.log("After Withdrawal:", account.withdraw(1000));
+
+
+// 90. Static method
+class MathHelper {
+    static square(number) {
+        return number * number;
+    }
+
+    static cube(number) {
+        return number * number * number;
+    }
+}
+
+console.log("Square:", MathHelper.square(5));
+console.log("Cube:", MathHelper.cube(3));
+
+
+// 91. Private class field
+class Employee {
+    #salary;
+
+    constructor(name, salary) {
+        this.name = name;
+        this.#salary = salary;
+    }
+
+    getSalary() {
+        return this.#salary;
+    }
+}
+
+const employee = new Employee("Shivaprada", 40000);
+
+console.log("Employee:", employee.name);
+console.log("Salary:", employee.getSalary());
+
+
+// 92. Getter
+class Person {
+    constructor(firstName, lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    get fullName() {
+        return `${this.firstName} ${this.lastName}`;
+    }
+}
+
+const person = new Person("Shivaprada", "Upadya");
+
+console.log("Full Name:", person.fullName);
+
+
+// 93. Setter
+class Account {
+    constructor(owner) {
+        this.owner = owner;
+        this._balance = 0;
+    }
+
+    get balance() {
+        return this._balance;
+    }
+
+    set balance(amount) {
+        if (amount < 0) {
+            console.log("Balance cannot be negative");
+            return;
+        }
+
+        this._balance = amount;
+    }
+}
+
+const account2 = new Account("Shivaprada");
+
+account2.balance = 10000;
+
+console.log("Account Balance:", account2.balance);
+
+
+// 94. Inheritance
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak() {
+        console.log(`${this.name} makes a sound`);
+    }
+}
+
+class Dog extends Animal {
+    speak() {
+        console.log(`${this.name} says Woof!`);
+    }
+}
+
+const dog = new Dog("Tommy");
+
+dog.speak();
+
+
+// 95. Using super
+class Developer {
+    constructor(name) {
+        this.name = name;
+    }
+
+    introduce() {
+        console.log(`Developer: ${this.name}`);
+    }
+}
+
+class SoftwareDeveloper extends Developer {
+    constructor(name, technology) {
+        super(name);
+        this.technology = technology;
+    }
+
+    introduce() {
+        super.introduce();
+        console.log(`Technology: ${this.technology}`);
+    }
+}
+
+const developer = new SoftwareDeveloper(
+    "Shivaprada",
+    "React + Node.js"
+);
+
+developer.introduce();
