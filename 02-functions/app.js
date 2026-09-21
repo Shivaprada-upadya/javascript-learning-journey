@@ -6504,3 +6504,114 @@ const developer = new SoftwareDeveloper(
 );
 
 developer.introduce();
+
+// 96. Function using this
+const userProfile = {
+    name: "Shivaprada",
+
+    showName() {
+        console.log("User Name:", this.name);
+    }
+};
+
+userProfile.showName();
+
+
+// 97. call()
+const personOne = {
+    name: "Rahul"
+};
+
+function introduce(greeting) {
+    console.log(`${greeting}, I am ${this.name}`);
+}
+
+introduce.call(personOne, "Hello");
+
+
+// 98. apply()
+const personTwo = {
+    name: "Priya"
+};
+
+introduce.apply(personTwo, ["Hi"]);
+
+
+// 99. bind()
+const personThree = {
+    name: "Shivaprada"
+};
+
+const boundIntroduce = introduce.bind(personThree);
+
+boundIntroduce("Welcome");
+
+
+// 100. Function with object destructuring
+function displayEmployee({ name, role, salary }) {
+    console.log("Name:", name);
+    console.log("Role:", role);
+    console.log("Salary:", salary);
+}
+
+displayEmployee({
+    name: "Shivaprada",
+    role: "Software Developer",
+    salary: 40000
+});
+
+
+// 101. Object.keys()
+const employeeData = {
+    name: "Shivaprada",
+    role: "Developer",
+    experience: 1
+};
+
+console.log("Keys:", Object.keys(employeeData));
+
+
+// 102. Object.values()
+console.log("Values:", Object.values(employeeData));
+
+
+// 103. Object.entries()
+console.log("Entries:", Object.entries(employeeData));
+
+
+// 104. Object.assign()
+const basicUser = {
+    name: "Shivaprada"
+};
+
+const additionalDetails = {
+    role: "Developer",
+    technology: "JavaScript"
+};
+
+const completeUser = Object.assign(
+    {},
+    basicUser,
+    additionalDetails
+);
+
+console.log("Complete User:", completeUser);
+
+
+// 105. Optional chaining with function
+function getCompanyName(user) {
+    return user?.company?.name ?? "Company not available";
+}
+
+const employee = {
+    name: "Shivaprada",
+    company: {
+        name: "Ninestars"
+    }
+};
+
+console.log("Company:", getCompanyName(employee));
+console.log(
+    "Company:",
+    getCompanyName({ name: "Rahul" })
+);
