@@ -6615,3 +6615,96 @@ console.log(
     "Company:",
     getCompanyName({ name: "Rahul" })
 );
+
+// 106. Map
+const userMap = new Map();
+
+userMap.set(1, "Shivaprada");
+userMap.set(2, "Rahul");
+userMap.set(3, "Priya");
+
+console.log("User:", userMap.get(1));
+console.log("Map Size:", userMap.size);
+
+
+// 107. Check Map value
+console.log("Has User 2:", userMap.has(2));
+
+
+// 108. Loop through Map
+userMap.forEach((name, id) => {
+    console.log(`ID: ${id}, Name: ${name}`);
+});
+
+
+// 109. Set
+const uniqueNumbers = new Set([10, 20, 20, 30, 30, 40]);
+
+console.log("Unique Numbers:", uniqueNumbers);
+
+
+// 110. Add and delete Set values
+uniqueNumbers.add(50);
+uniqueNumbers.delete(20);
+
+console.log("Updated Set:", uniqueNumbers);
+console.log("Has 30:", uniqueNumbers.has(30));
+
+
+// 111. Convert Set to Array
+const numberArray = [...uniqueNumbers];
+
+console.log("Set as Array:", numberArray);
+
+
+// 112. Symbol
+const userId = Symbol("userId");
+
+const symbolUser = {
+    name: "Shivaprada",
+    [userId]: 101
+};
+
+console.log("User Name:", symbolUser.name);
+console.log("Symbol ID:", symbolUser[userId]);
+
+
+// 113. Generator function
+function* numberGenerator() {
+    yield 10;
+    yield 20;
+    yield 30;
+}
+
+const generator = numberGenerator();
+
+console.log("Generator:", generator.next().value);
+console.log("Generator:", generator.next().value);
+console.log("Generator:", generator.next().value);
+
+
+// 114. Generator with loop
+function* countNumbers(limit) {
+    for (let i = 1; i <= limit; i++) {
+        yield i;
+    }
+}
+
+for (const number of countNumbers(5)) {
+    console.log("Generated Number:", number);
+}
+
+
+// 115. Object.freeze()
+const settings = {
+    theme: "dark",
+    language: "English"
+};
+
+Object.freeze(settings);
+
+settings.theme = "light";
+
+console.log("Settings:", settings);
+
+
