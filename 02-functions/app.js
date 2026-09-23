@@ -6707,4 +6707,175 @@ settings.theme = "light";
 
 console.log("Settings:", settings);
 
+// 116. Promise.resolve()
+function getUser() {
+    return Promise.resolve({
+        id: 1,
+        name: "Shivaprada"
+    });
+}
+
+getUser().then(user => {
+    console.log("User:", user);
+});
+
+
+// 117. Promise.reject()
+function checkAccess(isAllowed) {
+    if (isAllowed) {
+        return Promise.resolve("Access granted");
+    }
+
+    return Promise.reject(new Error("Access denied"));
+}
+
+checkAccess(true)
+    .then(message => console.log(message))
+    .catch(error => console.log("Error:", error.message));
+
+
+// 118. Promise.all()
+function getProfile() {
+    return Promise.resolve("Profile loaded");
+}
+
+function getSettings() {
+    return Promise.resolve("Settings loaded");
+}
+
+async function loadUserData() {
+    const results = await Promise.all([
+        getProfile(),
+        getSettings()
+    ]);
+
+    console.log("User Data:", results);
+}
+
+loadUserData();
+
+
+// 119. Promise.race()
+function fastRequest() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve("Fast request completed");
+        }, 500);
+    });
+}
+
+function slowRequest() {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve("Slow request completed");
+        }, 1000);
+    });
+}
+
+Promise.race([fastRequest(), slowRequest()])
+    .then(result => console.log("Race Result:", result));
+
+
+// 120. Promise.allSettled()
+function successfulRequest() {
+    return Promise.resolve("Request successful");
+}
+
+function failedRequest() {
+    return Promise.reject(new Error("Request failed"));
+}
+
+Promise.allSettled([
+    successfulRequest(),
+    failedRequest()
+]).then(results => {
+    console.log("All Results:", results);
+});
+
+
+// 121. Async function with multiple steps
+async function processUser() {
+    const user = await getUser();
+
+    console.log("Processing:", user.name);
+
+    return {
+        ...user,
+        status: "active"
+    };
+}
+
+processUser().then(result => {
+    console.log("Processed User:", result);
+});
+
+
+// 122. Function to transform API data
+function transformUsers(users) {
+    return users.map(user => ({
+        id: user.id,
+        displayName: user.name.toUpperCase()
+    }));
+}
+
+const apiUsers = [
+    { id: 1, name: "Rahul" },
+    { id: 2, name: "Priya" },
+    { id: 3, name: "Shivaprada" }
+];
+
+console.log("Transformed Users:", transformUsers(apiUsers));
+
+
+// 123. Function to group users by role
+function groupByRole(users) {
+    return users.reduce((groups, user) => {
+        if (!groups[user.role]) {
+            groups[user.role] = [];
+        }
+
+        groups[user.role].push(user);
+
+        return groups;
+    }, {});
+}
+
+const employees = [
+    { name: "Rahul", role: "Developer" },
+    { name: "Priya", role: "Tester" },
+    { name: "Shivaprada", role: "Developer" }
+];
+
+console.log("Grouped Users:", groupByRole(employees));
+
+
+// 124. Function to create a reusable validator
+function createValidator(rule) {
+    return function (value) {
+        return rule(value);
+    };
+}
+
+const isValidEmail = createValidator(value => {
+    return value.includes("@");
+});
+
+console.log("Email Valid:", isValidEmail("user@gmail.com"));
+console.log("Email Valid:", isValidEmail("usergmail.com"));
+
+
+// 125. Async function with try-catch-finally
+async function performTask() {
+    try {
+        const result = await Promise.resolve("Task completed");
+        console.log("Result:", result);
+    } catch (error) {
+        console.log("Error:", error.message);
+    } finally {
+        console.log("Task finished");
+    }
+}
+
+performTask();
+
 
