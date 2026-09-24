@@ -1,3 +1,4 @@
+-
 function add(a, b) {
     return a + b;
 }
@@ -6877,5 +6878,196 @@ async function performTask() {
 }
 
 performTask();
+
+// 126. Function to clone an object
+function cloneObject(object) {
+    return { ...object };
+}
+
+const originalUser = {
+    name: "Shivaprada",
+    role: "Developer"
+};
+
+const clonedUser = cloneObject(originalUser);
+
+console.log("Cloned User:", clonedUser);
+
+
+// 127. Function to merge two objects
+function mergeObjects(object1, object2) {
+    return {
+        ...object1,
+        ...object2
+    };
+}
+
+const userDetails = {
+    name: "Shivaprada",
+    age: 22
+};
+
+const jobDetails = {
+    role: "Software Developer",
+    experience: 1
+};
+
+console.log(
+    "Merged Object:",
+    mergeObjects(userDetails, jobDetails)
+);
+
+
+// 128. Function to update object without modifying original
+function updateUserRole(user, newRole) {
+    return {
+        ...user,
+        role: newRole
+    };
+}
+
+const currentUser = {
+    name: "Shivaprada",
+    role: "Trainee Developer"
+};
+
+const updatedUser = updateUserRole(
+    currentUser,
+    "Software Developer"
+);
+
+console.log("Original:", currentUser);
+console.log("Updated:", updatedUser);
+
+
+// 129. Function to remove a property
+function removePassword(user) {
+    const { password, ...safeUser } = user;
+
+    return safeUser;
+}
+
+const userWithPassword = {
+    id: 1,
+    name: "Shivaprada",
+    email: "user@gmail.com",
+    password: "secret123"
+};
+
+console.log(
+    "Safe User:",
+    removePassword(userWithPassword)
+);
+
+
+// 130. Function to get unique values
+function getUniqueValues(values) {
+    return [...new Set(values)];
+}
+
+console.log(
+    "Unique Values:",
+    getUniqueValues([1, 2, 2, 3, 4, 4, 5])
+);
+
+
+// 131. Function to find common values
+function findCommonValues(firstArray, secondArray) {
+    return firstArray.filter(value =>
+        secondArray.includes(value)
+    );
+}
+
+console.log(
+    "Common Values:",
+    findCommonValues(
+        [1, 2, 3, 4],
+        [3, 4, 5, 6]
+    )
+);
+
+
+// 132. Function to find difference between arrays
+function findDifference(firstArray, secondArray) {
+    return firstArray.filter(value =>
+        !secondArray.includes(value)
+    );
+}
+
+console.log(
+    "Difference:",
+    findDifference(
+        [1, 2, 3, 4],
+        [3, 4, 5, 6]
+    )
+);
+
+
+// 133. Function to chunk an array
+function chunkArray(array, size) {
+    const result = [];
+
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size));
+    }
+
+    return result;
+}
+
+console.log(
+    "Chunks:",
+    chunkArray([1, 2, 3, 4, 5, 6, 7], 3)
+);
+
+
+// 134. Function to paginate data
+function paginateData(data, page, limit) {
+    const startIndex = (page - 1) * limit;
+
+    return data.slice(
+        startIndex,
+        startIndex + limit
+    );
+}
+
+const productsList = [
+    "Laptop",
+    "Mouse",
+    "Keyboard",
+    "Monitor",
+    "Headphones",
+    "Webcam"
+];
+
+console.log(
+    "Page 2:",
+    paginateData(productsList, 2, 2)
+);
+
+
+// 135. Function to safely access nested data
+function getNestedValue(object, path) {
+    return path
+        .split(".")
+        .reduce((current, key) => current?.[key], object);
+}
+
+const companyData = {
+    name: "Ninestars",
+    address: {
+        city: "Bengaluru",
+        country: "India"
+    }
+};
+
+console.log(
+    "City:",
+    getNestedValue(companyData, "address.city")
+);
+
+console.log(
+    "Country:",
+    getNestedValue(companyData, "address.country")
+);
 
 
