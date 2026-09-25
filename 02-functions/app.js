@@ -7070,4 +7070,151 @@ console.log(
     getNestedValue(companyData, "address.country")
 );
 
+// 136. Function to check if an object is empty
+function isEmptyObject(object) {
+    return Object.keys(object).length === 0;
+}
 
+console.log("Is Empty:", isEmptyObject({}));
+console.log("Is Empty:", isEmptyObject({ name: "Shivaprada" }));
+
+
+// 137. Function to count occurrences
+function countOccurrences(array) {
+    return array.reduce((count, value) => {
+        count[value] = (count[value] || 0) + 1;
+        return count;
+    }, {});
+}
+
+console.log(
+    "Occurrences:",
+    countOccurrences(["React", "Node", "React", "JavaScript", "Node"])
+);
+
+
+// 138. Function to find the most frequent value
+function findMostFrequent(array) {
+    const counts = countOccurrences(array);
+
+    return Object.keys(counts).reduce((mostFrequent, value) => {
+        return counts[value] > counts[mostFrequent]
+            ? value
+            : mostFrequent;
+    });
+}
+
+console.log(
+    "Most Frequent:",
+    findMostFrequent(["A", "B", "A", "C", "A", "B"])
+);
+
+
+// 139. Function to capitalize every word
+function capitalizeWords(sentence) {
+    return sentence
+        .split(" ")
+        .map(word => {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(" ");
+}
+
+console.log(
+    "Capitalized:",
+    capitalizeWords("javascript is very useful")
+);
+
+
+// 140. Function to remove extra spaces
+function removeExtraSpaces(text) {
+    return text.trim().replace(/\s+/g, " ");
+}
+
+console.log(
+    "Clean Text:",
+    removeExtraSpaces("   Hello     JavaScript   World   ")
+);
+
+
+// 141. Function to validate password
+function validatePassword(password) {
+    if (password.length < 8) {
+        return "Password must contain at least 8 characters";
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        return "Password must contain an uppercase letter";
+    }
+
+    if (!/[0-9]/.test(password)) {
+        return "Password must contain a number";
+    }
+
+    return "Password is valid";
+}
+
+console.log(
+    validatePassword("JavaScript123")
+);
+
+
+// 142. Function to validate phone number
+function validatePhoneNumber(phone) {
+    const phoneRegex = /^[6-9]\d{9}$/;
+
+    return phoneRegex.test(phone);
+}
+
+console.log(
+    "Valid Phone:",
+    validatePhoneNumber("9876543210")
+);
+
+console.log(
+    "Valid Phone:",
+    validatePhoneNumber("1234567890")
+);
+
+
+// 143. Function to format date
+function formatDate(date) {
+    return new Intl.DateTimeFormat("en-IN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    }).format(date);
+}
+
+console.log(
+    "Formatted Date:",
+    formatDate(new Date())
+);
+
+
+// 144. Function to calculate age
+function calculateAge(birthYear) {
+    const currentYear = new Date().getFullYear();
+
+    return currentYear - birthYear;
+}
+
+console.log(
+    "Age:",
+    calculateAge(2004)
+);
+
+
+// 145. Function to create a slug
+function createSlug(text) {
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-");
+}
+
+console.log(
+    "Slug:",
+    createSlug("JavaScript Functions Tutorial")
+);
