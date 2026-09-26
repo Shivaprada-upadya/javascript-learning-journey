@@ -7218,3 +7218,210 @@ console.log(
     "Slug:",
     createSlug("JavaScript Functions Tutorial")
 );
+
+// 146. Function to check if two arrays are equal
+function areArraysEqual(firstArray, secondArray) {
+    if (firstArray.length !== secondArray.length) {
+        return false;
+    }
+
+    return firstArray.every((value, index) => {
+        return value === secondArray[index];
+    });
+}
+
+console.log(
+    "Arrays Equal:",
+    areArraysEqual([1, 2, 3], [1, 2, 3])
+);
+
+
+// 147. Function to flatten an array
+function flattenArray(array) {
+    return array.flat(Infinity);
+}
+
+console.log(
+    "Flattened Array:",
+    flattenArray([1, [2, [3, 4]], 5])
+);
+
+
+// 148. Function to sort objects by property
+function sortByProperty(items, property) {
+    return [...items].sort((a, b) => {
+        return String(a[property]).localeCompare(String(b[property]));
+    });
+}
+
+const developers = [
+    { name: "Shivaprada", role: "Developer" },
+    { name: "Rahul", role: "Tester" },
+    { name: "Priya", role: "Designer" }
+];
+
+console.log(
+    "Sorted Developers:",
+    sortByProperty(developers, "name")
+);
+
+
+// 149. Function to group objects by property
+function groupBy(items, property) {
+    return items.reduce((groups, item) => {
+        const key = item[property];
+
+        if (!groups[key]) {
+            groups[key] = [];
+        }
+
+        groups[key].push(item);
+
+        return groups;
+    }, {});
+}
+
+console.log(
+    "Grouped Developers:",
+    groupBy(developers, "role")
+);
+
+
+// 150. Function to memoize results
+function memoize(callback) {
+    const cache = new Map();
+
+    return function (value) {
+        if (cache.has(value)) {
+            console.log("Returning cached result");
+            return cache.get(value);
+        }
+
+        const result = callback(value);
+
+        cache.set(value, result);
+
+        return result;
+    };
+}
+
+const squareNumber = memoize(number => number * number);
+
+console.log("Square:", squareNumber(10));
+console.log("Square:", squareNumber(10));
+console.log("Square:", squareNumber(20));
+
+
+// 151. Function to throttle execution
+function throttle(callback, delay) {
+    let waiting = false;
+
+    return function (...args) {
+        if (waiting) {
+            return;
+        }
+
+        callback(...args);
+        waiting = true;
+
+        setTimeout(() => {
+            waiting = false;
+        }, delay);
+    };
+}
+
+const logMessage = throttle(message => {
+    console.log("Throttled:", message);
+}, 1000);
+
+logMessage("Message 1");
+logMessage("Message 2");
+
+
+// 152. Function to deep clone an object
+function deepClone(object) {
+    return structuredClone(object);
+}
+
+const originalData = {
+    name: "Shivaprada",
+    address: {
+        city: "Bengaluru"
+    }
+};
+
+const clonedData = deepClone(originalData);
+
+clonedData.address.city = "Mangaluru";
+
+console.log("Original Data:", originalData);
+console.log("Cloned Data:", clonedData);
+
+
+// 153. Function to pick selected properties
+function pickProperties(object, properties) {
+    return properties.reduce((result, property) => {
+        if (property in object) {
+            result[property] = object[property];
+        }
+
+        return result;
+    }, {});
+}
+
+const employeeInfo = {
+    name: "Shivaprada",
+    age: 22,
+    role: "Developer",
+    salary: 40000
+};
+
+console.log(
+    "Selected Properties:",
+    pickProperties(employeeInfo, ["name", "role"])
+);
+
+
+// 154. Function to omit selected properties
+function omitProperties(object, properties) {
+    const result = { ...object };
+
+    properties.forEach(property => {
+        delete result[property];
+    });
+
+    return result;
+}
+
+console.log(
+    "Without Salary:",
+    omitProperties(employeeInfo, ["salary"])
+);
+
+
+// 155. Function to safely execute another function
+function safeExecute(callback) {
+    try {
+        return {
+            success: true,
+            result: callback()
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message
+        };
+    }
+}
+
+console.log(
+    "Safe Result:",
+    safeExecute(() => 10 + 20)
+);
+
+console.log(
+    "Safe Error:",
+    safeExecute(() => {
+        throw new Error("Something went wrong");
+    })
+);
