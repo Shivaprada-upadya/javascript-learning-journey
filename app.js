@@ -156,3 +156,137 @@ retryWithDelay(successfulOperation, 3, 1000)
     .catch(error => {
         console.log("Final Error:", error.message);
     });
+
+// 166. Function to check if a value is a valid number
+function isValidNumber166(value) {
+    return typeof value === "number" && !Number.isNaN(value);
+}
+
+console.log("Valid Number:", isValidNumber166(100));
+
+
+// 167. Function to calculate percentage
+function calculatePercentage167(value, total) {
+    if (total === 0) {
+        return 0;
+    }
+
+    return (value / total) * 100;
+}
+
+console.log(
+    "Percentage:",
+    calculatePercentage167(45, 60).toFixed(2) + "%"
+);
+
+
+// 168. Function to generate a random number in a range
+function randomNumberInRange168(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+console.log(
+    "Random Number:",
+    randomNumberInRange168(1, 100)
+);
+
+
+// 169. Function to check if an array contains duplicates
+function hasDuplicates169(array) {
+    return new Set(array).size !== array.length;
+}
+
+console.log(
+    "Has Duplicates:",
+    hasDuplicates169([1, 2, 3, 2])
+);
+
+
+// 170. Function to remove duplicates from an array
+function removeDuplicates170(array) {
+    return [...new Set(array)];
+}
+
+console.log(
+    "Without Duplicates:",
+    removeDuplicates170([1, 2, 2, 3, 3, 4])
+);
+
+
+// 171. Function to calculate total price
+function calculateTotalPrice171(items) {
+    return items.reduce((total, item) => {
+        return total + item.price * item.quantity;
+    }, 0);
+}
+
+const shoppingItems171 = [
+    { name: "Keyboard", price: 1000, quantity: 1 },
+    { name: "Mouse", price: 500, quantity: 2 },
+    { name: "USB Cable", price: 200, quantity: 3 }
+];
+
+console.log(
+    "Total Price:",
+    calculateTotalPrice171(shoppingItems171)
+);
+
+
+// 172. Function to apply tax
+function calculatePriceWithTax172(price, taxRate) {
+    return price + (price * taxRate / 100);
+}
+
+console.log(
+    "Price With Tax:",
+    calculatePriceWithTax172(1000, 18)
+);
+
+
+// 173. Function to create a simple logger
+function createLogger173(prefix) {
+    return function (message) {
+        console.log(`[${prefix}] ${message}`);
+    };
+}
+
+const appLogger173 = createLogger173("APP");
+
+appLogger173("Application started");
+appLogger173("User logged in");
+
+
+// 174. Function to safely access nested object data
+function getNestedValue174(object, path) {
+    return path.split(".").reduce((current, key) => {
+        return current?.[key];
+    }, object);
+}
+
+const userData174 = {
+    profile: {
+        contact: {
+            email: "user@example.com"
+        }
+    }
+};
+
+console.log(
+    "Email:",
+    getNestedValue174(userData174, "profile.contact.email")
+);
+
+
+// 175. Function to convert object to query string
+function objectToQueryString175(parameters) {
+    return new URLSearchParams(parameters).toString();
+}
+
+console.log(
+    "Query String:",
+    objectToQueryString175({
+        page: 1,
+        limit: 10,
+        search: "javascript"
+    })
+);
