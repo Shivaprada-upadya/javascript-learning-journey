@@ -290,3 +290,190 @@ console.log(
         search: "javascript"
     })
 );
+
+// 176. Function to create an API success response
+function createSuccessResponse176(data) {
+    return {
+        success: true,
+        data: data
+    };
+}
+
+console.log(
+    "Success Response:",
+    createSuccessResponse176({ name: "Shivaprada" })
+);
+
+
+// 177. Function to create an API error response
+function createErrorResponse177(message, statusCode) {
+    return {
+        success: false,
+        statusCode: statusCode,
+        message: message
+    };
+}
+
+console.log(
+    "Error Response:",
+    createErrorResponse177("User not found", 404)
+);
+
+
+// 178. Function to validate required fields
+function validateRequiredFields178(data, fields) {
+    const missingFields = fields.filter(field => {
+        return data[field] === undefined ||
+               data[field] === null ||
+               data[field] === "";
+    });
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields: missingFields
+    };
+}
+
+console.log(
+    "Validation:",
+    validateRequiredFields178(
+        {
+            name: "Shivaprada",
+            email: ""
+        },
+        ["name", "email", "age"]
+    )
+);
+
+
+// 179. Function to create a user object
+function createUserObject179(name, email, role = "user") {
+    return {
+        id: Date.now(),
+        name: name,
+        email: email,
+        role: role,
+        createdAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "User:",
+    createUserObject179(
+        "Shivaprada",
+        "shivaprada@example.com"
+    )
+);
+
+
+// 180. Function to find a user by email
+function findUserByEmail180(users, email) {
+    return users.find(user => user.email === email);
+}
+
+const userList180 = [
+    {
+        id: 1,
+        name: "Rahul",
+        email: "rahul@example.com"
+    },
+    {
+        id: 2,
+        name: "Shivaprada",
+        email: "shivaprada@example.com"
+    }
+];
+
+console.log(
+    "Found User:",
+    findUserByEmail180(
+        userList180,
+        "shivaprada@example.com"
+    )
+);
+
+
+// 181. Function to update a user
+function updateUser181(users, userId, updates) {
+    return users.map(user => {
+        if (user.id === userId) {
+            return {
+                ...user,
+                ...updates
+            };
+        }
+
+        return user;
+    });
+}
+
+console.log(
+    "Updated Users:",
+    updateUser181(
+        userList180,
+        2,
+        { role: "admin" }
+    )
+);
+
+
+// 182. Function to delete a user
+function deleteUser182(users, userId) {
+    return users.filter(user => user.id !== userId);
+}
+
+console.log(
+    "Remaining Users:",
+    deleteUser182(userList180, 1)
+);
+
+
+// 183. Function to create pagination information
+function createPagination183(totalItems, currentPage, pageSize) {
+    const totalPages = Math.ceil(totalItems / pageSize);
+
+    return {
+        currentPage: currentPage,
+        pageSize: pageSize,
+        totalItems: totalItems,
+        totalPages: totalPages,
+        hasNextPage: currentPage < totalPages,
+        hasPreviousPage: currentPage > 1
+    };
+}
+
+console.log(
+    "Pagination:",
+    createPagination183(100, 2, 10)
+);
+
+
+// 184. Function to calculate pagination offset
+function calculateOffset184(page, pageSize) {
+    return (page - 1) * pageSize;
+}
+
+console.log(
+    "Database Offset:",
+    calculateOffset184(3, 10)
+);
+
+
+// 185. Function to simulate an API request
+async function simulateApiRequest185(data, delay = 1000) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve({
+                success: true,
+                data: data
+            });
+        }, delay);
+    });
+}
+
+simulateApiRequest185({
+    message: "Data fetched successfully"
+})
+    .then(response => {
+        console.log("API Response:", response);
+    });
