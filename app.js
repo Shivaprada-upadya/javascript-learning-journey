@@ -477,3 +477,163 @@ simulateApiRequest185({
     .then(response => {
         console.log("API Response:", response);
     });
+
+// 186. Function to check HTTP success status
+function isSuccessStatus186(statusCode) {
+    return statusCode >= 200 && statusCode < 300;
+}
+
+console.log(
+    "Is Success Status:",
+    isSuccessStatus186(200)
+);
+
+
+// 187. Function to check HTTP client error
+function isClientError187(statusCode) {
+    return statusCode >= 400 && statusCode < 500;
+}
+
+console.log(
+    "Is Client Error:",
+    isClientError187(404)
+);
+
+
+// 188. Function to check HTTP server error
+function isServerError188(statusCode) {
+    return statusCode >= 500 && statusCode < 600;
+}
+
+console.log(
+    "Is Server Error:",
+    isServerError188(500)
+);
+
+
+// 189. Function to get HTTP status message
+function getStatusMessage189(statusCode) {
+    const statusMessages = {
+        200: "OK",
+        201: "Created",
+        400: "Bad Request",
+        401: "Unauthorized",
+        403: "Forbidden",
+        404: "Not Found",
+        500: "Internal Server Error"
+    };
+
+    return statusMessages[statusCode] ?? "Unknown Status";
+}
+
+console.log(
+    "Status Message:",
+    getStatusMessage189(404)
+);
+
+
+// 190. Function to create HTTP response
+function createHttpResponse190(statusCode, data) {
+    return {
+        statusCode: statusCode,
+        success: statusCode >= 200 && statusCode < 300,
+        data: data,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "HTTP Response:",
+    createHttpResponse190(
+        200,
+        { message: "Request successful" }
+    )
+);
+
+
+// 191. Function to validate email
+function isValidEmail191(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+console.log(
+    "Valid Email:",
+    isValidEmail191("user@example.com")
+);
+
+
+// 192. Function to sanitize string
+function sanitizeString192(value) {
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value.trim();
+}
+
+console.log(
+    "Sanitized String:",
+    sanitizeString192("   Hello Node.js   ")
+);
+
+
+// 193. Function to safely parse JSON
+function parseJsonSafely193(jsonString) {
+    try {
+        return {
+            success: true,
+            data: JSON.parse(jsonString)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            data: null,
+            error: "Invalid JSON"
+        };
+    }
+}
+
+console.log(
+    "JSON Result:",
+    parseJsonSafely193('{"name":"Shivaprada"}')
+);
+
+
+// 194. Function to create request metadata
+function createRequestMetadata194(method, path) {
+    return {
+        method: method.toUpperCase(),
+        path: path,
+        requestId: generateId(),
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "Request Metadata:",
+    createRequestMetadata194("get", "/api/users")
+);
+
+
+// 195. Function to simulate an API request handler
+async function handleApiRequest195(request) {
+    if (!request || !request.method || !request.path) {
+        return createHttpResponse190(400, {
+            message: "Invalid request"
+        });
+    }
+
+    return createHttpResponse190(200, {
+        message: "Request processed successfully",
+        method: request.method,
+        path: request.path
+    });
+}
+
+handleApiRequest195({
+    method: "GET",
+    path: "/api/users"
+})
+    .then(response => {
+        console.log("API Handler Response:", response);
+    });
