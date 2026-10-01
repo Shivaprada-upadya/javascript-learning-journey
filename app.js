@@ -637,3 +637,207 @@ handleApiRequest195({
     .then(response => {
         console.log("API Handler Response:", response);
     });
+
+// 196. Function to validate password length
+function isValidPassword196(password) {
+    return typeof password === "string" && password.length >= 8;
+}
+
+console.log(
+    "Valid Password:",
+    isValidPassword196("Password123")
+);
+
+
+// 197. Function to check password strength
+function getPasswordStrength197(password) {
+    if (typeof password !== "string") {
+        return "Invalid";
+    }
+
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    if (score >= 4) {
+        return "Strong";
+    }
+
+    if (score >= 2) {
+        return "Medium";
+    }
+
+    return "Weak";
+}
+
+console.log(
+    "Password Strength:",
+    getPasswordStrength197("Password123!")
+);
+
+
+// 198. Function to compare passwords
+function passwordsMatch198(password, confirmPassword) {
+    return password === confirmPassword;
+}
+
+console.log(
+    "Passwords Match:",
+    passwordsMatch198(
+        "Password123",
+        "Password123"
+    )
+);
+
+
+// 199. Function to create a user session
+function createSession199(userId, role) {
+    return {
+        sessionId: generateId(),
+        userId: userId,
+        role: role,
+        createdAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "Session:",
+    createSession199(101, "user")
+);
+
+
+// 200. Function to check user authentication
+function isAuthenticated200(session) {
+    return Boolean(
+        session &&
+        session.sessionId &&
+        session.userId
+    );
+}
+
+const session200 = createSession199(101, "user");
+
+console.log(
+    "Authenticated:",
+    isAuthenticated200(session200)
+);
+
+
+// 201. Function to check user role
+function hasRole201(session, requiredRole) {
+    return session?.role === requiredRole;
+}
+
+const adminSession201 = createSession199(101, "admin");
+
+adminSession201.role = "admin";
+
+console.log(
+    "Has Admin Role:",
+    hasRole201(adminSession201, "admin")
+);
+
+
+// 202. Function to check authorization
+function isAuthorized202(session, allowedRoles) {
+    if (!isAuthenticated200(session)) {
+        return false;
+    }
+
+    return allowedRoles.includes(session.role);
+}
+
+console.log(
+    "Authorized:",
+    isAuthorized202(
+        adminSession201,
+        ["admin", "manager"]
+    )
+);
+
+
+// 203. Function to create authentication response
+function createAuthResponse203(userId, role) {
+    const session = createSession199(userId, role);
+
+    return {
+        success: true,
+        message: "Authentication successful",
+        session: session
+    };
+}
+
+console.log(
+    "Auth Response:",
+    createAuthResponse203(101, "user")
+);
+
+
+// 204. Function to create authorization middleware
+function authorizationMiddleware204(allowedRoles) {
+    return function (session) {
+        if (!isAuthenticated200(session)) {
+            return {
+                allowed: false,
+                statusCode: 401,
+                message: "Authentication required"
+            };
+        }
+
+        if (!allowedRoles.includes(session.role)) {
+            return {
+                allowed: false,
+                statusCode: 403,
+                message: "Access denied"
+            };
+        }
+
+        return {
+            allowed: true,
+            statusCode: 200,
+            message: "Access granted"
+        };
+    };
+}
+
+const adminMiddleware204 =
+    authorizationMiddleware204(["admin"]);
+
+console.log(
+    "Middleware Result:",
+    adminMiddleware204(adminSession201)
+);
+
+
+// 205. Function to simulate login
+async function loginUser205(email, password) {
+    const validEmail = "user@example.com";
+    const validPassword = "Password123";
+
+    if (email !== validEmail || password !== validPassword) {
+        return {
+            success: false,
+            statusCode: 401,
+            message: "Invalid email or password"
+        };
+    }
+
+    return {
+        success: true,
+        statusCode: 200,
+        message: "Login successful",
+        session: createSession199(101, "user")
+    };
+}
+
+loginUser205(
+    "user@example.com",
+    "Password123"
+)
+    .then(response => {
+        console.log("Login Response:", response);
+    });
