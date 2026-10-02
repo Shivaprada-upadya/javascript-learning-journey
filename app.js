@@ -841,3 +841,274 @@ loginUser205(
     .then(response => {
         console.log("Login Response:", response);
     });
+
+// 206. Function to create a request logger
+function createRequestLogger206() {
+    return function (method, path) {
+        console.log(
+            `[${new Date().toISOString()}] ${method} ${path}`
+        );
+    };
+}
+
+const requestLogger206 = createRequestLogger206();
+
+requestLogger206("GET", "/api/users");
+
+
+// 207. Function to measure execution time
+async function measureExecutionTime207(operation) {
+    const startTime = Date.now();
+
+    const result = await operation();
+
+    const endTime = Date.now();
+
+    return {
+        result: result,
+        executionTime: `${endTime - startTime} ms`
+    };
+}
+
+measureExecutionTime207(async () => {
+    await new Promise(resolve => {
+        setTimeout(resolve, 500);
+    });
+
+    return "Operation completed";
+})
+    .then(result => {
+        console.log("Execution Result:", result);
+    });
+
+
+// 208. Function to create a middleware chain
+function createMiddlewareChain208(middlewares) {
+    return async function (context) {
+        for (const middleware of middlewares) {
+            await middleware(context);
+        }
+
+        return context;
+    };
+}
+
+const middlewareChain208 = createMiddlewareChain208([
+    async context => {
+        context.step1 = true;
+    },
+
+    async context => {
+        context.step2 = true;
+    }
+]);
+
+middlewareChain208({})
+    .then(result => {
+        console.log("Middleware Chain:", result);
+    });
+
+
+// 209. Function to validate request method
+function validateRequestMethod209(request, allowedMethods) {
+    if (!request || !allowedMethods.includes(request.method)) {
+        return {
+            valid: false,
+            statusCode: 405,
+            message: "Method Not Allowed"
+        };
+    }
+
+    return {
+        valid: true,
+        statusCode: 200,
+        message: "Method Allowed"
+    };
+}
+
+console.log(
+    "Method Validation:",
+    validateRequestMethod209(
+        { method: "GET" },
+        ["GET", "POST"]
+    )
+);
+
+
+// 210. Function to create request context
+function createRequestContext210(method, path, body = {}) {
+    return {
+        method: method.toUpperCase(),
+        path: path,
+        body: body,
+        requestId: generateId(),
+        createdAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "Request Context:",
+    createRequestContext210(
+        "post",
+        "/api/users",
+        { name: "Shivaprada" }
+    )
+);
+
+
+// 211. Function to validate request body
+function validateRequestBody211(body, requiredFields) {
+    if (!body || typeof body !== "object") {
+        return {
+            valid: false,
+            errors: ["Request body must be an object"]
+        };
+    }
+
+    const errors = [];
+
+    for (const field of requiredFields) {
+        if (
+            body[field] === undefined ||
+            body[field] === null ||
+            body[field] === ""
+        ) {
+            errors.push(`${field} is required`);
+        }
+    }
+
+    return {
+        valid: errors.length === 0,
+        errors: errors
+    };
+}
+
+console.log(
+    "Body Validation:",
+    validateRequestBody211(
+        {
+            name: "Shivaprada",
+            email: ""
+        },
+        ["name", "email"]
+    )
+);
+
+
+// 212. Function to create an API controller
+async function userController212(request) {
+    if (!request) {
+        return createHttpResponse190(400, {
+            message: "Invalid request"
+        });
+    }
+
+    return createHttpResponse190(200, {
+        message: "User data fetched successfully",
+        requestId: request.requestId
+    });
+}
+
+userController212(
+    createRequestContext210(
+        "GET",
+        "/api/users"
+    )
+)
+    .then(response => {
+        console.log("Controller Response:", response);
+    });
+
+
+// 213. Function to create a simple cache
+function createSimpleCache213() {
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            cache.set(key, value);
+        },
+
+        get(key) {
+            return cache.get(key);
+        },
+
+        has(key) {
+            return cache.has(key);
+        },
+
+        clear() {
+            cache.clear();
+        }
+    };
+}
+
+const simpleCache213 = createSimpleCache213();
+
+simpleCache213.set("user:101", {
+    name: "Shivaprada"
+});
+
+console.log(
+    "Cached User:",
+    simpleCache213.get("user:101")
+);
+
+
+// 214. Function to get cached data or fetch it
+async function getCachedData214(cache, key, fetchData) {
+    if (cache.has(key)) {
+        console.log("Returning data from cache");
+
+        return cache.get(key);
+    }
+
+    console.log("Fetching fresh data");
+
+    const data = await fetchData();
+
+    cache.set(key, data);
+
+    return data;
+}
+
+getCachedData214(
+    simpleCache213,
+    "user:102",
+    async () => {
+        return {
+            id: 102,
+            name: "New User"
+        };
+    }
+)
+    .then(data => {
+        console.log("Cached Data:", data);
+    });
+
+
+// 215. Function to handle errors safely
+async function safelyExecute215(operation) {
+    try {
+        const result = await operation();
+
+        return {
+            success: true,
+            data: result,
+            error: null
+        };
+    } catch (error) {
+        return {
+            success: false,
+            data: null,
+            error: error.message
+        };
+    }
+}
+
+safelyExecute215(async () => {
+    throw new Error("Something went wrong");
+})
+    .then(result => {
+        console.log("Safe Execution:", result);
+    });
