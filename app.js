@@ -1112,3 +1112,193 @@ safelyExecute215(async () => {
     .then(result => {
         console.log("Safe Execution:", result);
     });
+
+// 216. Function to find a record by ID
+function findRecordById216(records, id) {
+    return records.find(record => record.id === id);
+}
+
+const records216 = [
+    { id: 1, name: "Product A", price: 500 },
+    { id: 2, name: "Product B", price: 800 },
+    { id: 3, name: "Product C", price: 1200 }
+];
+
+console.log(
+    "Found Record:",
+    findRecordById216(records216, 2)
+);
+
+
+// 217. Function to filter records by condition
+function filterRecords217(records, field, value) {
+    return records.filter(record => record[field] === value);
+}
+
+const employeeRecords217 = [
+    { id: 1, name: "Rahul", department: "IT" },
+    { id: 2, name: "Anu", department: "HR" },
+    { id: 3, name: "Kiran", department: "IT" }
+];
+
+console.log(
+    "Filtered Records:",
+    filterRecords217(
+        employeeRecords217,
+        "department",
+        "IT"
+    )
+);
+
+
+// 218. Function to search records
+function searchRecords218(records, field, keyword) {
+    const searchText = keyword.toLowerCase();
+
+    return records.filter(record => {
+        return String(record[field])
+            .toLowerCase()
+            .includes(searchText);
+    });
+}
+
+console.log(
+    "Search Results:",
+    searchRecords218(
+        employeeRecords217,
+        "name",
+        "an"
+    )
+);
+
+
+// 219. Function to sort records
+function sortRecords219(records, field, ascending = true) {
+    return [...records].sort((a, b) => {
+        if (a[field] < b[field]) {
+            return ascending ? -1 : 1;
+        }
+
+        if (a[field] > b[field]) {
+            return ascending ? 1 : -1;
+        }
+
+        return 0;
+    });
+}
+
+console.log(
+    "Sorted Records:",
+    sortRecords219(
+        records216,
+        "price"
+    )
+);
+
+
+// 220. Function to paginate records
+function paginateRecords220(records, page, pageSize) {
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    return {
+        data: records.slice(startIndex, endIndex),
+        page: page,
+        pageSize: pageSize,
+        totalRecords: records.length,
+        totalPages: Math.ceil(records.length / pageSize)
+    };
+}
+
+console.log(
+    "Paginated Records:",
+    paginateRecords220(records216, 1, 2)
+);
+
+
+// 221. Function to insert a record
+function insertRecord221(records, newRecord) {
+    return [
+        ...records,
+        newRecord
+    ];
+}
+
+const insertedRecords221 = insertRecord221(
+    records216,
+    {
+        id: 4,
+        name: "Product D",
+        price: 1500
+    }
+);
+
+console.log(
+    "After Insert:",
+    insertedRecords221
+);
+
+
+// 222. Function to update a record
+function updateRecord222(records, id, updates) {
+    return records.map(record => {
+        if (record.id === id) {
+            return {
+                ...record,
+                ...updates
+            };
+        }
+
+        return record;
+    });
+}
+
+console.log(
+    "After Update:",
+    updateRecord222(
+        records216,
+        2,
+        { price: 900 }
+    )
+);
+
+
+// 223. Function to delete a record
+function deleteRecord223(records, id) {
+    return records.filter(record => record.id !== id);
+}
+
+console.log(
+    "After Delete:",
+    deleteRecord223(records216, 3)
+);
+
+
+// 224. Function to count records
+function countRecords224(records) {
+    return records.length;
+}
+
+console.log(
+    "Record Count:",
+    countRecords224(records216)
+);
+
+
+// 225. Function to calculate total numeric field
+function calculateFieldTotal225(records, field) {
+    return records.reduce((total, record) => {
+        const value = Number(record[field]);
+
+        return total + (
+            Number.isFinite(value) ? value : 0
+        );
+    }, 0);
+}
+
+console.log(
+    "Total Price:",
+    calculateFieldTotal225(records216, "price")
+);
+
+
