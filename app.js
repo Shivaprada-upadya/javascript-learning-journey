@@ -1301,4 +1301,126 @@ console.log(
     calculateFieldTotal225(records216, "price")
 );
 
+// 226. Function to create a parameterized SQL query
+function createSelectQuery226(tableName, columnName, value) {
+    return {
+        query: `SELECT * FROM ${tableName} WHERE ${columnName} = $1`,
+        values: [value]
+    };
+}
 
+console.log(
+    "Parameterized Query:",
+    createSelectQuery226(
+        "users",
+        "email",
+        "user@example.com"
+    )
+);
+
+
+// 227. Function to create an INSERT query
+function createInsertQuery227(tableName, columns, values) {
+    const placeholders = columns.map((_, index) => `$${index + 1}`);
+
+    return {
+        query: `
+            INSERT INTO ${tableName}
+            (${columns.join(", ")})
+            VALUES (${placeholders.join(", ")})
+        `,
+        values: values
+    };
+}
+
+console.log(
+    "Insert Query:",
+    createInsertQuery227(
+        "users",
+        ["name", "email", "age"],
+        ["Shivaprada", "user@example.com", 22]
+    )
+);
+
+
+// 228. Function to create an UPDATE query
+function createUpdateQuery228(
+    tableName,
+    id,
+    updates
+) {
+    const entries = Object.entries(updates);
+
+    const setClause = entries
+        .map(([column], index) => `${column} = $${index + 1}`)
+        .join(", ");
+
+    const values = entries.map(([, value]) => value);
+
+    values.push(id);
+
+    return {
+        query: `
+            UPDATE ${tableName}
+            SET ${setClause}
+            WHERE id = $${values.length}
+        `,
+        values: values
+    };
+}
+
+console.log(
+    "Update Query:",
+    createUpdateQuery228(
+        "users",
+        101,
+        {
+            name: "Updated User",
+            age: 23
+        }
+    )
+);
+
+
+// 229. Function to create a DELETE query
+function createDeleteQuery229(tableName, id) {
+    return {
+        query: `
+            DELETE FROM ${tableName}
+            WHERE id = $1
+        `,
+        values: [id]
+    };
+}
+
+console.log(
+    "Delete Query:",
+    createDeleteQuery229("users", 101)
+);
+
+
+// 230. Function to format database rows
+function formatDatabaseRows230(rows) {
+    return rows.map(row => ({
+        ...row,
+        formatted: true
+    }));
+}
+
+console.log(
+    "Formatted Rows:",
+    formatDatabaseRows230([
+        { id: 1, name: "Rahul" },
+        { id: 2, name: "Anu" }
+    ])
+);
+
+
+// 231. Function to get the first database row
+function getFirstRow231(rows) {
+    if (!Array.isArray(rows) || rows.length === 0) {
+        return null;
+    }
+
+    return rows[0];
+}
