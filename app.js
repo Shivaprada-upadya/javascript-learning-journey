@@ -1424,3 +1424,323 @@ function getFirstRow231(rows) {
 
     return rows[0];
 }
+
+// 236. Function to create request validation middleware
+function validateRequest236(requiredFields) {
+    return function (request) {
+        const errors = [];
+
+        for (const field of requiredFields) {
+            if (
+                request[field] === undefined ||
+                request[field] === null ||
+                request[field] === ""
+            ) {
+                errors.push(`${field} is required`);
+            }
+        }
+
+        return {
+            valid: errors.length === 0,
+            errors: errors
+        };
+    };
+}
+
+const validateUserRequest236 = validateRequest236([
+    "name",
+    "email"
+]);
+
+console.log(
+    "Request Validation:",
+    validateUserRequest236({
+        name: "Shivaprada",
+        email: "user@example.com"
+    })
+);
+
+
+// 237. Function to create an authentication middleware
+function createAuthMiddleware237() {
+    return function (request) {
+        if (!request || !request.user) {
+            return {
+                authenticated: false,
+                statusCode: 401,
+                message: "Authentication required"
+            };
+        }
+
+        return {
+            authenticated: true,
+            statusCode: 200,
+            message: "Authenticated"
+        };
+    };
+}
+
+const authMiddleware237 = createAuthMiddleware237();
+
+console.log(
+    "Auth Middleware:",
+    authMiddleware237({
+        user: {
+            id: 101,
+            role: "user"
+        }
+    })
+);
+
+
+// 238. Function to create role-based middleware
+function createRoleMiddleware238(allowedRoles) {
+    return function (request) {
+        const userRole = request?.user?.role;
+
+        if (!userRole) {
+            return {
+                allowed: false,
+                statusCode: 401,
+                message: "Authentication required"
+            };
+        }
+
+        if (!allowedRoles.includes(userRole)) {
+            return {
+                allowed: false,
+                statusCode: 403,
+                message: "Access denied"
+            };
+        }
+
+        return {
+            allowed: true,
+            statusCode: 200,
+            message: "Access granted"
+        };
+    };
+}
+
+const adminMiddleware238 =
+    createRoleMiddleware238(["admin"]);
+
+console.log(
+    "Role Middleware:",
+    adminMiddleware238({
+        user: {
+            id: 101,
+            role: "admin"
+        }
+    })
+);
+
+
+// 239. Function to create a controller response
+function createControllerResponse239(
+    statusCode,
+    data,
+    message
+) {
+    return {
+        statusCode: statusCode,
+        success: statusCode >= 200 && statusCode < 300,
+        message: message,
+        data: data
+    };
+}
+
+console.log(
+    "Controller Response:",
+    createControllerResponse239(
+        200,
+        { id: 101 },
+        "User fetched successfully"
+    )
+);
+
+
+// 240. Function to create a user controller
+async function createUserController240(request) {
+    const validation = validateUserRequest236(
+        request
+    );
+
+    if (!validation.valid) {
+        return createControllerResponse239(
+            400,
+            null,
+            validation.errors.join(", ")
+        );
+    }
+
+    const newUser = {
+        id: generateId(),
+        name: request.name,
+        email: request.email
+    };
+
+    return createControllerResponse239(
+        201,
+        newUser,
+        "User created successfully"
+    );
+}
+
+createUserController240({
+    name: "Shivaprada",
+    email: "shivaprada@example.com"
+})
+    .then(response => {
+        console.log(
+            "Create User Response:",
+            response
+        );
+    });
+
+
+// 241. Function to handle controller errors
+async function controllerErrorHandler241(
+    controller,
+    request
+) {
+    try {
+        return await controller(request);
+    } catch (error) {
+        return {
+            statusCode: 500,
+            success: false,
+            message: "Internal Server Error",
+            error: error.message
+        };
+    }
+}
+
+controllerErrorHandler241(
+    async () => {
+        throw new Error("Database connection failed");
+    },
+    {}
+)
+    .then(response => {
+        console.log(
+            "Error Handler Response:",
+            response
+        );
+    });
+
+
+// 242. Function to create a route handler
+function createRouteHandler242(
+    method,
+    path,
+    controller
+) {
+    return {
+        method: method.toUpperCase(),
+        path: path,
+        controller: controller.name
+    };
+}
+
+console.log(
+    "Route:",
+    createRouteHandler242(
+        "get",
+        "/api/users",
+        userController212
+    )
+);
+
+
+// 243. Function to create an API request pipeline
+async function executeRequestPipeline243(
+    request,
+    middlewares,
+    controller
+) {
+    for (const middleware of middlewares) {
+        const result = await middleware(request);
+
+        if (
+            result.allowed === false ||
+            result.authenticated === false ||
+            result.valid === false
+        ) {
+            return result;
+        }
+    }
+
+    return await controller(request);
+}
+
+const requestPipeline243 = [
+    authMiddleware237,
+    validateUserRequest236(["name"])
+];
+
+executeRequestPipeline243(
+    {
+        user: {
+            id: 101,
+            role: "user"
+        },
+        name: "Shivaprada"
+    },
+    requestPipeline243,
+    async request => {
+        return {
+            statusCode: 200,
+            success: true,
+            message: "Pipeline completed",
+            user: request.user
+        };
+    }
+)
+    .then(response => {
+        console.log(
+            "Pipeline Response:",
+            response
+        );
+    });
+
+
+// 244. Function to create an API error
+function createApiError244(
+    message,
+    statusCode = 500
+) {
+    const error = new Error(message);
+
+    error.statusCode = statusCode;
+
+    return error;
+}
+
+const apiError244 = createApiError244(
+    "User not found",
+    404
+);
+
+console.log(
+    "API Error:",
+    apiError244.message,
+    apiError244.statusCode
+);
+
+
+// 245. Function to handle API errors
+function handleApiError245(error) {
+    return {
+        success: false,
+        statusCode: error.statusCode ?? 500,
+        message: error.message ?? "Internal Server Error",
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "Handled API Error:",
+    handleApiError245(apiError244)
+);
+
