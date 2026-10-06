@@ -1744,3 +1744,262 @@ console.log(
     handleApiError245(apiError244)
 );
 
+// 246. Function to create a request ID
+function createRequestId246() {
+    return `req-${Date.now()}-${Math.random()
+        .toString(36)
+        .substring(2, 8)}`;
+}
+
+console.log(
+    "Request ID:",
+    createRequestId246()
+);
+
+
+// 247. Function to create a structured log
+function createLogEntry247(level, message, metadata = {}) {
+    return {
+        timestamp: new Date().toISOString(),
+        level: level,
+        message: message,
+        metadata: metadata
+    };
+}
+
+console.log(
+    "Log Entry:",
+    createLogEntry247(
+        "INFO",
+        "User login successful",
+        { userId: 101 }
+    )
+);
+
+
+// 248. Function to create an API request log
+function createRequestLog248(request) {
+    return createLogEntry247(
+        "INFO",
+        `${request.method} ${request.path}`,
+        {
+            requestId: request.requestId,
+            userId: request.userId ?? null
+        }
+    );
+}
+
+console.log(
+    "Request Log:",
+    createRequestLog248({
+        method: "GET",
+        path: "/api/users",
+        requestId: createRequestId246(),
+        userId: 101
+    })
+);
+
+
+// 249. Function to create a simple rate limiter
+function createRateLimiter249(maxRequests, windowMs) {
+    const requests = new Map();
+
+    return function (clientId) {
+        const now = Date.now();
+        const clientData = requests.get(clientId);
+
+        if (!clientData || now - clientData.startTime >= windowMs) {
+            requests.set(clientId, {
+                count: 1,
+                startTime: now
+            });
+
+            return {
+                allowed: true,
+                remaining: maxRequests - 1
+            };
+        }
+
+        if (clientData.count >= maxRequests) {
+            return {
+                allowed: false,
+                remaining: 0,
+                message: "Too many requests"
+            };
+        }
+
+        clientData.count++;
+
+        return {
+            allowed: true,
+            remaining: maxRequests - clientData.count
+        };
+    };
+}
+
+const rateLimiter249 = createRateLimiter249(3, 10000);
+
+console.log(
+    "Rate Limit 1:",
+    rateLimiter249("client-101")
+);
+
+console.log(
+    "Rate Limit 2:",
+    rateLimiter249("client-101")
+);
+
+
+// 250. Function to check rate limit
+function checkRateLimit250(rateLimiter, clientId) {
+    const result = rateLimiter(clientId);
+
+    if (!result.allowed) {
+        return {
+            statusCode: 429,
+            allowed: false,
+            message: result.message
+        };
+    }
+
+    return {
+        statusCode: 200,
+        allowed: true,
+        remaining: result.remaining
+    };
+}
+
+console.log(
+    "Rate Limit Check:",
+    checkRateLimit250(
+        rateLimiter249,
+        "client-102"
+    )
+);
+
+
+// 251. Function to create a cache with expiration
+function createExpiringCache251() {
+    const cache = new Map();
+
+    return {
+        set(key, value, ttl) {
+            cache.set(key, {
+                value: value,
+                expiresAt: Date.now() + ttl
+            });
+        },
+
+        get(key) {
+            const item = cache.get(key);
+
+            if (!item) {
+                return null;
+            }
+
+            if (Date.now() > item.expiresAt) {
+                cache.delete(key);
+                return null;
+            }
+
+            return item.value;
+        }
+    };
+}
+
+const expiringCache251 = createExpiringCache251();
+
+expiringCache251.set(
+    "user:101",
+    { name: "Shivaprada" },
+    5000
+);
+
+console.log(
+    "Cached Value:",
+    expiringCache251.get("user:101")
+);
+
+
+// 252. Function to validate content type
+function validateContentType252(contentType) {
+    const allowedTypes = [
+        "application/json"
+    ];
+
+    return allowedTypes.includes(contentType);
+}
+
+console.log(
+    "Content Type Valid:",
+    validateContentType252(
+        "application/json"
+    )
+);
+
+
+// 253. Function to create security headers
+function createSecurityHeaders253() {
+    return {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "no-referrer",
+        "Content-Security-Policy": "default-src 'self'"
+    };
+}
+
+console.log(
+    "Security Headers:",
+    createSecurityHeaders253()
+);
+
+
+// 254. Function to remove sensitive fields
+function removeSensitiveFields254(user) {
+    const {
+        password,
+        token,
+        refreshToken,
+        ...safeUser
+    } = user;
+
+    return safeUser;
+}
+
+console.log(
+    "Safe User:",
+    removeSensitiveFields254({
+        id: 101,
+        name: "Shivaprada",
+        email: "user@example.com",
+        password: "secret",
+        token: "abc123"
+    })
+);
+
+
+// 255. Function to create a secure API response
+function createSecureResponse255(
+    statusCode,
+    data
+) {
+    return {
+        statusCode: statusCode,
+        success: statusCode >= 200 && statusCode < 300,
+        data: removeSensitiveFields254(data),
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "Secure Response:",
+    createSecureResponse255(
+        200,
+        {
+            id: 101,
+            name: "Shivaprada",
+            password: "secret",
+            token: "secret-token"
+        }
+    )
+);
