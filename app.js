@@ -2003,3 +2003,197 @@ console.log(
         }
     )
 );
+
+// 256. Function to check if a file exists
+const fs256 = require("fs");
+
+function fileExists256(filePath) {
+    return fs256.existsSync(filePath);
+}
+
+console.log(
+    "File Exists:",
+    fileExists256("app.js")
+);
+
+
+// 257. Function to get file information
+function getFileInfo257(filePath) {
+    if (!fs256.existsSync(filePath)) {
+        return null;
+    }
+
+    const stats = fs256.statSync(filePath);
+
+    return {
+        size: stats.size,
+        isFile: stats.isFile(),
+        isDirectory: stats.isDirectory(),
+        modifiedAt: stats.mtime
+    };
+}
+
+console.log(
+    "File Info:",
+    getFileInfo257("app.js")
+);
+
+
+// 258. Function to read a text file
+function readTextFile258(filePath) {
+    try {
+        return fs256.readFileSync(
+            filePath,
+            "utf-8"
+        );
+    } catch (error) {
+        return null;
+    }
+}
+
+console.log(
+    "File Content:",
+    readTextFile258("app.js").substring(0, 50)
+);
+
+
+// 259. Function to write a text file
+function writeTextFile259(filePath, content) {
+    try {
+        fs256.writeFileSync(
+            filePath,
+            content,
+            "utf-8"
+        );
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+console.log(
+    "Write Result:",
+    writeTextFile259(
+        "sample-259.txt",
+        "Hello from Node.js"
+    )
+);
+
+
+// 260. Function to append text to a file
+function appendToFile260(filePath, content) {
+    try {
+        fs256.appendFileSync(
+            filePath,
+            `\n${content}`,
+            "utf-8"
+        );
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+console.log(
+    "Append Result:",
+    appendToFile260(
+        "sample-259.txt",
+        "New line added"
+    )
+);
+
+
+// 261. Function to delete a file
+function deleteFile261(filePath) {
+    try {
+        if (fs256.existsSync(filePath)) {
+            fs256.unlinkSync(filePath);
+        }
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+console.log(
+    "Delete Result:",
+    deleteFile261("sample-259.txt")
+);
+
+
+// 262. Function to convert object to JSON
+function objectToJson262(data) {
+    return JSON.stringify(
+        data,
+        null,
+        2
+    );
+}
+
+console.log(
+    "JSON:",
+    objectToJson262({
+        name: "Shivaprada",
+        role: "Developer"
+    })
+);
+
+
+// 263. Function to parse JSON safely
+function parseJsonFileData263(jsonString) {
+    try {
+        return JSON.parse(jsonString);
+    } catch (error) {
+        return null;
+    }
+}
+
+console.log(
+    "Parsed JSON:",
+    parseJsonFileData263(
+        '{"name":"Shivaprada","role":"Developer"}'
+    )
+);
+
+
+// 264. Function to get environment configuration
+function getConfigValue264(name, defaultValue) {
+    return process.env[name] ?? defaultValue;
+}
+
+const appConfig264 = {
+    environment: getConfigValue264(
+        "NODE_ENV",
+        "development"
+    ),
+
+    port: Number(
+        getConfigValue264(
+            "PORT",
+            3000
+        )
+    )
+};
+
+console.log(
+    "App Config:",
+    appConfig264
+);
+
+
+// 265. Function to create application configuration
+function createAppConfig265() {
+    return {
+        environment: process.env.NODE_ENV ?? "development",
+        port: Number(process.env.PORT ?? 3000),
+        debug: process.env.DEBUG === "true"
+    };
+}
+
+console.log(
+    "Application Configuration:",
+    createAppConfig265()
+);
