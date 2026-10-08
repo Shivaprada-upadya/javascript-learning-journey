@@ -2197,3 +2197,217 @@ console.log(
     "Application Configuration:",
     createAppConfig265()
 );
+
+// 266. Function to create an EventEmitter
+const EventEmitter266 = require("events");
+
+function createEventEmitter266() {
+    return new EventEmitter266();
+}
+
+const appEvents266 = createEventEmitter266();
+
+appEvents266.on("userLogin", user => {
+    console.log("User Login Event:", user);
+});
+
+appEvents266.emit("userLogin", {
+    id: 101,
+    name: "Shivaprada"
+});
+
+
+// 267. Function to register an event handler
+function registerEventHandler267(emitter, eventName, handler) {
+    emitter.on(eventName, handler);
+
+    return {
+        registered: true,
+        event: eventName
+    };
+}
+
+console.log(
+    "Event Registration:",
+    registerEventHandler267(
+        appEvents266,
+        "userLogout",
+        user => {
+            console.log("User Logout:", user);
+        }
+    )
+);
+
+appEvents266.emit("userLogout", {
+    id: 101
+});
+
+
+// 268. Function to emit an application event
+function emitApplicationEvent268(
+    emitter,
+    eventName,
+    data
+) {
+    emitter.emit(eventName, data);
+
+    return true;
+}
+
+appEvents266.on("orderCreated", order => {
+    console.log("Order Created:", order);
+});
+
+emitApplicationEvent268(
+    appEvents266,
+    "orderCreated",
+    {
+        orderId: 5001,
+        amount: 1500
+    }
+);
+
+
+// 269. Function to create a Buffer
+function createBuffer269(text) {
+    return Buffer.from(text, "utf-8");
+}
+
+const textBuffer269 = createBuffer269(
+    "Hello Node.js"
+);
+
+console.log(
+    "Buffer:",
+    textBuffer269
+);
+
+
+// 270. Function to convert Buffer to string
+function bufferToString270(buffer) {
+    return buffer.toString("utf-8");
+}
+
+console.log(
+    "Buffer String:",
+    bufferToString270(textBuffer269)
+);
+
+
+// 271. Function to get Buffer size
+function getBufferSize271(buffer) {
+    return Buffer.byteLength(buffer);
+}
+
+console.log(
+    "Buffer Size:",
+    getBufferSize271("Hello Node.js")
+);
+
+
+// 272. Function to create a readable stream
+const { Readable } = require("stream");
+
+function createReadableStream272(data) {
+    return Readable.from(data);
+}
+
+const readableStream272 = createReadableStream272([
+    "Hello",
+    " ",
+    "Node.js",
+    " ",
+    "Stream"
+]);
+
+readableStream272.on("data", chunk => {
+    console.log(
+        "Stream Chunk:",
+        chunk.toString()
+    );
+});
+
+
+// 273. Function to read a file asynchronously
+const fsPromises273 = require("fs").promises;
+
+async function readFileAsync273(filePath) {
+    try {
+        const content = await fsPromises273.readFile(
+            filePath,
+            "utf-8"
+        );
+
+        return {
+            success: true,
+            data: content
+        };
+    } catch (error) {
+        return {
+            success: false,
+            data: null,
+            error: error.message
+        };
+    }
+}
+
+readFileAsync273("app.js")
+    .then(result => {
+        console.log(
+            "Async File Result:",
+            {
+                success: result.success,
+                length: result.data?.length ?? 0
+            }
+        );
+    });
+
+
+// 274. Function to write a file asynchronously
+async function writeFileAsync274(
+    filePath,
+    content
+) {
+    try {
+        await fsPromises273.writeFile(
+            filePath,
+            content,
+            "utf-8"
+        );
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+writeFileAsync274(
+    "sample-274.txt",
+    "Created using async filesystem API"
+)
+    .then(result => {
+        console.log(
+            "Async Write Result:",
+            result
+        );
+    });
+
+
+// 275. Function to delete a file asynchronously
+async function deleteFileAsync275(filePath) {
+    try {
+        await fsPromises273.unlink(filePath);
+
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+deleteFileAsync275("sample-274.txt")
+    .then(result => {
+        console.log(
+            "Async Delete Result:",
+            result
+        );
+    });
