@@ -2411,3 +2411,152 @@ deleteFileAsync275("sample-274.txt")
             result
         );
     });
+
+// 276. Function to get the current module filename
+const path276 = require("path");
+
+function getCurrentFilename276() {
+    return __filename;
+}
+
+console.log(
+    "Current Filename:",
+    getCurrentFilename276()
+);
+
+
+// 277. Function to get the current directory
+function getCurrentDirectory277() {
+    return __dirname;
+}
+
+console.log(
+    "Current Directory:",
+    getCurrentDirectory277()
+);
+
+
+// 278. Function to extract a file extension
+function getFileExtension278(filename) {
+    return path276.extname(filename);
+}
+
+console.log(
+    "File Extension:",
+    getFileExtension278("app.js")
+);
+
+
+// 279. Function to join file paths
+function joinFilePaths279(directory, filename) {
+    return path276.join(directory, filename);
+}
+
+console.log(
+    "Joined Path:",
+    joinFilePaths279("projects", "app.js")
+);
+
+
+// 280. Function to extract a filename
+function getFilename280(filePath) {
+    return path276.basename(filePath);
+}
+
+console.log(
+    "Filename:",
+    getFilename280("/projects/javascript/app.js")
+);
+
+
+// 281. Function to parse a URL
+function parseRequestURL281(urlString) {
+    const parsedURL = new URL(
+        urlString,
+        "http://localhost:3000"
+    );
+
+    return {
+        pathname: parsedURL.pathname,
+        queryParameters: Object.fromEntries(
+            parsedURL.searchParams.entries()
+        )
+    };
+}
+
+console.log(
+    "Parsed Request URL:",
+    parseRequestURL281("/api/users?page=2&limit=10")
+);
+
+
+// 282. Function to create a URL with query parameters
+function buildRequestURL282(baseURL, parameters) {
+    const url = new URL(baseURL);
+
+    for (const [key, value] of Object.entries(parameters)) {
+        url.searchParams.set(key, String(value));
+    }
+
+    return url.toString();
+}
+
+console.log(
+    "Request URL:",
+    buildRequestURL282(
+        "https://example.com/api/users",
+        {
+            page: 1,
+            limit: 10
+        }
+    )
+);
+
+
+// 283. Function to create HTTP response headers
+function createHttpHeaders283() {
+    return {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store"
+    };
+}
+
+console.log(
+    "HTTP Headers:",
+    createHttpHeaders283()
+);
+
+
+// 284. Function to send JSON using an HTTP response
+function sendJsonResponse284(response, statusCode, data) {
+    response.writeHead(statusCode, {
+        "Content-Type": "application/json"
+    });
+
+    response.end(JSON.stringify(data));
+}
+
+
+// 285. Function to create a basic HTTP server
+const http285 = require("http");
+
+function createHttpServer285() {
+    return http285.createServer((request, response) => {
+        if (request.url === "/api/health") {
+            sendJsonResponse284(response, 200, {
+                success: true,
+                message: "Server is running"
+            });
+
+            return;
+        }
+
+        sendJsonResponse284(response, 404, {
+            success: false,
+            message: "Route not found"
+        });
+    });
+}
+
+console.log("HTTP server function defined.");
+console.log("Call createHttpServer285() to create the server.");
