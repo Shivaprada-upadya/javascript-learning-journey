@@ -2560,3 +2560,220 @@ function createHttpServer285() {
 
 console.log("HTTP server function defined.");
 console.log("Call createHttpServer285() to create the server.");
+
+// 286. Function to start an HTTP server
+function startHttpServer286(port = 3000) {
+    const server = http285.createServer((request, response) => {
+        sendJsonResponse284(response, 200, {
+            success: true,
+            message: "HTTP server is running"
+        });
+    });
+
+    server.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+
+    return server;
+}
+
+console.log("Function 286: HTTP server starter defined.");
+
+
+// 287. Function to handle GET requests
+function handleGetRequest287(request, response) {
+    if (request.method !== "GET") {
+        sendJsonResponse284(response, 405, {
+            success: false,
+            message: "Method not allowed"
+        });
+
+        return;
+    }
+
+    sendJsonResponse284(response, 200, {
+        success: true,
+        message: "GET request received",
+        path: request.url
+    });
+}
+
+console.log("Function 287: GET handler defined.");
+
+
+// 288. Function to handle POST requests
+function handlePostRequest288(request, response, data) {
+    if (request.method !== "POST") {
+        sendJsonResponse284(response, 405, {
+            success: false,
+            message: "Method not allowed"
+        });
+
+        return;
+    }
+
+    sendJsonResponse284(response, 201, {
+        success: true,
+        message: "POST request received",
+        data: data
+    });
+}
+
+console.log("Function 288: POST handler defined.");
+
+
+// 289. Function to read a request body
+function readRequestBody289(request) {
+    return new Promise((resolve, reject) => {
+        let body = "";
+        let totalBytes = 0;
+        const maxBytes = 1024 * 1024;
+
+        request.setEncoding("utf8");
+
+        request.on("data", chunk => {
+            totalBytes += Buffer.byteLength(chunk);
+
+            if (totalBytes > maxBytes) {
+                const error = new Error("Request body too large");
+                error.statusCode = 413;
+                reject(error);
+                request.destroy();
+                return;
+            }
+
+            body += chunk;
+        });
+
+        request.on("end", () => {
+            resolve(body);
+        });
+
+        request.on("error", reject);
+    });
+}
+
+console.log("Function 289: Request body reader defined.");
+
+
+// 290. Function to parse a JSON request body
+function parseRequestJson290(body) {
+    try {
+        return {
+            success: true,
+            data: JSON.parse(body)
+        };
+    } catch {
+        return {
+            success: false,
+            data: null,
+            message: "Invalid JSON"
+        };
+    }
+}
+
+console.log(
+    "JSON Parsing:",
+    parseRequestJson290('{"name":"Shivaprada"}')
+);
+
+
+// 291. Function to route HTTP requests
+function routeRequest291(request, response) {
+    const pathname = new URL(
+        request.url,
+        "http://localhost"
+    ).pathname;
+
+    if (request.method === "GET" && pathname === "/api/health") {
+        sendJsonResponse284(response, 200, {
+            success: true,
+            message: "API is healthy"
+        });
+        return;
+    }
+
+    if (request.method === "GET" && pathname === "/api/users") {
+        sendJsonResponse284(response, 200, {
+            success: true,
+            data: [
+                { id: 1, name: "Rahul" },
+                { id: 2, name: "Shivaprada" }
+            ]
+        });
+        return;
+    }
+
+    sendJsonResponse284(response, 404, {
+        success: false,
+        message: "Route not found"
+    });
+}
+
+console.log("Function 291: Request router defined.");
+
+
+// 292. Function to handle HTTP errors
+function handleHttpError292(response, error) {
+    if (response.headersSent) {
+        response.destroy();
+        return;
+    }
+
+    const statusCode = error.statusCode || 500;
+
+    sendJsonResponse284(response, statusCode, {
+        success: false,
+        message: statusCode >= 500
+            ? "Internal server error"
+            : error.message
+    });
+}
+
+console.log("Function 292: HTTP error handler defined.");
+
+
+// 293. Function to create a request logger
+function logHttpRequest293(request) {
+    console.log({
+        method: request.method,
+        url: request.url,
+        timestamp: new Date().toISOString()
+    });
+}
+
+console.log("Function 293: HTTP logger defined.");
+
+
+// 294. Function to create a complete API server
+function createApiServer294() {
+    return http285.createServer((request, response) => {
+        logHttpRequest293(request);
+
+        try {
+            routeRequest291(request, response);
+        } catch (error) {
+            handleHttpError292(response, error);
+        }
+    });
+}
+
+console.log("Function 294: API server factory defined.");
+
+
+// 295. Function to start the API server
+function startApiServer295(port = 3001) {
+    const server = createApiServer294();
+
+    server.on("error", error => {
+        console.error("Server Error:", error.message);
+    });
+
+    server.listen(port, "127.0.0.1", () => {
+        console.log(`API server listening at http://127.0.0.1:${port}`);
+    });
+
+    return server;
+}
+
+console.log("Function 295: API server starter defined.");
