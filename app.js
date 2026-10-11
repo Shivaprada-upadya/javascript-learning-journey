@@ -2777,3 +2777,213 @@ function startApiServer295(port = 3001) {
 }
 
 console.log("Function 295: API server starter defined.");
+
+// 296. Function to validate an API request body
+function validateRequestBody296(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return {
+            valid: false,
+            message: "Request body must be an object"
+        };
+    }
+
+    return {
+        valid: true,
+        message: "Request body is valid"
+    };
+}
+
+console.log(
+    "296:",
+    validateRequestBody296({ name: "Shivaprada" })
+);
+
+
+// 297. Function to validate a user's name
+function validateUserName297(name) {
+    if (typeof name !== "string" || name.trim().length < 2) {
+        return {
+            valid: false,
+            message: "Name must contain at least 2 characters"
+        };
+    }
+
+    return {
+        valid: true,
+        name: name.trim()
+    };
+}
+
+console.log("297:", validateUserName297("Shivaprada"));
+
+
+// 298. Function to validate an email address
+function validateEmail298(email) {
+    if (typeof email !== "string") {
+        return false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return emailPattern.test(email);
+}
+
+console.log("298:", validateEmail298("user@example.com"));
+
+
+// 299. Function to validate a new user
+function validateNewUser299(user) {
+    if (!user || typeof user !== "object" || Array.isArray(user)) {
+        return {
+            valid: false,
+            errors: ["User data must be an object"]
+        };
+    }
+
+    const errors = [];
+
+    if (!validateUserName297(user.name).valid) {
+        errors.push("A valid name is required");
+    }
+
+    if (!validateEmail298(user.email)) {
+        errors.push("A valid email is required");
+    }
+
+    return {
+        valid: errors.length === 0,
+        errors: errors
+    };
+}
+
+console.log(
+    "299:",
+    validateNewUser299({
+        name: "Shivaprada",
+        email: "user@example.com"
+    })
+);
+
+
+// 300. Function to handle an asynchronous operation
+async function handleAsyncOperation300(operation) {
+    try {
+        const result = await operation();
+
+        return {
+            success: true,
+            data: result
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+handleAsyncOperation300(async () => {
+    return "Operation completed successfully";
+}).then(result => {
+    console.log("300:", result);
+});
+
+
+// 301. Function to simulate fetching a user
+async function fetchUser301(userId) {
+    if (!Number.isInteger(userId) || userId <= 0) {
+        throw new Error("User ID must be a positive integer");
+    }
+
+    return {
+        id: userId,
+        name: "Shivaprada",
+        role: "Developer"
+    };
+}
+
+fetchUser301(1)
+    .then(user => console.log("301:", user))
+    .catch(error => console.error(error.message));
+
+
+// 302. Function to check an HTTP method
+function isAllowedMethod302(method) {
+    const allowedMethods = ["GET", "POST", "PUT", "PATCH", "DELETE"];
+
+    if (typeof method !== "string") {
+        return false;
+    }
+
+    return allowedMethods.includes(method.toUpperCase());
+}
+
+console.log("302:", isAllowedMethod302("GET"));
+
+
+// 303. Function to create a standardized API response
+function createApiResponse303(success, data = null, message = "") {
+    return {
+        success: Boolean(success),
+        data: data,
+        message: message,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "303:",
+    createApiResponse303(true, { id: 1 }, "User fetched")
+);
+
+
+// 304. Function to simulate an API request
+async function simulateApiRequest304(method, data = null) {
+    if (!isAllowedMethod302(method)) {
+        return createApiResponse303(
+            false,
+            null,
+            "HTTP method is not allowed"
+        );
+    }
+
+    return createApiResponse303(
+        true,
+        data,
+        `${method.toUpperCase()} request simulated`
+    );
+}
+
+simulateApiRequest304("POST", { name: "Shivaprada" })
+    .then(result => console.log("304:", result));
+
+
+// 305. Function to create a validated user response
+function createValidatedUserResponse305(user) {
+    const validation = validateNewUser299(user);
+
+    if (!validation.valid) {
+        return createApiResponse303(
+            false,
+            { errors: validation.errors },
+            "User validation failed"
+        );
+    }
+
+    return createApiResponse303(
+        true,
+        {
+            name: user.name.trim(),
+            email: user.email.trim()
+        },
+        "User data validated successfully"
+    );
+}
+
+console.log(
+    "305:",
+    createValidatedUserResponse305({
+        name: "Shivaprada",
+        email: "user@example.com"
+    })
+);
