@@ -7425,3 +7425,249 @@ console.log(
         throw new Error("Something went wrong");
     })
 );
+
+// 306. Function to create a request context
+function createRequestContext306(method, url) {
+    return {
+        method: String(method).toUpperCase(),
+        url: String(url),
+        requestId: `REQ-${Date.now()}`,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "306:",
+    createRequestContext306("GET", "/api/users")
+);
+
+
+// 307. Function to log an API request
+function logApiRequest307(context) {
+    if (!context || typeof context !== "object") {
+        console.log("Invalid request context");
+        return;
+    }
+
+    console.log(
+        `[${context.timestamp}] ${context.method} ${context.url}`
+    );
+}
+
+logApiRequest307(
+    createRequestContext306("POST", "/api/users")
+);
+
+
+// 308. Function to create a middleware
+function createMiddleware308(message) {
+    return function (requestContext, next) {
+        console.log("Middleware:", message);
+
+        if (typeof next === "function") {
+            return next(requestContext);
+        }
+
+        return requestContext;
+    };
+}
+
+const requestMiddleware308 = createMiddleware308(
+    "Request received"
+);
+
+console.log(
+    "308:",
+    requestMiddleware308({ path: "/api/users" })
+);
+
+
+// 309. Function to execute multiple middleware functions
+function runMiddleware309(context, middlewareList) {
+    return middlewareList.reduce(
+        (currentContext, middleware) => {
+            return middleware(currentContext);
+        },
+        context
+    );
+}
+
+const middlewareList309 = [
+    context => ({ ...context, authenticated: true }),
+    context => ({ ...context, validated: true })
+];
+
+console.log(
+    "309:",
+    runMiddleware309(
+        { path: "/api/users" },
+        middlewareList309
+    )
+);
+
+
+// 310. Function to validate required fields
+function validateRequiredFields310(data, fields) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return {
+            valid: false,
+            missingFields: fields
+        };
+    }
+
+    const missingFields = fields.filter(field => {
+        const value = data[field];
+
+        return value === undefined ||
+            value === null ||
+            (typeof value === "string" && value.trim() === "");
+    });
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields: missingFields
+    };
+}
+
+console.log(
+    "310:",
+    validateRequiredFields310(
+        { name: "Shivaprada", email: "" },
+        ["name", "email"]
+    )
+);
+
+
+// 311. Function to create a safe error response
+function createSafeErrorResponse311(error) {
+    const statusCode =
+        Number.isInteger(error?.statusCode) &&
+        error.statusCode >= 400 &&
+        error.statusCode <= 599
+            ? error.statusCode
+            : 500;
+
+    return {
+        success: false,
+        statusCode: statusCode,
+        message: statusCode >= 500
+            ? "Internal server error"
+            : String(error.message || "Request failed"),
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "311:",
+    createSafeErrorResponse311({
+        statusCode: 404,
+        message: "User not found"
+    })
+);
+
+
+// 312. Function to handle an API error
+function handleApiError312(error) {
+    const response = createSafeErrorResponse311(error);
+
+    console.error("API Error:", response.statusCode);
+
+    return response;
+}
+
+console.log(
+    "312:",
+    handleApiError312({
+        statusCode: 400,
+        message: "Invalid request"
+    })
+);
+
+
+// 313. Function to check a request content type
+function validateContentType313(contentType) {
+    if (typeof contentType !== "string") {
+        return false;
+    }
+
+    return contentType
+        .toLowerCase()
+        .split(";")[0]
+        .trim() === "application/json";
+}
+
+console.log(
+    "313:",
+    validateContentType313("application/json; charset=utf-8")
+);
+
+
+// 314. Function to remove sensitive fields from an object
+function removeSensitiveFields314(data) {
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return data;
+    }
+
+    const sensitiveFields = [
+        "password",
+        "token",
+        "secret",
+        "accessToken",
+        "refreshToken"
+    ];
+
+    const safeData = { ...data };
+
+    for (const field of sensitiveFields) {
+        delete safeData[field];
+    }
+
+    return safeData;
+}
+
+console.log(
+    "314:",
+    removeSensitiveFields314({
+        id: 1,
+        name: "Shivaprada",
+        password: "example-password",
+        token: "example-token"
+    })
+);
+
+
+// 315. Function to combine request validation and response creation
+function processApiRequest315(requestData, requiredFields) {
+    const validation = validateRequiredFields310(
+        requestData,
+        requiredFields
+    );
+
+    if (!validation.valid) {
+        return {
+            success: false,
+            statusCode: 400,
+            message: "Required fields are missing",
+            missingFields: validation.missingFields
+        };
+    }
+
+    return {
+        success: true,
+        statusCode: 200,
+        message: "Request validated successfully",
+        data: removeSensitiveFields314(requestData)
+    };
+}
+
+console.log(
+    "315:",
+    processApiRequest315(
+        {
+            name: "Shivaprada",
+            email: "user@example.com",
+            password: "example-password"
+        },
+        ["name", "email"]
+    )
+);
