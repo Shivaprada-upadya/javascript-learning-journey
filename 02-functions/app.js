@@ -7671,3 +7671,273 @@ console.log(
         ["name", "email"]
     )
 );
+
+// 316. Function to generate a unique request ID
+function generateRequestId316() {
+    return `REQ-${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2, 8)}`;
+}
+
+console.log("316:", generateRequestId316());
+
+
+// 317. Function to measure execution time
+function measureExecutionTime317(callback) {
+    const startTime = performance.now();
+
+    const result = callback();
+
+    const endTime = performance.now();
+
+    return {
+        result: result,
+        executionTimeMs: Number(
+            (endTime - startTime).toFixed(3)
+        )
+    };
+}
+
+console.log(
+    "317:",
+    measureExecutionTime317(() => {
+        return 10 + 20;
+    })
+);
+
+
+// 318. Function to measure asynchronous execution time
+async function measureAsyncTime318(callback) {
+    const startTime = performance.now();
+
+    try {
+        const result = await callback();
+
+        return {
+            success: true,
+            result: result,
+            executionTimeMs: Number(
+                (performance.now() - startTime).toFixed(3)
+            )
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message,
+            executionTimeMs: Number(
+                (performance.now() - startTime).toFixed(3)
+            )
+        };
+    }
+}
+
+measureAsyncTime318(async () => {
+    return "Async task completed";
+}).then(result => console.log("318:", result));
+
+
+// 319. Function to create a simple rate limiter
+function createRateLimiter319(maxRequests, windowMs) {
+    const requests = new Map();
+
+    return function (clientId) {
+        const now = Date.now();
+        const requestTimes = requests.get(clientId) || [];
+
+        const recentRequests = requestTimes.filter(
+            time => now - time < windowMs
+        );
+
+        if (recentRequests.length >= maxRequests) {
+            requests.set(clientId, recentRequests);
+
+            return {
+                allowed: false,
+                remaining: 0,
+                message: "Rate limit exceeded"
+            };
+        }
+
+        recentRequests.push(now);
+        requests.set(clientId, recentRequests);
+
+        return {
+            allowed: true,
+            remaining: maxRequests - recentRequests.length,
+            message: "Request allowed"
+        };
+    };
+}
+
+const rateLimiter319 = createRateLimiter319(3, 60000);
+
+console.log("319:", rateLimiter319("user-1"));
+console.log("319:", rateLimiter319("user-1"));
+
+
+// 320. Function to remove expired entries
+function removeExpiredEntries320(cache, maxAgeMs) {
+    const now = Date.now();
+    let removedCount = 0;
+
+    for (const [key, entry] of cache.entries()) {
+        if (now - entry.createdAt >= maxAgeMs) {
+            cache.delete(key);
+            removedCount++;
+        }
+    }
+
+    return removedCount;
+}
+
+const cache320 = new Map();
+
+cache320.set("user-1", {
+    value: { name: "Shivaprada" },
+    createdAt: Date.now() - 10000
+});
+
+console.log(
+    "320: Removed entries:",
+    removeExpiredEntries320(cache320, 5000)
+);
+
+
+// 321. Function to create a response timing summary
+function createTimingSummary321(startTime, endTime) {
+    if (
+        !Number.isFinite(startTime) ||
+        !Number.isFinite(endTime) ||
+        endTime < startTime
+    ) {
+        throw new Error("Invalid timing values");
+    }
+
+    const duration = endTime - startTime;
+
+    return {
+        durationMs: Number(duration.toFixed(2)),
+        durationSeconds: Number((duration / 1000).toFixed(3))
+    };
+}
+
+console.log(
+    "321:",
+    createTimingSummary321(100, 250)
+);
+
+
+// 322. Function to run asynchronous middleware
+async function runAsyncMiddleware322(context, middlewareList) {
+    let currentContext = context;
+
+    for (const middleware of middlewareList) {
+        currentContext = await middleware(currentContext);
+
+        if (currentContext === null || currentContext === undefined) {
+            throw new Error("Middleware returned no context");
+        }
+    }
+
+    return currentContext;
+}
+
+runAsyncMiddleware322(
+    { userId: 1 },
+    [
+        async context => ({
+            ...context,
+            authenticated: true
+        }),
+        async context => ({
+            ...context,
+            validated: true
+        })
+    ]
+)
+    .then(result => console.log("322:", result))
+    .catch(error => console.error("322 Error:", error.message));
+
+
+// 323. Function to retry an asynchronous operation
+async function retryOperation323(
+    operation,
+    maxAttempts = 3,
+    delayMs = 500
+) {
+    if (!Number.isInteger(maxAttempts) || maxAttempts < 1) {
+        throw new Error("maxAttempts must be at least 1");
+    }
+
+    let lastError;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+            return await operation();
+        } catch (error) {
+            lastError = error;
+
+            if (attempt < maxAttempts) {
+                await new Promise(resolve => {
+                    setTimeout(resolve, delayMs);
+                });
+            }
+        }
+    }
+
+    throw lastError;
+}
+
+retryOperation323(
+    async () => "Operation successful",
+    3,
+    200
+)
+    .then(result => console.log("323:", result))
+    .catch(error => console.error("323 Error:", error.message));
+
+
+// 324. Function to safely parse JSON
+function safeParseJson324(jsonString) {
+    try {
+        return {
+            success: true,
+            data: JSON.parse(jsonString)
+        };
+    } catch {
+        return {
+            success: false,
+            data: null,
+            message: "Invalid JSON"
+        };
+    }
+}
+
+console.log(
+    "324:",
+    safeParseJson324('{"name":"Shivaprada"}')
+);
+
+
+// 325. Function to create an API request summary
+function createApiRequestSummary325(request) {
+    if (!request || typeof request !== "object") {
+        throw new Error("A request object is required");
+    }
+
+    return {
+        requestId: generateRequestId316(),
+        method: String(request.method || "GET").toUpperCase(),
+        path: String(request.path || "/"),
+        timestamp: new Date().toISOString(),
+        status: "received"
+    };
+}
+
+console.log(
+    "325:",
+    createApiRequestSummary325({
+        method: "POST",
+        path: "/api/users"
+    })
+);
