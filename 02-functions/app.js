@@ -7941,3 +7941,297 @@ console.log(
         path: "/api/users"
     })
 );
+
+// 326. Function to create a simple cache
+function createCache326() {
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            cache.set(key, {
+                value: value,
+                createdAt: Date.now()
+            });
+        },
+
+        get(key) {
+            const entry = cache.get(key);
+            return entry ? entry.value : undefined;
+        },
+
+        has(key) {
+            return cache.has(key);
+        },
+
+        delete(key) {
+            return cache.delete(key);
+        },
+
+        size() {
+            return cache.size;
+        }
+    };
+}
+
+const cache326 = createCache326();
+
+cache326.set("username", "Shivaprada");
+console.log("326:", cache326.get("username"));
+
+
+// 327. Function to cache values with an expiration time
+function createExpiringCache327(ttlMs) {
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            cache.set(key, {
+                value: value,
+                expiresAt: Date.now() + ttlMs
+            });
+        },
+
+        get(key) {
+            const entry = cache.get(key);
+
+            if (!entry) {
+                return undefined;
+            }
+
+            if (Date.now() >= entry.expiresAt) {
+                cache.delete(key);
+                return undefined;
+            }
+
+            return entry.value;
+        }
+    };
+}
+
+const expiringCache327 = createExpiringCache327(5000);
+
+expiringCache327.set("status", "Active");
+console.log("327:", expiringCache327.get("status"));
+
+
+// 328. Function to filter records by a field
+function filterRecords328(records, field, value) {
+    if (!Array.isArray(records)) {
+        return [];
+    }
+
+    return records.filter(record => record[field] === value);
+}
+
+const records328 = [
+    { id: 1, name: "Asha", role: "Developer" },
+    { id: 2, name: "Ravi", role: "Tester" },
+    { id: 3, name: "Meera", role: "Developer" }
+];
+
+console.log(
+    "328:",
+    filterRecords328(records328, "role", "Developer")
+);
+
+
+// 329. Function to sort records by a numeric field
+function sortRecords329(records, field, order = "asc") {
+    if (!Array.isArray(records)) {
+        return [];
+    }
+
+    if (!["asc", "desc"].includes(order)) {
+        throw new Error("Order must be 'asc' or 'desc'");
+    }
+
+    return [...records].sort((a, b) => {
+        const first = a[field];
+        const second = b[field];
+
+        if (
+            typeof first !== "number" ||
+            typeof second !== "number"
+        ) {
+            throw new Error("Sort field must contain numbers");
+        }
+
+        return order === "asc"
+            ? first - second
+            : second - first;
+    });
+}
+
+const scores329 = [
+    { name: "Asha", score: 85 },
+    { name: "Ravi", score: 65 },
+    { name: "Meera", score: 95 }
+];
+
+console.log(
+    "329:",
+    sortRecords329(scores329, "score", "desc")
+);
+
+
+// 330. Function to paginate an array
+function paginateArray330(records, page = 1, limit = 5) {
+    if (!Array.isArray(records)) {
+        throw new Error("Records must be an array");
+    }
+
+    if (
+        !Number.isInteger(page) ||
+        !Number.isInteger(limit) ||
+        page < 1 ||
+        limit < 1
+    ) {
+        throw new Error("Page and limit must be positive integers");
+    }
+
+    const startIndex = (page - 1) * limit;
+
+    return {
+        data: records.slice(startIndex, startIndex + limit),
+        page: page,
+        limit: limit,
+        totalRecords: records.length,
+        totalPages: Math.ceil(records.length / limit)
+    };
+}
+
+console.log(
+    "330:",
+    paginateArray330(records328, 1, 2)
+);
+
+
+// 331. Function to search records by text
+function searchRecords331(records, field, searchText) {
+    if (!Array.isArray(records)) {
+        return [];
+    }
+
+    const query = String(searchText).toLowerCase();
+
+    return records.filter(record => {
+        const value = record[field];
+
+        return typeof value === "string" &&
+            value.toLowerCase().includes(query);
+    });
+}
+
+console.log(
+    "331:",
+    searchRecords331(records328, "name", "as")
+);
+
+
+// 332. Function to find a record by ID
+function findRecordById332(records, id) {
+    if (!Array.isArray(records)) {
+        return null;
+    }
+
+    return records.find(record => record.id === id) ?? null;
+}
+
+console.log("332:", findRecordById332(records328, 2));
+
+
+// 333. Function to count records by a field
+function countRecordsByField333(records, field) {
+    if (!Array.isArray(records)) {
+        return {};
+    }
+
+    return records.reduce((counts, record) => {
+        const key = String(record[field] ?? "undefined");
+
+        counts[key] = (counts[key] || 0) + 1;
+
+        return counts;
+    }, {});
+}
+
+console.log(
+    "333:",
+    countRecordsByField333(records328, "role")
+);
+
+
+// 334. Function to remove duplicate records by ID
+function removeDuplicateRecords334(records) {
+    if (!Array.isArray(records)) {
+        return [];
+    }
+
+    const uniqueRecords = new Map();
+
+    for (const record of records) {
+        if (record && record.id !== undefined) {
+            if (!uniqueRecords.has(record.id)) {
+                uniqueRecords.set(record.id, record);
+            }
+        }
+    }
+
+    return [...uniqueRecords.values()];
+}
+
+console.log(
+    "334:",
+    removeDuplicateRecords334([
+        { id: 1, name: "Asha" },
+        { id: 2, name: "Ravi" },
+        { id: 1, name: "Asha" }
+    ])
+);
+
+
+// 335. Function to create a database-style query result
+function createQueryResult335(records, options = {}) {
+    if (!Array.isArray(records)) {
+        throw new Error("Records must be an array");
+    }
+
+    const {
+        field,
+        value,
+        page = 1,
+        limit = 10
+    } = options;
+
+    let results = [...records];
+
+    if (field !== undefined) {
+        results = results.filter(
+            record => record[field] === value
+        );
+    }
+
+    const totalRecords = results.length;
+
+    const paginated = paginateArray330(results, page, limit);
+
+    return {
+        data: paginated.data,
+        pagination: {
+            page: page,
+            limit: limit,
+            totalRecords: totalRecords,
+            totalPages: Math.ceil(totalRecords / limit)
+        }
+    };
+}
+
+console.log(
+    "335:",
+    createQueryResult335(records328, {
+        field: "role",
+        value: "Developer",
+        page: 1,
+        limit: 1
+    })
+);
