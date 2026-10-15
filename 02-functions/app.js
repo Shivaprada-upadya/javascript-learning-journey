@@ -8235,3 +8235,332 @@ console.log(
         limit: 1
     })
 );
+
+// 336. Function to create an in-memory database
+function createDatabase336(initialData = []) {
+    const records = new Map();
+
+    for (const record of initialData) {
+        if (record && record.id !== undefined) {
+            records.set(record.id, { ...record });
+        }
+    }
+
+    return {
+        getAll() {
+            return [...records.values()].map(record => ({ ...record }));
+        },
+
+        getById(id) {
+            const record = records.get(id);
+            return record ? { ...record } : null;
+        },
+
+        insert(record) {
+            if (!record || record.id === undefined) {
+                throw new Error("Record ID is required");
+            }
+
+            if (records.has(record.id)) {
+                throw new Error("Record already exists");
+            }
+
+            records.set(record.id, { ...record });
+            return { ...record };
+        },
+
+        update(id, changes) {
+            const existing = records.get(id);
+
+            if (!existing) {
+                return null;
+            }
+
+            const updated = { ...existing, ...changes, id };
+            records.set(id, updated);
+
+            return { ...updated };
+        },
+
+        delete(id) {
+            return records.delete(id);
+        }
+    };
+}
+
+const database336 = createDatabase336([
+    { id: 1, name: "Asha" },
+    { id: 2, name: "Ravi" }
+]);
+
+console.log("336:", database336.getAll());
+
+
+// 337. Function to create a repository layer
+function createRepository337(database) {
+    return {
+        findAll() {
+            return database.getAll();
+        },
+
+        findById(id) {
+            return database.getById(id);
+        },
+
+        create(record) {
+            return database.insert(record);
+        },
+
+        update(id, changes) {
+            return database.update(id, changes);
+        },
+
+        remove(id) {
+            return database.delete(id);
+        }
+    };
+}
+
+const repository337 = createRepository337(database336);
+
+console.log("337:", repository337.findById(1));
+
+
+// 338. Function to create a service layer
+function createUserService338(repository) {
+    return {
+        getUsers() {
+            return repository.findAll();
+        },
+
+        getUser(id) {
+            if (!Number.isInteger(id) || id <= 0) {
+                throw new Error("A valid user ID is required");
+            }
+
+            return repository.findById(id);
+        },
+
+        createUser(user) {
+            if (!user || typeof user.name !== "string" ||
+                user.name.trim().length < 2) {
+                throw new Error("A valid user name is required");
+            }
+
+            return repository.create({
+                ...user,
+                name: user.name.trim()
+            });
+        }
+    };
+}
+
+const userService338 = createUserService338(repository337);
+
+console.log("338:", userService338.getUsers());
+
+
+// 339. Function to safely execute a service operation
+function executeService339(operation) {
+    try {
+        return {
+            success: true,
+            data: operation()
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+console.log(
+    "339:",
+    executeService339(() => userService338.getUser(1))
+);
+
+
+// 340. Function to create a transaction-like operation
+function executeTransaction340(database, operations) {
+    if (!Array.isArray(operations)) {
+        throw new Error("Operations must be an array");
+    }
+
+    const backup = database.getAll();
+
+    try {
+        const results = operations.map(operation => operation(database));
+
+        return {
+            success: true,
+            results: results
+        };
+    } catch (error) {
+        // Restore the original records if an operation fails.
+        for (const record of database.getAll()) {
+            database.delete(record.id);
+        }
+
+        for (const record of backup) {
+            database.insert(record);
+        }
+
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+console.log(
+    "340:",
+    executeTransaction340(database336, [
+        db => db.insert({ id: 3, name: "Meera" }),
+        db => db.insert({ id: 3, name: "Duplicate" })
+    ])
+);
+
+
+// 341. Function to validate a database record
+function validateRecord341(record, requiredFields = []) {
+    if (!record || typeof record !== "object" ||
+        Array.isArray(record)) {
+        return {
+            valid: false,
+            missingFields: requiredFields
+        };
+    }
+
+    const missingFields = requiredFields.filter(field => {
+        const value = record[field];
+
+        return value === undefined ||
+            value === null ||
+            (typeof value === "string" && value.trim() === "");
+    });
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields: missingFields
+    };
+}
+
+console.log(
+    "341:",
+    validateRecord341(
+        { name: "Asha", email: "asha@example.com" },
+        ["name", "email"]
+    )
+);
+
+
+// 342. Function to update a record with validation
+function updateRecord342(repository, id, changes) {
+    if (!changes || typeof changes !== "object" ||
+        Array.isArray(changes)) {
+        return {
+            success: false,
+            message: "Changes must be an object"
+        };
+    }
+
+    const existing = repository.findById(id);
+
+    if (!existing) {
+        return {
+            success: false,
+            message: "Record not found"
+        };
+    }
+
+    const updated = repository.update(id, changes);
+
+    return {
+        success: true,
+        data: updated
+    };
+}
+
+console.log(
+    "342:",
+    updateRecord342(repository337, 1, { name: "Asha Sharma" })
+);
+
+
+// 343. Function to delete a record safely
+function deleteRecord343(repository, id) {
+    const existing = repository.findById(id);
+
+    if (!existing) {
+        return {
+            success: false,
+            message: "Record not found"
+        };
+    }
+
+    repository.remove(id);
+
+    return {
+        success: true,
+        message: "Record deleted successfully",
+        deletedId: id
+    };
+}
+
+console.log("343:", deleteRecord343(repository337, 2));
+
+
+// 344. Function to create a paginated repository response
+function getPaginatedRecords344(repository, page = 1, limit = 10) {
+    if (!Number.isInteger(page) || page < 1 ||
+        !Number.isInteger(limit) || limit < 1) {
+        throw new Error("Page and limit must be positive integers");
+    }
+
+    const records = repository.findAll();
+    const startIndex = (page - 1) * limit;
+
+    return {
+        data: records.slice(startIndex, startIndex + limit),
+        pagination: {
+            page: page,
+            limit: limit,
+            totalRecords: records.length,
+            totalPages: Math.ceil(records.length / limit)
+        }
+    };
+}
+
+console.log(
+    "344:",
+    getPaginatedRecords344(repository337, 1, 5)
+);
+
+
+// 345. Function to create a standard service response
+function createServiceResponse345(operation) {
+    try {
+        const data = operation();
+
+        return {
+            success: true,
+            data: data,
+            timestamp: new Date().toISOString()
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: {
+                message: error.message
+            },
+            timestamp: new Date().toISOString()
+        };
+    }
+}
+
+console.log(
+    "345:",
+    createServiceResponse345(() => userService338.getUser(1))
+);
+
