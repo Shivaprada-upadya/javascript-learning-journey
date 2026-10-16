@@ -8564,3 +8564,241 @@ console.log(
     createServiceResponse345(() => userService338.getUser(1))
 );
 
+// 346. Function to sanitize a text input
+function sanitizeText346(value) {
+    if (typeof value !== "string") {
+        return "";
+    }
+
+    return value.trim().replace(/\s+/g, " ");
+}
+
+console.log("346:", sanitizeText346("  Hello    World  "));
+
+
+// 347. Function to validate a numeric ID
+function validateId347(id) {
+    const numericId = Number(id);
+
+    return {
+        valid: Number.isSafeInteger(numericId) && numericId > 0,
+        value: Number.isSafeInteger(numericId) && numericId > 0
+            ? numericId
+            : null
+    };
+}
+
+console.log("347:", validateId347("25"));
+
+
+// 348. Function to create a standardized error object
+function createError348(message, statusCode = 500) {
+    const error = new Error(message);
+    error.statusCode = statusCode;
+
+    return error;
+}
+
+console.log(
+    "348:",
+    createError348("User not found", 404).statusCode
+);
+
+
+// 349. Function to create an API controller
+function createUserController349(userService) {
+    return {
+        getAll() {
+            return {
+                statusCode: 200,
+                body: {
+                    success: true,
+                    data: userService.getUsers()
+                }
+            };
+        },
+
+        getById(id) {
+            const validation = validateId347(id);
+
+            if (!validation.valid) {
+                return {
+                    statusCode: 400,
+                    body: {
+                        success: false,
+                        message: "Invalid user ID"
+                    }
+                };
+            }
+
+            const user = userService.getUser(validation.value);
+
+            if (!user) {
+                return {
+                    statusCode: 404,
+                    body: {
+                        success: false,
+                        message: "User not found"
+                    }
+                };
+            }
+
+            return {
+                statusCode: 200,
+                body: {
+                    success: true,
+                    data: user
+                }
+            };
+        }
+    };
+}
+
+// Reuse the service created in function 338.
+const userController349 = createUserController349(userService338);
+
+console.log("349:", userController349.getAll());
+
+
+// 350. Function to handle controller errors
+function handleControllerError350(error) {
+    const statusCode =
+        Number.isInteger(error?.statusCode) &&
+        error.statusCode >= 400 &&
+        error.statusCode <= 599
+            ? error.statusCode
+            : 500;
+
+    return {
+        statusCode: statusCode,
+        body: {
+            success: false,
+            message: statusCode >= 500
+                ? "Internal server error"
+                : error.message
+        }
+    };
+}
+
+console.log(
+    "350:",
+    handleControllerError350(createError348("Not found", 404))
+);
+
+
+// 351. Function to validate an allowed sort field
+function validateSortField351(field, allowedFields) {
+    if (
+        typeof field !== "string" ||
+        !Array.isArray(allowedFields)
+    ) {
+        return false;
+    }
+
+    return allowedFields.includes(field);
+}
+
+console.log(
+    "351:",
+    validateSortField351("name", ["name", "email", "createdAt"])
+);
+
+
+// 352. Function to build a safe sorting configuration
+function createSortConfig352(field, direction, allowedFields) {
+    if (!validateSortField351(field, allowedFields)) {
+        throw new Error("Invalid sort field");
+    }
+
+    const normalizedDirection = String(direction).toLowerCase();
+
+    if (!["asc", "desc"].includes(normalizedDirection)) {
+        throw new Error("Sort direction must be asc or desc");
+    }
+
+    return {
+        field: field,
+        direction: normalizedDirection
+    };
+}
+
+console.log(
+    "352:",
+    createSortConfig352(
+        "name",
+        "asc",
+        ["name", "email", "createdAt"]
+    )
+);
+
+
+// 353. Function to validate pagination parameters
+function validatePagination353(page, limit) {
+    const valid =
+        Number.isInteger(page) &&
+        Number.isInteger(limit) &&
+        page >= 1 &&
+        limit >= 1 &&
+        limit <= 100;
+
+    return {
+        valid: valid,
+        page: valid ? page : null,
+        limit: valid ? limit : null,
+        message: valid
+            ? "Pagination parameters are valid"
+            : "Invalid page or limit"
+    };
+}
+
+console.log("353:", validatePagination353(1, 20));
+
+
+// 354. Function to create request metadata
+function createRequestMetadata354(request) {
+    if (!request || typeof request !== "object") {
+        throw new Error("A request object is required");
+    }
+
+    return {
+        requestId: generateRequestId316(),
+        method: String(request.method || "GET").toUpperCase(),
+        path: sanitizeText346(request.path || "/"),
+        receivedAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "354:",
+    createRequestMetadata354({
+        method: "GET",
+        path: "/api/users"
+    })
+);
+
+
+// 355. Function to combine validation and controller execution
+function executeController355(controller, id) {
+    try {
+        const result = controller.getById(id);
+
+        return {
+            success: true,
+            statusCode: result.statusCode,
+            body: result.body
+        };
+    } catch (error) {
+        const handledError = handleControllerError350(error);
+
+        return {
+            success: false,
+            statusCode: handledError.statusCode,
+            body: handledError.body
+        };
+    }
+}
+
+console.log(
+    "355:",
+    executeController355(userController349, 1)
+);
