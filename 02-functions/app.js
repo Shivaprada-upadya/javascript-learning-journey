@@ -8802,3 +8802,284 @@ console.log(
     "355:",
     executeController355(userController349, 1)
 );
+
+// 356. Function to create a standard HTTP response
+function createHttpResponse356(statusCode, data, message = "") {
+    return {
+        statusCode: statusCode,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: {
+            success: statusCode >= 200 && statusCode < 300,
+            data: data,
+            message: message,
+            timestamp: new Date().toISOString()
+        }
+    };
+}
+
+console.log(
+    "356:",
+    createHttpResponse356(200, { id: 1 }, "User found")
+);
+
+
+// 357. Function to validate a request method and path
+function validateRequest357(request, allowedMethods, allowedPaths) {
+    if (!request || typeof request !== "object") {
+        return { valid: false, message: "Invalid request" };
+    }
+
+    const method = String(request.method || "").toUpperCase();
+    const path = String(request.path || "");
+
+    if (!allowedMethods.includes(method)) {
+        return { valid: false, message: "Method not allowed" };
+    }
+
+    if (!allowedPaths.includes(path)) {
+        return { valid: false, message: "Path not allowed" };
+    }
+
+    return { valid: true, message: "Request is valid" };
+}
+
+console.log(
+    "357:",
+    validateRequest357(
+        { method: "GET", path: "/api/users" },
+        ["GET", "POST"],
+        ["/api/users", "/api/health"]
+    )
+);
+
+
+// 358. Function to safely parse a request body
+function parseRequestBody358(body) {
+    if (typeof body === "object" && body !== null) {
+        if (Array.isArray(body)) {
+            return {
+                success: false,
+                message: "Request body must be an object"
+            };
+        }
+
+        return { success: true, data: body };
+    }
+
+    if (typeof body !== "string") {
+        return {
+            success: false,
+            message: "Request body must be JSON"
+        };
+    }
+
+    try {
+        const data = JSON.parse(body);
+
+        if (
+            typeof data !== "object" ||
+            data === null ||
+            Array.isArray(data)
+        ) {
+            return {
+                success: false,
+                message: "JSON body must contain an object"
+            };
+        }
+
+        return { success: true, data: data };
+    } catch {
+        return {
+            success: false,
+            message: "Invalid JSON"
+        };
+    }
+}
+
+console.log(
+    "358:",
+    parseRequestBody358('{"name":"Shivaprada"}')
+);
+
+
+// 359. Function to create an asynchronous controller
+function createAsyncController359(operation) {
+    return async function (input) {
+        try {
+            const data = await operation(input);
+
+            return createHttpResponse356(
+                200,
+                data,
+                "Operation completed"
+            );
+        } catch (error) {
+            console.error("Controller error:", error.message);
+
+            return createHttpResponse356(
+                500,
+                null,
+                "Internal server error"
+            );
+        }
+    };
+}
+
+const controller359 = createAsyncController359(async input => {
+    return { greeting: `Hello, ${input.name}` };
+});
+
+controller359({ name: "Shivaprada" })
+    .then(result => console.log("359:", result));
+
+
+// 360. Function to validate an email and password
+function validateCredentials360(credentials) {
+    if (
+        !credentials ||
+        typeof credentials !== "object" ||
+        Array.isArray(credentials)
+    ) {
+        return {
+            valid: false,
+            message: "Credentials must be an object"
+        };
+    }
+
+    const emailValid = validateEmail298(credentials.email);
+
+    const passwordValid =
+        typeof credentials.password === "string" &&
+        credentials.password.length >= 8;
+
+    return {
+        valid: emailValid && passwordValid,
+        message: !emailValid
+            ? "Invalid email"
+            : !passwordValid
+                ? "Password must contain at least 8 characters"
+                : "Credentials format is valid"
+    };
+}
+
+console.log(
+    "360:",
+    validateCredentials360({
+        email: "user@example.com",
+        password: "example123"
+    })
+);
+
+
+// 361. Function to create a not-found response
+function createNotFoundResponse361(resource = "Resource") {
+    return createHttpResponse356(
+        404,
+        null,
+        `${resource} not found`
+    );
+}
+
+console.log("361:", createNotFoundResponse361("User"));
+
+
+// 362. Function to create a conflict response
+function createConflictResponse362(message = "Resource already exists") {
+    return createHttpResponse356(
+        409,
+        null,
+        message
+    );
+}
+
+console.log("362:", createConflictResponse362());
+
+
+// 363. Function to create a bad-request response
+function createBadRequestResponse363(message = "Invalid request") {
+    return createHttpResponse356(
+        400,
+        null,
+        message
+    );
+}
+
+console.log("363:", createBadRequestResponse363("Missing name"));
+
+
+// 364. Function to execute an operation with a timeout
+async function executeWithTimeout364(operation, timeoutMs = 3000) {
+    if (
+        typeof operation !== "function" ||
+        !Number.isFinite(timeoutMs) ||
+        timeoutMs <= 0
+    ) {
+        throw new Error("A valid operation and timeout are required");
+    }
+
+    let timer;
+
+    try {
+        return await Promise.race([
+            Promise.resolve().then(operation),
+            new Promise((_, reject) => {
+                timer = setTimeout(() => {
+                    reject(new Error("Operation timed out"));
+                }, timeoutMs);
+            })
+        ]);
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+executeWithTimeout364(
+    async () => "Task completed",
+    3000
+)
+    .then(result => console.log("364:", result))
+    .catch(error => console.log("364:", error.message));
+
+
+// 365. Function to combine request validation and response handling
+async function processRequest365(request, operation) {
+    const validation = validateRequest357(
+        request,
+        ["GET", "POST"],
+        ["/api/users", "/api/health"]
+    );
+
+    if (!validation.valid) {
+        return createHttpResponse356(
+            400,
+            null,
+            validation.message
+        );
+    }
+
+    try {
+        const data = await operation(request);
+
+        return createHttpResponse356(
+            200,
+            data,
+            "Request processed successfully"
+        );
+    } catch (error) {
+        console.error("Request processing error:", error.message);
+
+        return createHttpResponse356(
+            500,
+            null,
+            "Internal server error"
+        );
+    }
+}
+
+processRequest365(
+    { method: "GET", path: "/api/users" },
+    async () => [{ id: 1, name: "Shivaprada" }]
+)
+    .then(result => console.log("365:", result));
