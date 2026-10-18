@@ -9083,3 +9083,242 @@ processRequest365(
     async () => [{ id: 1, name: "Shivaprada" }]
 )
     .then(result => console.log("365:", result));
+
+// 366. Function to build a parameterized SQL query
+function buildUserQuery366(userId) {
+    if (!Number.isSafeInteger(userId) || userId <= 0) {
+        throw new Error("A valid user ID is required");
+    }
+
+    return {
+        text: "SELECT id, name, email FROM users WHERE id = $1",
+        values: [userId]
+    };
+}
+
+console.log("366:", buildUserQuery366(1));
+
+
+// 367. Function to build a paginated SQL query
+function buildPaginationQuery367(page = 1, limit = 10) {
+    if (
+        !Number.isInteger(page) ||
+        !Number.isInteger(limit) ||
+        page < 1 ||
+        limit < 1 ||
+        limit > 100
+    ) {
+        throw new Error("Invalid pagination parameters");
+    }
+
+    const offset = (page - 1) * limit;
+
+    return {
+        text: "SELECT id, name FROM users ORDER BY id LIMIT $1 OFFSET $2",
+        values: [limit, offset]
+    };
+}
+
+console.log("367:", buildPaginationQuery367(2, 10));
+
+
+// 368. Function to build a parameterized search query
+function buildSearchQuery368(searchText) {
+    if (
+        typeof searchText !== "string" ||
+        searchText.trim().length === 0
+    ) {
+        throw new Error("Search text is required");
+    }
+
+    return {
+        text: "SELECT id, name FROM users WHERE name ILIKE $1",
+        values: [`%${searchText.trim()}%`]
+    };
+}
+
+console.log("368:", buildSearchQuery368("Shiva"));
+
+
+// 369. Function to build a parameterized INSERT query
+function buildInsertUserQuery369(user) {
+    if (
+        !user ||
+        typeof user.name !== "string" ||
+        typeof user.email !== "string" ||
+        !user.name.trim() ||
+        !user.email.trim()
+    ) {
+        throw new Error("Name and email are required");
+    }
+
+    return {
+        text: "INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id, name, email",
+        values: [user.name.trim(), user.email.trim()]
+    };
+}
+
+console.log(
+    "369:",
+    buildInsertUserQuery369({
+        name: "Shivaprada",
+        email: "user@example.com"
+    })
+);
+
+
+// 370. Function to build a parameterized UPDATE query
+function buildUpdateUserQuery370(userId, changes) {
+    if (!Number.isSafeInteger(userId) || userId <= 0) {
+        throw new Error("A valid user ID is required");
+    }
+
+    const allowedFields = ["name", "email"];
+    const fields = Object.keys(changes || {}).filter(
+        field => allowedFields.includes(field)
+    );
+
+    if (fields.length === 0) {
+        throw new Error("No valid fields to update");
+    }
+
+    const values = fields.map(field => changes[field]);
+    values.push(userId);
+
+    const assignments = fields.map(
+        (field, index) => `${field} = $${index + 1}`
+    );
+
+    return {
+        text: `UPDATE users SET ${assignments.join(", ")} WHERE id = $${values.length} RETURNING id, name, email`,
+        values: values
+    };
+}
+
+console.log(
+    "370:",
+    buildUpdateUserQuery370(1, { name: "Shivaprada U." })
+);
+
+
+// 371. Function to build a parameterized DELETE query
+function buildDeleteUserQuery371(userId) {
+    if (!Number.isSafeInteger(userId) || userId <= 0) {
+        throw new Error("A valid user ID is required");
+    }
+
+    return {
+        text: "DELETE FROM users WHERE id = $1 RETURNING id",
+        values: [userId]
+    };
+}
+
+console.log("371:", buildDeleteUserQuery371(1));
+
+
+// 372. Function to normalize a database result
+function normalizeDatabaseResult372(result) {
+    if (!result || !Array.isArray(result.rows)) {
+        return {
+            success: false,
+            data: [],
+            rowCount: 0
+        };
+    }
+
+    return {
+        success: true,
+        data: result.rows,
+        rowCount: result.rowCount ?? result.rows.length
+    };
+}
+
+console.log(
+    "372:",
+    normalizeDatabaseResult372({
+        rows: [{ id: 1, name: "Asha" }],
+        rowCount: 1
+    })
+);
+
+
+// 373. Function to check whether a record exists
+function databaseRecordExists373(result) {
+    return Boolean(
+        result &&
+        Array.isArray(result.rows) &&
+        result.rows.length > 0
+    );
+}
+
+console.log(
+    "373:",
+    databaseRecordExists373({
+        rows: [{ id: 1 }]
+    })
+);
+
+
+// 374. Function to map database rows to API objects
+function mapDatabaseRows374(rows) {
+    if (!Array.isArray(rows)) {
+        throw new Error("Database rows must be an array");
+    }
+
+    return rows.map(row => ({
+        id: row.id,
+        name: row.name,
+        email: row.email
+    }));
+}
+
+console.log(
+    "374:",
+    mapDatabaseRows374([
+        {
+            id: 1,
+            name: "Shivaprada",
+            email: "user@example.com",
+            password_hash: "not-returned"
+        }
+    ])
+);
+
+
+// 375. Function to create a database-backed API response
+function createDatabaseApiResponse375(result) {
+    const normalized = normalizeDatabaseResult372(result);
+
+    if (!normalized.success) {
+        return {
+            statusCode: 500,
+            body: {
+                success: false,
+                message: "Invalid database result"
+            }
+        };
+    }
+
+    return {
+        statusCode: 200,
+        body: {
+            success: true,
+            data: mapDatabaseRows374(normalized.data),
+            count: normalized.rowCount
+        }
+    };
+}
+
+console.log(
+    "375:",
+    createDatabaseApiResponse375({
+        rows: [
+            {
+                id: 1,
+                name: "Shivaprada",
+                email: "user@example.com"
+            }
+        ],
+        rowCount: 1
+    })
+);
