@@ -9322,3 +9322,303 @@ console.log(
         rowCount: 1
     })
 );
+
+// 376. Function to validate database configuration
+function validateDbConfig376(config) {
+    const requiredFields = [
+        "host",
+        "database",
+        "user",
+        "password"
+    ];
+
+    if (!config || typeof config !== "object") {
+        return {
+            valid: false,
+            missingFields: requiredFields
+        };
+    }
+
+    const missingFields = requiredFields.filter(field => {
+        return typeof config[field] !== "string" ||
+            config[field].trim() === "";
+    });
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields
+    };
+}
+
+console.log(
+    "376:",
+    validateDbConfig376({
+        host: "localhost",
+        database: "learning_db",
+        user: "app_user",
+        password: "example-password"
+    })
+);
+
+
+// 377. Function to create database connection options
+function createDbOptions377(config) {
+    const validation = validateDbConfig376(config);
+
+    if (!validation.valid) {
+        throw new Error(
+            `Missing database settings: ${validation.missingFields.join(", ")}`
+        );
+    }
+
+    return {
+        host: config.host,
+        database: config.database,
+        user: config.user,
+        password: config.password,
+        port: Number.isInteger(config.port) ? config.port : 5432
+    };
+}
+
+console.log(
+    "377:",
+    createDbOptions377({
+        host: "localhost",
+        database: "learning_db",
+        user: "app_user",
+        password: "example-password"
+    })
+);
+
+
+// 378. Function to execute a database query safely
+async function executeDbQuery378(queryFunction) {
+    if (typeof queryFunction !== "function") {
+        throw new Error("A query function is required");
+    }
+
+    try {
+        const result = await queryFunction();
+
+        return {
+            success: true,
+            data: result
+        };
+    } catch (error) {
+        console.error("Database query failed:", error.message);
+
+        return {
+            success: false,
+            message: "Database operation failed"
+        };
+    }
+}
+
+executeDbQuery378(async () => {
+    return {
+        rows: [{ id: 1, name: "Asha" }],
+        rowCount: 1
+    };
+}).then(result => console.log("378:", result));
+
+
+// 379. Function to create a database repository
+function createDbRepository379(queryFunction) {
+    return {
+        async findById(id) {
+            if (!Number.isSafeInteger(id) || id <= 0) {
+                throw new Error("A valid ID is required");
+            }
+
+            return queryFunction(
+                "SELECT id, name, email FROM users WHERE id = $1",
+                [id]
+            );
+        },
+
+        async findAll(limit = 10) {
+            if (!Number.isInteger(limit) || limit < 1 || limit > 100) {
+                throw new Error("Limit must be between 1 and 100");
+            }
+
+            return queryFunction(
+                "SELECT id, name, email FROM users ORDER BY id LIMIT $1",
+                [limit]
+            );
+        }
+    };
+}
+
+console.log("379: Database repository factory defined.");
+
+
+// 380. Function to get a user through a repository
+async function getUserFromRepository380(repository, userId) {
+    try {
+        const result = await repository.findById(userId);
+
+        const rows = result?.rows;
+
+        return {
+            success: true,
+            data: Array.isArray(rows) && rows.length > 0
+                ? rows[0]
+                : null
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+console.log("380: Repository user lookup defined.");
+
+
+// 381. Function to validate transaction operations
+function validateTransactionOperations381(operations) {
+    if (!Array.isArray(operations) || operations.length === 0) {
+        return {
+            valid: false,
+            message: "At least one transaction operation is required"
+        };
+    }
+
+    const valid = operations.every(
+        operation => typeof operation === "function"
+    );
+
+    return {
+        valid,
+        message: valid
+            ? "Transaction operations are valid"
+            : "Every operation must be a function"
+    };
+}
+
+console.log(
+    "381:",
+    validateTransactionOperations381([
+        async () => "First operation",
+        async () => "Second operation"
+    ])
+);
+
+
+// 382. Function to execute transaction operations
+async function executeTransaction382(operations) {
+    const validation = validateTransactionOperations381(operations);
+
+    if (!validation.valid) {
+        throw new Error(validation.message);
+    }
+
+    const results = [];
+
+    for (const operation of operations) {
+        results.push(await operation());
+    }
+
+    return results;
+}
+
+executeTransaction382([
+    async () => "Insert completed",
+    async () => "Update completed"
+])
+    .then(result => console.log("382:", result))
+    .catch(error => console.error("382:", error.message));
+
+
+// 383. Function to run a real PostgreSQL transaction
+async function runPostgresTransaction383(pool, operations) {
+    if (
+        !pool ||
+        typeof pool.connect !== "function" ||
+        !Array.isArray(operations) ||
+        operations.length === 0 ||
+        !operations.every(operation => typeof operation === "function")
+    ) {
+        throw new Error("A valid pool and transaction operations are required");
+    }
+
+    const client = await pool.connect();
+
+    try {
+        await client.query("BEGIN");
+
+        const results = [];
+
+        for (const operation of operations) {
+            results.push(await operation(client));
+        }
+
+        await client.query("COMMIT");
+
+        return results;
+    } catch (error) {
+        try {
+            await client.query("ROLLBACK");
+        } catch (rollbackError) {
+            console.error("Rollback failed:", rollbackError.message);
+        }
+
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
+console.log("383: PostgreSQL transaction helper defined.");
+
+
+// 384. Function to check database health
+async function checkDatabaseHealth384(queryFunction) {
+    try {
+        await queryFunction("SELECT 1");
+
+        return {
+            healthy: true,
+            message: "Database is reachable"
+        };
+    } catch {
+        return {
+            healthy: false,
+            message: "Database is unavailable"
+        };
+    }
+}
+
+checkDatabaseHealth384(async sql => {
+    console.log("384: Simulated query:", sql);
+}).then(result => console.log("384:", result));
+
+
+// 385. Function to create a database service
+function createDatabaseService385(repository) {
+    return {
+        async getUser(id) {
+            try {
+                const result = await repository.findById(id);
+                const rows = result?.rows;
+
+                return {
+                    success: true,
+                    data: Array.isArray(rows) && rows.length > 0
+                        ? rows[0]
+                        : null
+                };
+            } catch (error) {
+                console.error("User service error:", error.message);
+
+                return {
+                    success: false,
+                    message: "Unable to retrieve user"
+                };
+            }
+        }
+    };
+}
+
+console.log("385: Database service factory defined.");
