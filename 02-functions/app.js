@@ -9622,3 +9622,214 @@ function createDatabaseService385(repository) {
 }
 
 console.log("385: Database service factory defined.");
+
+// 386. Function to validate a database port
+function validateDbPort386(port) {
+    return Number.isInteger(port) && port >= 1 && port <= 65535;
+}
+
+console.log("386:", validateDbPort386(5432));
+
+
+// 387. Function to calculate a database connection pool size
+function calculatePoolSize387(totalConnections, appInstances) {
+    if (
+        !Number.isInteger(totalConnections) ||
+        !Number.isInteger(appInstances) ||
+        totalConnections < 1 ||
+        appInstances < 1
+    ) {
+        throw new Error("Connection counts must be positive integers");
+    }
+
+    return Math.max(1, Math.floor(totalConnections / appInstances));
+}
+
+console.log("387:", calculatePoolSize387(100, 4));
+
+
+// 388. Function to retry an asynchronous operation
+async function retryOperation388(operation, maxAttempts = 3) {
+    if (
+        typeof operation !== "function" ||
+        !Number.isInteger(maxAttempts) ||
+        maxAttempts < 1
+    ) {
+        throw new Error("A valid operation and attempt count are required");
+    }
+
+    let lastError;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+            return await operation();
+        } catch (error) {
+            lastError = error;
+
+            console.log(`388: Attempt ${attempt} failed`);
+
+            if (attempt < maxAttempts) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+    }
+
+    throw lastError;
+}
+
+retryOperation388(async () => {
+    return "Database operation completed";
+})
+    .then(result => console.log("388:", result))
+    .catch(error => console.error("388:", error.message));
+
+
+// 389. Function to measure an asynchronous operation's duration
+async function measureOperationTime389(operation) {
+    if (typeof operation !== "function") {
+        throw new Error("A valid operation is required");
+    }
+
+    const startTime = Date.now();
+
+    try {
+        const result = await operation();
+
+        return {
+            success: true,
+            result,
+            durationMs: Date.now() - startTime
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message,
+            durationMs: Date.now() - startTime
+        };
+    }
+}
+
+measureOperationTime389(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return "Query completed";
+}).then(result => console.log("389:", result));
+
+
+// 390. Function to create a database query logger
+function createQueryLogger390() {
+    return {
+        log(queryName, durationMs) {
+            console.log({
+                queryName,
+                durationMs,
+                timestamp: new Date().toISOString()
+            });
+        }
+    };
+}
+
+const queryLogger390 = createQueryLogger390();
+
+queryLogger390.log("getUsers", 45);
+
+
+// 391. Function to check whether a query is slow
+function checkSlowQuery391(durationMs, thresholdMs = 500) {
+    if (
+        !Number.isFinite(durationMs) ||
+        durationMs < 0 ||
+        !Number.isFinite(thresholdMs) ||
+        thresholdMs < 0
+    ) {
+        throw new Error("Durations must be valid non-negative numbers");
+    }
+
+    return {
+        slow: durationMs > thresholdMs,
+        durationMs,
+        thresholdMs
+    };
+}
+
+console.log("391:", checkSlowQuery391(750));
+
+
+// 392. Function to safely parse an environment number
+function parseEnvironmentNumber392(value, defaultValue) {
+    if (value === undefined || value === null || String(value).trim() === "") {
+        return defaultValue;
+    }
+
+    const parsedValue = Number(value);
+
+    return Number.isFinite(parsedValue) ? parsedValue : defaultValue;
+}
+
+console.log(
+    "392:",
+    parseEnvironmentNumber392("5432", 3000)
+);
+
+
+// 393. Function to read validated application configuration
+function getAppConfig393(env) {
+    const port = parseEnvironmentNumber392(env.PORT, 3000);
+    const timeout = parseEnvironmentNumber392(env.TIMEOUT_MS, 5000);
+
+    return {
+        port: Number.isInteger(port) && port >= 1 && port <= 65535
+            ? port
+            : 3000,
+        timeoutMs: Number.isFinite(timeout) && timeout > 0
+            ? timeout
+            : 5000
+    };
+}
+
+console.log(
+    "393:",
+    getAppConfig393({
+        PORT: "4000",
+        TIMEOUT_MS: "8000"
+    })
+);
+
+
+// 394. Function to create a timeout promise
+function createTimeout394(milliseconds) {
+    if (!Number.isFinite(milliseconds) || milliseconds < 0) {
+        throw new Error("Timeout must be a non-negative number");
+    }
+
+    return new Promise((_, reject) => {
+        setTimeout(() => {
+            reject(new Error("Operation timed out"));
+        }, milliseconds);
+    });
+}
+
+console.log("394: Timeout utility created.");
+
+
+// 395. Function to run an operation with a timeout
+async function runWithTimeout395(operation, timeoutMs = 3000) {
+    if (typeof operation !== "function") {
+        throw new Error("A valid operation is required");
+    }
+
+    try {
+        return await Promise.race([
+            Promise.resolve().then(() => operation()),
+            createTimeout394(timeoutMs)
+        ]);
+    } catch (error) {
+        throw new Error(`Operation failed: ${error.message}`);
+    }
+}
+
+runWithTimeout395(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return "Operation completed within the timeout";
+})
+    .then(result => console.log("395:", result))
+    .catch(error => console.error("395:", error.message));
