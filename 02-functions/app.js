@@ -9833,3 +9833,271 @@ runWithTimeout395(async () => {
 })
     .then(result => console.log("395:", result))
     .catch(error => console.error("395:", error.message));
+
+// 396. Function to validate a database query result
+function validateQueryResult396(result) {
+    return {
+        valid:
+            result !== null &&
+            typeof result === "object" &&
+            Array.isArray(result.rows),
+        rowCount: Array.isArray(result?.rows)
+            ? result.rows.length
+            : 0
+    };
+}
+
+console.log(
+    "396:",
+    validateQueryResult396({
+        rows: [{ id: 1 }, { id: 2 }]
+    })
+);
+
+
+// 397. Function to extract rows from a query result
+function extractQueryRows397(result) {
+    if (!result || !Array.isArray(result.rows)) {
+        throw new Error("Invalid database query result");
+    }
+
+    return result.rows;
+}
+
+console.log(
+    "397:",
+    extractQueryRows397({
+        rows: [{ id: 1, name: "Asha" }]
+    })
+);
+
+
+// 398. Function to check whether a record exists
+function recordExists398(rows) {
+    if (!Array.isArray(rows)) {
+        throw new Error("Rows must be an array");
+    }
+
+    return rows.length > 0;
+}
+
+console.log("398:", recordExists398([{ id: 1 }]));
+
+
+// 399. Function to normalize a database error
+function normalizeDatabaseError399(error) {
+    const errorCode =
+        typeof error?.code === "string"
+            ? error.code
+            : "UNKNOWN";
+
+    return {
+        code: errorCode,
+        message: "A database operation failed"
+    };
+}
+
+console.log(
+    "399:",
+    normalizeDatabaseError399({
+        code: "ECONNREFUSED",
+        message: "Internal connection details"
+    })
+);
+
+
+// 400. Function to track active operations
+function createOperationTracker400() {
+    let activeOperations = 0;
+
+    return {
+        start() {
+            activeOperations++;
+            return activeOperations;
+        },
+
+        finish() {
+            if (activeOperations > 0) {
+                activeOperations--;
+            }
+
+            return activeOperations;
+        },
+
+        getActiveCount() {
+            return activeOperations;
+        }
+    };
+}
+
+const operationTracker400 = createOperationTracker400();
+
+operationTracker400.start();
+operationTracker400.start();
+
+console.log(
+    "400: Active operations:",
+    operationTracker400.getActiveCount()
+);
+
+operationTracker400.finish();
+
+console.log(
+    "400: After finishing one:",
+    operationTracker400.getActiveCount()
+);
+
+
+// 401. Function to check application readiness
+function checkReadiness401(checks) {
+    if (!Array.isArray(checks)) {
+        throw new Error("Checks must be an array");
+    }
+
+    const ready = checks.every(check => check === true);
+
+    return {
+        ready,
+        message: ready
+            ? "Application is ready"
+            : "Application is not ready"
+    };
+}
+
+console.log("401:", checkReadiness401([true, true, true]));
+
+
+// 402. Function to create an application health report
+function createHealthReport402(services) {
+    if (
+        services === null ||
+        typeof services !== "object" ||
+        Array.isArray(services)
+    ) {
+        throw new Error("Services must be an object");
+    }
+
+    const serviceStatuses = Object.fromEntries(
+        Object.entries(services).map(([name, healthy]) => [
+            name,
+            healthy === true ? "healthy" : "unhealthy"
+        ])
+    );
+
+    return {
+        healthy: Object.values(serviceStatuses).every(
+            status => status === "healthy"
+        ),
+        services: serviceStatuses,
+        checkedAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "402:",
+    createHealthReport402({
+        database: true,
+        cache: true,
+        api: false
+    })
+);
+
+
+// 403. Function to create a graceful-shutdown plan
+function createShutdownPlan403(services) {
+    if (
+        !Array.isArray(services) ||
+        !services.every(service => typeof service === "string")
+    ) {
+        throw new Error("Services must be an array of names");
+    }
+
+    return {
+        shutdownOrder: [...services].reverse(),
+        message: "Stop accepting new work before closing services"
+    };
+}
+
+console.log(
+    "403:",
+    createShutdownPlan403([
+        "httpServer",
+        "backgroundWorker",
+        "databasePool"
+    ])
+);
+
+
+// 404. Function to close services in order
+async function closeServices404(services) {
+    if (
+        !Array.isArray(services) ||
+        !services.every(
+            service => typeof service?.close === "function"
+        )
+    ) {
+        throw new Error("Every service must provide a close function");
+    }
+
+    const results = [];
+
+    for (const service of [...services].reverse()) {
+        try {
+            await service.close();
+
+            results.push({
+                success: true
+            });
+        } catch (error) {
+            results.push({
+                success: false,
+                message: error.message
+            });
+        }
+    }
+
+    return results;
+}
+
+closeServices404([
+    {
+        name: "worker",
+        async close() {
+            console.log("404: Worker closed");
+        }
+    },
+    {
+        name: "database",
+        async close() {
+            console.log("404: Database pool closed");
+        }
+    }
+]).then(result => console.log("404:", result));
+
+
+// 405. Function to create a retry delay
+function calculateRetryDelay405(
+    attempt,
+    baseDelayMs = 500,
+    maxDelayMs = 10000
+) {
+    if (!Number.isInteger(attempt) || attempt < 1) {
+        throw new Error("Attempt must be a positive integer");
+    }
+
+    if (
+        !Number.isFinite(baseDelayMs) ||
+        !Number.isFinite(maxDelayMs) ||
+        baseDelayMs < 0 ||
+        maxDelayMs < 0
+    ) {
+        throw new Error("Delay values must be non-negative numbers");
+    }
+
+    return Math.min(
+        baseDelayMs * (2 ** Math.min(attempt - 1, 30)),
+        maxDelayMs
+    );
+}
+
+console.log("405:", calculateRetryDelay405(4));
