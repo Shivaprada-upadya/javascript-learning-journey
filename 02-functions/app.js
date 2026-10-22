@@ -10101,3 +10101,330 @@ function calculateRetryDelay405(
 }
 
 console.log("405:", calculateRetryDelay405(4));
+
+// 406. Function to validate an API request timeout
+function validateRequestTimeout406(timeoutMs) {
+    return (
+        Number.isFinite(timeoutMs) &&
+        timeoutMs >= 100 &&
+        timeoutMs <= 120000
+    );
+}
+
+console.log("406:", validateRequestTimeout406(5000));
+
+
+// 407. Function to execute an operation with a timeout
+async function executeWithTimeout407(operation, timeoutMs = 3000) {
+    if (
+        typeof operation !== "function" ||
+        !Number.isFinite(timeoutMs) ||
+        timeoutMs < 0
+    ) {
+        throw new Error("A valid operation and timeout are required");
+    }
+
+    let timer;
+
+    try {
+        return await Promise.race([
+            Promise.resolve().then(operation),
+            new Promise((_, reject) => {
+                timer = setTimeout(() => {
+                    reject(new Error("Request timed out"));
+                }, timeoutMs);
+            })
+        ]);
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+executeWithTimeout407(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return "API request completed";
+})
+    .then(result => console.log("407:", result))
+    .catch(error => console.error("407:", error.message));
+
+
+// 408. Function to limit the number of concurrent tasks
+function createConcurrencyLimiter408(maxConcurrent) {
+    if (!Number.isInteger(maxConcurrent) || maxConcurrent < 1) {
+        throw new Error("Concurrency limit must be a positive integer");
+    }
+
+    let activeTasks = 0;
+    const waitingTasks = [];
+
+    function runNext() {
+        if (activeTasks >= maxConcurrent || waitingTasks.length === 0) {
+            return;
+        }
+
+        const { task, resolve, reject } = waitingTasks.shift();
+
+        activeTasks++;
+
+        Promise.resolve()
+            .then(task)
+            .then(resolve, reject)
+            .finally(() => {
+                activeTasks--;
+                runNext();
+            });
+    }
+
+    return function limit(task) {
+        if (typeof task !== "function") {
+            return Promise.reject(new Error("Task must be a function"));
+        }
+
+        return new Promise((resolve, reject) => {
+            waitingTasks.push({ task, resolve, reject });
+            runNext();
+        });
+    };
+}
+
+const limitTasks408 = createConcurrencyLimiter408(2);
+
+Promise.all([
+    limitTasks408(async () => "Task A completed"),
+    limitTasks408(async () => "Task B completed"),
+    limitTasks408(async () => "Task C completed")
+]).then(results => console.log("408:", results));
+
+
+// 409. Function to process items in batches
+async function processBatches409(items, batchSize, processor) {
+    if (
+        !Array.isArray(items) ||
+        !Number.isInteger(batchSize) ||
+        batchSize < 1 ||
+        typeof processor !== "function"
+    ) {
+        throw new Error("Valid items, batch size, and processor are required");
+    }
+
+    const results = [];
+
+    for (let index = 0; index < items.length; index += batchSize) {
+        const batch = items.slice(index, index + batchSize);
+
+        const batchResults = await Promise.all(
+            batch.map(item => processor(item))
+        );
+
+        results.push(...batchResults);
+    }
+
+    return results;
+}
+
+processBatches409(
+    [1, 2, 3, 4, 5],
+    2,
+    async number => number * 10
+).then(results => console.log("409:", results));
+
+
+// 410. Function to execute tasks sequentially
+async function executeSequentially410(tasks) {
+    if (
+        !Array.isArray(tasks) ||
+        !tasks.every(task => typeof task === "function")
+    ) {
+        throw new Error("Tasks must be an array of functions");
+    }
+
+    const results = [];
+
+    for (const task of tasks) {
+        results.push(await task());
+    }
+
+    return results;
+}
+
+executeSequentially410([
+    async () => "First task",
+    async () => "Second task",
+    async () => "Third task"
+]).then(results => console.log("410:", results));
+
+
+// 411. Function to execute independent tasks in parallel
+async function executeInParallel411(tasks) {
+    if (
+        !Array.isArray(tasks) ||
+        !tasks.every(task => typeof task === "function")
+    ) {
+        throw new Error("Tasks must be an array of functions");
+    }
+
+    return Promise.all(tasks.map(task => Promise.resolve().then(task)));
+}
+
+executeInParallel411([
+    async () => "User data loaded",
+    async () => "Product data loaded",
+    async () => "Order data loaded"
+]).then(results => console.log("411:", results));
+
+
+// 412. Function to collect successful and failed task results
+async function collectTaskResults412(tasks) {
+    if (
+        !Array.isArray(tasks) ||
+        !tasks.every(task => typeof task === "function")
+    ) {
+        throw new Error("Tasks must be an array of functions");
+    }
+
+    return Promise.allSettled(
+        tasks.map(task => Promise.resolve().then(task))
+    );
+}
+
+collectTaskResults412([
+    async () => "Task succeeded",
+    async () => {
+        throw new Error("Task failed");
+    }
+]).then(results => console.log("412:", results));
+
+
+// 413. Function to create a simple asynchronous task queue
+function createTaskQueue413() {
+    const tasks = [];
+    let processing = false;
+
+    async function processQueue() {
+        if (processing) {
+            return;
+        }
+
+        processing = true;
+
+        try {
+            while (tasks.length > 0) {
+                const { task, resolve, reject } = tasks.shift();
+
+                try {
+                    resolve(await task());
+                } catch (error) {
+                    reject(error);
+                }
+            }
+        } finally {
+            processing = false;
+
+            if (tasks.length > 0) {
+                void processQueue();
+            }
+        }
+    }
+
+    return {
+        add(task) {
+            if (typeof task !== "function") {
+                return Promise.reject(
+                    new Error("Task must be a function")
+                );
+            }
+
+            const result = new Promise((resolve, reject) => {
+                tasks.push({ task, resolve, reject });
+            });
+
+            void processQueue();
+
+            return result;
+        },
+
+        getPendingCount() {
+            return tasks.length;
+        }
+    };
+}
+
+const taskQueue413 = createTaskQueue413();
+
+taskQueue413.add(async () => "Queued task 1")
+    .then(result => console.log("413:", result));
+
+taskQueue413.add(async () => "Queued task 2")
+    .then(result => console.log("413:", result));
+
+
+// 414. Function to retry an operation with increasing delays
+async function retryWithBackoff414(
+    operation,
+    maxAttempts = 3,
+    baseDelayMs = 500
+) {
+    if (
+        typeof operation !== "function" ||
+        !Number.isInteger(maxAttempts) ||
+        maxAttempts < 1 ||
+        !Number.isFinite(baseDelayMs) ||
+        baseDelayMs < 0
+    ) {
+        throw new Error("Invalid retry configuration");
+    }
+
+    for (let attempt = 1; ; attempt++) {
+        try {
+            return await operation();
+        } catch (error) {
+            if (attempt >= maxAttempts) {
+                throw error;
+            }
+
+            const delay = Math.min(
+                baseDelayMs * (2 ** Math.min(attempt - 1, 30)),
+                30000
+            );
+
+            console.log(`414: Retrying in ${delay} ms`);
+
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
+    }
+}
+
+retryWithBackoff414(
+    async () => "Retry operation succeeded",
+    3,
+    200
+)
+    .then(result => console.log("414:", result))
+    .catch(error => console.error("414:", error.message));
+
+
+// 415. Function to execute a workflow step by step
+async function executeWorkflow415(steps, initialValue) {
+    if (
+        !Array.isArray(steps) ||
+        !steps.every(step => typeof step === "function")
+    ) {
+        throw new Error("Workflow steps must be functions");
+    }
+
+    let value = initialValue;
+
+    for (const step of steps) {
+        value = await step(value);
+    }
+
+    return value;
+}
+
+executeWorkflow415([
+    async value => value + 5,
+    async value => value * 2,
+    async value => `Final result: ${value}`
+], 10)
+    .then(result => console.log("415:", result))
+    .catch(error => console.error("415:", error.message));
