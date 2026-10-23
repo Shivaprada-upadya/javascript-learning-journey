@@ -10428,3 +10428,386 @@ executeWorkflow415([
 ], 10)
     .then(result => console.log("415:", result))
     .catch(error => console.error("415:", error.message));
+
+// 416. Function to create a simple in-memory cache
+function createMemoryCache416() {
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            cache.set(key, value);
+        },
+
+        get(key) {
+            return cache.has(key) ? cache.get(key) : undefined;
+        },
+
+        has(key) {
+            return cache.has(key);
+        },
+
+        delete(key) {
+            return cache.delete(key);
+        },
+
+        clear() {
+            cache.clear();
+        },
+
+        size() {
+            return cache.size;
+        }
+    };
+}
+
+const cache416 = createMemoryCache416();
+
+cache416.set("username", "Shivaprada");
+
+console.log("416:", cache416.get("username"));
+
+
+// 417. Function to create a cache with expiration
+function createExpiringCache417(ttlMs) {
+    if (!Number.isFinite(ttlMs) || ttlMs < 0) {
+        throw new Error("TTL must be a non-negative number");
+    }
+
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            cache.set(key, {
+                value,
+                expiresAt: Date.now() + ttlMs
+            });
+        },
+
+        get(key) {
+            const entry = cache.get(key);
+
+            if (!entry) {
+                return undefined;
+            }
+
+            if (Date.now() >= entry.expiresAt) {
+                cache.delete(key);
+                return undefined;
+            }
+
+            return entry.value;
+        }
+    };
+}
+
+const cache417 = createExpiringCache417(5000);
+
+cache417.set("status", "active");
+
+console.log("417:", cache417.get("status"));
+
+
+// 418. Function to memoize a calculation
+function memoize418(fn) {
+    if (typeof fn !== "function") {
+        throw new Error("A function is required");
+    }
+
+    const cache = new Map();
+
+    return function (...args) {
+        const key = JSON.stringify(args);
+
+        if (cache.has(key)) {
+            return cache.get(key);
+        }
+
+        const result = fn.apply(this, args);
+
+        cache.set(key, result);
+
+        return result;
+    };
+}
+
+const square418 = memoize418(number => number * number);
+
+console.log("418:", square418(5));
+console.log("418 cached:", square418(5));
+
+
+// 419. Function to count memoized function executions
+function createCountedFunction419(fn) {
+    if (typeof fn !== "function") {
+        throw new Error("A function is required");
+    }
+
+    let executionCount = 0;
+
+    return {
+        execute(...args) {
+            executionCount++;
+            return fn(...args);
+        },
+
+        getExecutionCount() {
+            return executionCount;
+        }
+    };
+}
+
+const counted419 = createCountedFunction419(
+    number => number + 10
+);
+
+console.log("419:", counted419.execute(5));
+console.log("419:", counted419.execute(8));
+console.log(
+    "419 execution count:",
+    counted419.getExecutionCount()
+);
+
+
+// 420. Function to remove expired cache entries
+function removeExpiredEntries420(cache) {
+    if (!(cache instanceof Map)) {
+        throw new Error("Cache must be a Map");
+    }
+
+    let removedCount = 0;
+    const now = Date.now();
+
+    for (const [key, entry] of cache.entries()) {
+        if (
+            entry &&
+            typeof entry.expiresAt === "number" &&
+            now >= entry.expiresAt
+        ) {
+            cache.delete(key);
+            removedCount++;
+        }
+    }
+
+    return removedCount;
+}
+
+const expiringEntries420 = new Map();
+
+expiringEntries420.set("old", {
+    value: "old data",
+    expiresAt: Date.now() - 1000
+});
+
+expiringEntries420.set("new", {
+    value: "new data",
+    expiresAt: Date.now() + 10000
+});
+
+console.log(
+    "420 removed:",
+    removeExpiredEntries420(expiringEntries420)
+);
+
+
+// 421. Function to prevent duplicate concurrent requests
+function createRequestDeduplicator421() {
+    const pendingRequests = new Map();
+
+    return function deduplicate(key, requestFunction) {
+        if (typeof requestFunction !== "function") {
+            return Promise.reject(
+                new Error("A request function is required")
+            );
+        }
+
+        if (pendingRequests.has(key)) {
+            return pendingRequests.get(key);
+        }
+
+        const request = Promise.resolve().then(requestFunction);
+
+        pendingRequests.set(key, request);
+
+        request.then(
+            () => {
+                if (pendingRequests.get(key) === request) {
+                    pendingRequests.delete(key);
+                }
+            },
+            () => {
+                if (pendingRequests.get(key) === request) {
+                    pendingRequests.delete(key);
+                }
+            }
+        );
+
+        return request;
+    };
+}
+
+const deduplicator421 = createRequestDeduplicator421();
+
+const request421A = deduplicator421(
+    "user-1",
+    async () => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        return { id: 1, name: "Asha" };
+    }
+);
+
+const request421B = deduplicator421(
+    "user-1",
+    async () => {
+        return { id: 1, name: "Different request" };
+    }
+);
+
+Promise.all([request421A, request421B]).then(results => {
+    console.log("421:", results);
+});
+
+
+// 422. Function to cache asynchronous results
+function createAsyncCache422() {
+    const cache = new Map();
+
+    return async function getOrLoad(key, loader) {
+        if (typeof loader !== "function") {
+            throw new Error("A loader function is required");
+        }
+
+        if (cache.has(key)) {
+            return cache.get(key);
+        }
+
+        const pending = Promise.resolve().then(loader);
+
+        cache.set(key, pending);
+
+        try {
+            return await pending;
+        } catch (error) {
+            if (cache.get(key) === pending) {
+                cache.delete(key);
+            }
+
+            throw error;
+        }
+    };
+}
+
+const asyncCache422 = createAsyncCache422();
+
+asyncCache422("products", async () => {
+    return ["Laptop", "Keyboard", "Mouse"];
+}).then(result => console.log("422:", result));
+
+
+// 423. Function to create a cache with a maximum size
+function createLimitedCache423(maxSize) {
+    if (!Number.isInteger(maxSize) || maxSize < 1) {
+        throw new Error("Maximum size must be a positive integer");
+    }
+
+    const cache = new Map();
+
+    return {
+        set(key, value) {
+            if (cache.has(key)) {
+                cache.delete(key);
+            }
+
+            cache.set(key, value);
+
+            if (cache.size > maxSize) {
+                const oldestKey = cache.keys().next().value;
+                cache.delete(oldestKey);
+            }
+        },
+
+        get(key) {
+            return cache.get(key);
+        },
+
+        size() {
+            return cache.size;
+        }
+    };
+}
+
+const limitedCache423 = createLimitedCache423(2);
+
+limitedCache423.set("a", 1);
+limitedCache423.set("b", 2);
+limitedCache423.set("c", 3);
+
+console.log("423:", limitedCache423.size());
+console.log("423 oldest entry removed:", limitedCache423.get("a"));
+
+
+// 424. Function to invalidate cache entries by prefix
+function invalidateCacheByPrefix424(cache, prefix) {
+    if (!(cache instanceof Map) || typeof prefix !== "string") {
+        throw new Error("A Map and string prefix are required");
+    }
+
+    let removedCount = 0;
+
+    for (const key of cache.keys()) {
+        if (typeof key === "string" && key.startsWith(prefix)) {
+            cache.delete(key);
+            removedCount++;
+        }
+    }
+
+    return removedCount;
+}
+
+const prefixCache424 = new Map([
+    ["user:1", { name: "Asha" }],
+    ["user:2", { name: "Ravi" }],
+    ["product:1", { name: "Laptop" }]
+]);
+
+console.log(
+    "424 removed:",
+    invalidateCacheByPrefix424(prefixCache424, "user:")
+);
+
+console.log("424 remaining:", [...prefixCache424.keys()]);
+
+
+// 425. Function to measure cache hits and misses
+function createCacheStats425() {
+    let hits = 0;
+    let misses = 0;
+
+    return {
+        recordHit() {
+            hits++;
+        },
+
+        recordMiss() {
+            misses++;
+        },
+
+        getStats() {
+            const total = hits + misses;
+
+            return {
+                hits,
+                misses,
+                total,
+                hitRate: total === 0 ? 0 : hits / total
+            };
+        }
+    };
+}
+
+const cacheStats425 = createCacheStats425();
+
+cacheStats425.recordHit();
+cacheStats425.recordHit();
+cacheStats425.recordMiss();
+
+console.log("425:", cacheStats425.getStats());
