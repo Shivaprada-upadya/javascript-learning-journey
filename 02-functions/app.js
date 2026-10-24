@@ -10811,3 +10811,305 @@ cacheStats425.recordHit();
 cacheStats425.recordMiss();
 
 console.log("425:", cacheStats425.getStats());
+
+// 426. Function to create a debounce utility
+function debounce426(fn, delayMs) {
+    if (
+        typeof fn !== "function" ||
+        !Number.isFinite(delayMs) ||
+        delayMs < 0
+    ) {
+        throw new Error("A valid function and delay are required");
+    }
+
+    let timer;
+
+    return function (...args) {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            fn.apply(this, args);
+        }, delayMs);
+    };
+}
+
+const search426 = debounce426(
+    query => console.log("426: Searching for", query),
+    300
+);
+
+search426("Java");
+search426("JavaScript");
+
+
+// 427. Function to create a throttle utility
+function throttle427(fn, intervalMs) {
+    if (
+        typeof fn !== "function" ||
+        !Number.isFinite(intervalMs) ||
+        intervalMs < 0
+    ) {
+        throw new Error("A valid function and interval are required");
+    }
+
+    let lastExecution = 0;
+
+    return function (...args) {
+        const now = Date.now();
+
+        if (now - lastExecution >= intervalMs) {
+            lastExecution = now;
+            return fn.apply(this, args);
+        }
+    };
+}
+
+const update427 = throttle427(
+    value => console.log("427: Updated", value),
+    1000
+);
+
+update427("First call");
+update427("Immediate second call");
+
+
+// 428. Function to create a fixed-window rate limiter
+function createRateLimiter428(maxRequests, windowMs) {
+    if (
+        !Number.isInteger(maxRequests) ||
+        maxRequests < 1 ||
+        !Number.isFinite(windowMs) ||
+        windowMs <= 0
+    ) {
+        throw new Error("Invalid rate-limit configuration");
+    }
+
+    let requestCount = 0;
+    let windowStart = Date.now();
+
+    return function allowRequest() {
+        const now = Date.now();
+
+        if (now - windowStart >= windowMs) {
+            requestCount = 0;
+            windowStart = now;
+        }
+
+        if (requestCount >= maxRequests) {
+            return false;
+        }
+
+        requestCount++;
+        return true;
+    };
+}
+
+const limiter428 = createRateLimiter428(3, 5000);
+
+console.log("428:", limiter428());
+console.log("428:", limiter428());
+console.log("428:", limiter428());
+console.log("428:", limiter428());
+
+
+// 429. Function to limit repeated button clicks
+function createClickGuard429(cooldownMs) {
+    if (!Number.isFinite(cooldownMs) || cooldownMs < 0) {
+        throw new Error("Cooldown must be a non-negative number");
+    }
+
+    let lastClickTime = -Infinity;
+
+    return function canClick() {
+        const now = Date.now();
+
+        if (now - lastClickTime < cooldownMs) {
+            return false;
+        }
+
+        lastClickTime = now;
+        return true;
+    };
+}
+
+const clickGuard429 = createClickGuard429(2000);
+
+console.log("429:", clickGuard429());
+console.log("429:", clickGuard429());
+
+
+// 430. Function to prevent duplicate form submissions
+function createSubmissionGuard430() {
+    let submitting = false;
+
+    return async function submitOnce(submitFunction) {
+        if (typeof submitFunction !== "function") {
+            throw new Error("A submission function is required");
+        }
+
+        if (submitting) {
+            return {
+                submitted: false,
+                message: "Submission already in progress"
+            };
+        }
+
+        submitting = true;
+
+        try {
+            const result = await submitFunction();
+
+            return {
+                submitted: true,
+                result
+            };
+        } finally {
+            submitting = false;
+        }
+    };
+}
+
+const submitGuard430 = createSubmissionGuard430();
+
+submitGuard430(async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return "Form submitted successfully";
+}).then(result => console.log("430:", result));
+
+
+// 431. Function to schedule a delayed execution
+function scheduleExecution431(fn, delayMs) {
+    if (
+        typeof fn !== "function" ||
+        !Number.isFinite(delayMs) ||
+        delayMs < 0
+    ) {
+        throw new Error("A valid function and delay are required");
+    }
+
+    return setTimeout(fn, delayMs);
+}
+
+scheduleExecution431(
+    () => console.log("431: Delayed execution completed"),
+    500
+);
+
+
+// 432. Function to cancel a scheduled execution
+function cancelScheduledExecution432(timerId) {
+    if (timerId === undefined || timerId === null) {
+        return false;
+    }
+
+    clearTimeout(timerId);
+    return true;
+}
+
+const timer432 = scheduleExecution431(
+    () => console.log("432: This message should not appear"),
+    2000
+);
+
+console.log(
+    "432: Timer cancelled:",
+    cancelScheduledExecution432(timer432)
+);
+
+
+// 433. Function to run a function only once
+function once433(fn) {
+    if (typeof fn !== "function") {
+        throw new Error("A function is required");
+    }
+
+    let called = false;
+    let result;
+
+    return function (...args) {
+        if (!called) {
+            called = true;
+            result = fn.apply(this, args);
+        }
+
+        return result;
+    };
+}
+
+const initialize433 = once433(() => {
+    console.log("433: Initialization executed");
+    return "Initialized";
+});
+
+console.log("433:", initialize433());
+console.log("433:", initialize433());
+
+
+// 434. Function to create a sliding-window rate limiter
+function createSlidingWindowLimiter434(maxRequests, windowMs) {
+    if (
+        !Number.isInteger(maxRequests) ||
+        maxRequests < 1 ||
+        !Number.isFinite(windowMs) ||
+        windowMs <= 0
+    ) {
+        throw new Error("Invalid rate-limit configuration");
+    }
+
+    const requestTimes = [];
+
+    return function allowRequest() {
+        const now = Date.now();
+
+        while (
+            requestTimes.length > 0 &&
+            now - requestTimes[0] >= windowMs
+        ) {
+            requestTimes.shift();
+        }
+
+        if (requestTimes.length >= maxRequests) {
+            return false;
+        }
+
+        requestTimes.push(now);
+        return true;
+    };
+}
+
+const slidingLimiter434 = createSlidingWindowLimiter434(2, 5000);
+
+console.log("434:", slidingLimiter434());
+console.log("434:", slidingLimiter434());
+console.log("434:", slidingLimiter434());
+
+
+// 435. Function to measure how long a synchronous function takes
+function measureExecutionTime435(fn, ...args) {
+    if (typeof fn !== "function") {
+        throw new Error("A function is required");
+    }
+
+    const startTime = performance.now();
+
+    try {
+        const result = fn(...args);
+
+        return {
+            success: true,
+            result,
+            durationMs: performance.now() - startTime
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: error.message,
+            durationMs: performance.now() - startTime
+        };
+    }
+}
+
+console.log(
+    "435:",
+    measureExecutionTime435((a, b) => a + b, 10, 20)
+);
