@@ -11113,3 +11113,437 @@ console.log(
     "435:",
     measureExecutionTime435((a, b) => a + b, 10, 20)
 );
+
+// 436. Function to create a simple event emitter
+function createEventEmitter436() {
+    const events = new Map();
+
+    return {
+        on(eventName, listener) {
+            if (typeof listener !== "function") {
+                throw new Error("Listener must be a function");
+            }
+
+            if (!events.has(eventName)) {
+                events.set(eventName, new Set());
+            }
+
+            events.get(eventName).add(listener);
+        },
+
+        emit(eventName, data) {
+            const listeners = events.get(eventName);
+
+            if (!listeners) {
+                return false;
+            }
+
+            for (const listener of [...listeners]) {
+                listener(data);
+            }
+
+            return true;
+        }
+    };
+}
+
+const emitter436 = createEventEmitter436();
+
+emitter436.on("welcome", message => {
+    console.log("436:", message);
+});
+
+emitter436.emit("welcome", "Welcome to JavaScript!");
+
+
+// 437. Function to remove an event listener
+function createRemovableEmitter437() {
+    const events = new Map();
+
+    return {
+        on(eventName, listener) {
+            if (typeof listener !== "function") {
+                throw new Error("Listener must be a function");
+            }
+
+            if (!events.has(eventName)) {
+                events.set(eventName, new Set());
+            }
+
+            events.get(eventName).add(listener);
+        },
+
+        off(eventName, listener) {
+            const listeners = events.get(eventName);
+
+            if (!listeners) {
+                return false;
+            }
+
+            const removed = listeners.delete(listener);
+
+            if (listeners.size === 0) {
+                events.delete(eventName);
+            }
+
+            return removed;
+        },
+
+        emit(eventName, data) {
+            for (const listener of [...(events.get(eventName) || [])]) {
+                listener(data);
+            }
+        }
+    };
+}
+
+const emitter437 = createRemovableEmitter437();
+
+function message437(message) {
+    console.log("437:", message);
+}
+
+emitter437.on("message", message437);
+emitter437.emit("message", "Listener is active");
+
+emitter437.off("message", message437);
+emitter437.emit("message", "This message has no listener");
+
+
+// 438. Function to subscribe to an event only once
+function createOnceEmitter438() {
+    const events = new Map();
+
+    return {
+        once(eventName, listener) {
+            if (typeof listener !== "function") {
+                throw new Error("Listener must be a function");
+            }
+
+            if (!events.has(eventName)) {
+                events.set(eventName, new Set());
+            }
+
+            const wrappedListener = data => {
+                const listeners = events.get(eventName);
+
+                listeners?.delete(wrappedListener);
+
+                if (listeners?.size === 0) {
+                    events.delete(eventName);
+                }
+
+                listener(data);
+            };
+
+            events.get(eventName).add(wrappedListener);
+        },
+
+        emit(eventName, data) {
+            for (const listener of [...(events.get(eventName) || [])]) {
+                listener(data);
+            }
+        }
+    };
+}
+
+const emitter438 = createOnceEmitter438();
+
+emitter438.once("login", user => {
+    console.log("438: First login event:", user);
+});
+
+emitter438.emit("login", "Shivaprada");
+emitter438.emit("login", "Another user");
+
+
+// 439. Function to create an event counter
+function createEventCounter439() {
+    const counts = new Map();
+
+    return {
+        record(eventName) {
+            counts.set(
+                eventName,
+                (counts.get(eventName) || 0) + 1
+            );
+        },
+
+        getCount(eventName) {
+            return counts.get(eventName) || 0;
+        },
+
+        getAllCounts() {
+            return Object.fromEntries(counts);
+        }
+    };
+}
+
+const counter439 = createEventCounter439();
+
+counter439.record("pageView");
+counter439.record("pageView");
+counter439.record("buttonClick");
+
+console.log("439:", counter439.getAllCounts());
+
+
+// 440. Function to notify multiple observers
+function createObservableValue440(initialValue) {
+    let value = initialValue;
+    const observers = new Set();
+
+    return {
+        get() {
+            return value;
+        },
+
+        set(newValue) {
+            if (Object.is(value, newValue)) {
+                return;
+            }
+
+            const oldValue = value;
+            value = newValue;
+
+            for (const observer of [...observers]) {
+                observer(newValue, oldValue);
+            }
+        },
+
+        subscribe(observer) {
+            if (typeof observer !== "function") {
+                throw new Error("Observer must be a function");
+            }
+
+            observers.add(observer);
+
+            return () => observers.delete(observer);
+        }
+    };
+}
+
+const observable440 = createObservableValue440(10);
+
+const unsubscribe440 = observable440.subscribe((newValue, oldValue) => {
+    console.log("440:", oldValue, "changed to", newValue);
+});
+
+observable440.set(20);
+unsubscribe440();
+observable440.set(30);
+
+
+// 441. Function to create a publish-subscribe system
+function createPubSub441() {
+    const topics = new Map();
+
+    return {
+        subscribe(topic, callback) {
+            if (typeof callback !== "function") {
+                throw new Error("Callback must be a function");
+            }
+
+            if (!topics.has(topic)) {
+                topics.set(topic, new Set());
+            }
+
+            topics.get(topic).add(callback);
+
+            return () => {
+                const subscribers = topics.get(topic);
+
+                subscribers?.delete(callback);
+
+                if (subscribers?.size === 0) {
+                    topics.delete(topic);
+                }
+            };
+        },
+
+        publish(topic, message) {
+            for (const callback of [...(topics.get(topic) || [])]) {
+                callback(message);
+            }
+        }
+    };
+}
+
+const pubSub441 = createPubSub441();
+
+const unsubscribe441 = pubSub441.subscribe("notifications", message => {
+    console.log("441:", message);
+});
+
+pubSub441.publish("notifications", "Your task is complete");
+unsubscribe441();
+
+
+// 442. Function to create a middleware pipeline
+function createMiddlewarePipeline442(middlewares) {
+    if (
+        !Array.isArray(middlewares) ||
+        !middlewares.every(item => typeof item === "function")
+    ) {
+        throw new Error("Middlewares must be an array of functions");
+    }
+
+    return async function run(context) {
+        let index = -1;
+
+        async function dispatch(currentIndex) {
+            if (currentIndex <= index) {
+                throw new Error("next() called more than once");
+            }
+
+            index = currentIndex;
+
+            const middleware = middlewares[currentIndex];
+
+            if (middleware) {
+                await middleware(context, () => dispatch(currentIndex + 1));
+            }
+        }
+
+        await dispatch(0);
+
+        return context;
+    };
+}
+
+const pipeline442 = createMiddlewarePipeline442([
+    async (context, next) => {
+        context.steps.push("authentication");
+        await next();
+    },
+    async (context, next) => {
+        context.steps.push("validation");
+        await next();
+    },
+    async context => {
+        context.steps.push("handler");
+    }
+]);
+
+pipeline442({ steps: [] }).then(result => {
+    console.log("442:", result.steps);
+});
+
+
+// 443. Function to create a sequential event processor
+function createSequentialEventProcessor443(handler) {
+    if (typeof handler !== "function") {
+        throw new Error("Handler must be a function");
+    }
+
+    let queue = Promise.resolve();
+
+    return function process(event) {
+        const currentTask = queue.then(() => handler(event));
+
+        queue = currentTask.catch(() => {});
+
+        return currentTask;
+    };
+}
+
+const processor443 = createSequentialEventProcessor443(async event => {
+    console.log("443: Processing event", event);
+    return `Processed ${event}`;
+});
+
+Promise.all([
+    processor443("A"),
+    processor443("B"),
+    processor443("C")
+]).then(results => console.log("443:", results));
+
+
+// 444. Function to wait for an event with a timeout
+function waitForEvent444(emitter, eventName, timeoutMs = 3000) {
+    if (
+        !emitter ||
+        typeof emitter.on !== "function" ||
+        typeof emitter.off !== "function"
+    ) {
+        return Promise.reject(
+            new Error("Emitter must provide on() and off()")
+        );
+    }
+
+    if (!Number.isFinite(timeoutMs) || timeoutMs < 0) {
+        return Promise.reject(new Error("Invalid timeout"));
+    }
+
+    return new Promise((resolve, reject) => {
+        let timer;
+
+        const cleanup = () => {
+            emitter.off(eventName, listener);
+            clearTimeout(timer);
+        };
+
+        const listener = data => {
+            cleanup();
+            resolve(data);
+        };
+
+        emitter.on(eventName, listener);
+
+        timer = setTimeout(() => {
+            cleanup();
+            reject(new Error(`Timed out waiting for ${eventName}`));
+        }, timeoutMs);
+    });
+}
+
+const emitter444 = createRemovableEmitter437();
+
+waitForEvent444(emitter444, "completed", 2000)
+    .then(result => console.log("444:", result))
+    .catch(error => console.log("444:", error.message));
+
+setTimeout(() => {
+    emitter444.emit("completed", "Background task completed");
+}, 100);
+
+
+// 445. Function to create an event log
+function createEventLog445(maxEntries = 100) {
+    if (!Number.isInteger(maxEntries) || maxEntries < 1) {
+        throw new Error("Maximum entries must be a positive integer");
+    }
+
+    const entries = [];
+
+    return {
+        add(eventName, data) {
+            entries.push({
+                eventName,
+                data,
+                timestamp: new Date().toISOString()
+            });
+
+            if (entries.length > maxEntries) {
+                entries.shift();
+            }
+        },
+
+        getAll() {
+            return entries.map(entry => ({ ...entry }));
+        },
+
+        clear() {
+            entries.length = 0;
+        }
+    };
+}
+
+const eventLog445 = createEventLog445(3);
+
+eventLog445.add("login", { userId: 1 });
+eventLog445.add("pageView", { page: "home" });
+eventLog445.add("logout", { userId: 1 });
+eventLog445.add("login", { userId: 2 });
+
+console.log("445:", eventLog445.getAll());
