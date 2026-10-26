@@ -11547,3 +11547,244 @@ eventLog445.add("logout", { userId: 1 });
 eventLog445.add("login", { userId: 2 });
 
 console.log("445:", eventLog445.getAll());
+
+// 446. Function to read a text file
+const fs446 = require("node:fs/promises");
+
+async function readTextFile446(filePath) {
+    try {
+        const content = await fs446.readFile(filePath, "utf8");
+
+        return {
+            success: true,
+            content
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_READ_FAILED"
+        };
+    }
+}
+
+console.log("446: Text file reader defined.");
+
+
+// 447. Function to write text to a file
+const fs447 = require("node:fs/promises");
+
+async function writeTextFile447(filePath, content) {
+    if (typeof content !== "string") {
+        throw new Error("Content must be a string");
+    }
+
+    try {
+        await fs447.writeFile(filePath, content, "utf8");
+
+        return {
+            success: true,
+            message: "File written successfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_WRITE_FAILED"
+        };
+    }
+}
+
+console.log("447: Text file writer defined.");
+
+
+// 448. Function to append text to a file
+const fs448 = require("node:fs/promises");
+
+async function appendTextFile448(filePath, content) {
+    if (typeof content !== "string") {
+        throw new Error("Content must be a string");
+    }
+
+    try {
+        await fs448.appendFile(filePath, content, "utf8");
+
+        return {
+            success: true,
+            message: "Content appended successfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_APPEND_FAILED"
+        };
+    }
+}
+
+console.log("448: Text file appender defined.");
+
+
+// 449. Function to check whether a file exists
+const fs449 = require("node:fs/promises");
+
+async function fileExists449(filePath) {
+    try {
+        await fs449.access(filePath);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+console.log("449: File existence checker defined.");
+
+
+// 450. Function to read and parse a JSON file
+const fs450 = require("node:fs/promises");
+
+async function readJsonFile450(filePath) {
+    try {
+        const content = await fs450.readFile(filePath, "utf8");
+        const data = JSON.parse(content);
+
+        return {
+            success: true,
+            data
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message:
+                error instanceof SyntaxError
+                    ? "Invalid JSON format"
+                    : error.code || "JSON_READ_FAILED"
+        };
+    }
+}
+
+console.log("450: JSON file reader defined.");
+
+
+// 451. Function to write data as JSON
+const fs451 = require("node:fs/promises");
+
+async function writeJsonFile451(filePath, data) {
+    try {
+        const json = JSON.stringify(data, null, 2);
+
+        if (json === undefined) {
+            throw new Error("Data cannot be converted to JSON");
+        }
+
+        await fs451.writeFile(filePath, json, "utf8");
+
+        return {
+            success: true,
+            message: "JSON saved successfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message || "JSON_WRITE_FAILED"
+        };
+    }
+}
+
+console.log("451: JSON file writer defined.");
+
+
+// 452. Function to create a directory
+const fs452 = require("node:fs/promises");
+
+async function createDirectory452(directoryPath) {
+    try {
+        await fs452.mkdir(directoryPath, {
+            recursive: true
+        });
+
+        return {
+            success: true,
+            message: "Directory created or already exists"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "DIRECTORY_CREATE_FAILED"
+        };
+    }
+}
+
+console.log("452: Directory creation utility defined.");
+
+
+// 453. Function to list directory entries
+const fs453 = require("node:fs/promises");
+
+async function listDirectory453(directoryPath) {
+    try {
+        const entries = await fs453.readdir(directoryPath, {
+            withFileTypes: true
+        });
+
+        return {
+            success: true,
+            entries: entries.map(entry => ({
+                name: entry.name,
+                type: entry.isDirectory()
+                    ? "directory"
+                    : entry.isFile()
+                        ? "file"
+                        : "other"
+            }))
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "DIRECTORY_READ_FAILED"
+        };
+    }
+}
+
+console.log("453: Directory listing utility defined.");
+
+
+// 454. Function to delete a file
+const fs454 = require("node:fs/promises");
+
+async function deleteFile454(filePath) {
+    try {
+        await fs454.unlink(filePath);
+
+        return {
+            success: true,
+            message: "File deleted successfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_DELETE_FAILED"
+        };
+    }
+}
+
+console.log("454: File deletion utility defined.");
+
+
+// 455. Function to copy a file
+const fs455 = require("node:fs/promises");
+
+async function copyFile455(sourcePath, destinationPath) {
+    try {
+        await fs455.copyFile(sourcePath, destinationPath);
+
+        return {
+            success: true,
+            message: "File copied successfully"
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_COPY_FAILED"
+        };
+    }
+}
+
+console.log("455: File copy utility defined.");
