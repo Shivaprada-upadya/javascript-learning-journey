@@ -11788,3 +11788,236 @@ async function copyFile455(sourcePath, destinationPath) {
 }
 
 console.log("455: File copy utility defined.");
+
+// 456. Function to get file metadata
+const fs456 = require("node:fs/promises");
+
+async function getFileMetadata456(filePath) {
+    try {
+        const stats = await fs456.stat(filePath);
+
+        return {
+            success: true,
+            name: require("node:path").basename(filePath),
+            sizeBytes: stats.size,
+            isFile: stats.isFile(),
+            isDirectory: stats.isDirectory(),
+            modifiedAt: stats.mtime.toISOString()
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "METADATA_READ_FAILED"
+        };
+    }
+}
+
+console.log("456: File metadata utility defined.");
+
+
+// 457. Function to convert bytes into a readable size
+function formatFileSize457(bytes) {
+    if (!Number.isFinite(bytes) || bytes < 0) {
+        throw new Error("Bytes must be a non-negative number");
+    }
+
+    if (bytes < 1024) {
+        return `${bytes} B`;
+    }
+
+    const units = ["KB", "MB", "GB", "TB"];
+    let size = bytes / 1024;
+    let unitIndex = 0;
+
+    while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex++;
+    }
+
+    return `${size.toFixed(2)} ${units[unitIndex]}`;
+}
+
+console.log("457:", formatFileSize457(1536000));
+
+
+// 458. Function to get a file extension
+function getFileExtension458(filePath) {
+    const path = require("node:path");
+    const extension = path.extname(filePath);
+
+    return extension.toLowerCase();
+}
+
+console.log("458:", getFileExtension458("report.PDF"));
+
+
+// 459. Function to check whether an extension is allowed
+function isAllowedExtension459(filePath, allowedExtensions) {
+    if (!Array.isArray(allowedExtensions)) {
+        throw new Error("Allowed extensions must be an array");
+    }
+
+    const extension = require("node:path")
+        .extname(filePath)
+        .toLowerCase();
+
+    return allowedExtensions.some(
+        allowed => typeof allowed === "string" &&
+            allowed.toLowerCase() === extension
+    );
+}
+
+console.log(
+    "459:",
+    isAllowedExtension459("document.pdf", [".pdf", ".txt", ".docx"])
+);
+
+
+// 460. Function to create a safe filename
+function createSafeFilename460(filename) {
+    if (typeof filename !== "string") {
+        throw new Error("Filename must be a string");
+    }
+
+    const path = require("node:path");
+    const baseName = path.basename(filename);
+
+    return baseName
+        .normalize("NFKC")
+        .replace(/[^a-zA-Z0-9._-]/g, "_")
+        .replace(/^\.+/, "_")
+        .slice(0, 100) || "unnamed_file";
+}
+
+console.log(
+    "460:",
+    createSafeFilename460("../../my report?.pdf")
+);
+
+
+// 461. Function to create a path inside a directory
+function createPathInsideDirectory461(baseDirectory, filename) {
+    const path = require("node:path");
+
+    if (
+        typeof baseDirectory !== "string" ||
+        typeof filename !== "string" ||
+        filename.trim() === ""
+    ) {
+        throw new Error("A directory and filename are required");
+    }
+
+    if (path.isAbsolute(filename)) {
+        throw new Error("Absolute filenames are not allowed");
+    }
+
+    const root = path.resolve(baseDirectory);
+    const target = path.resolve(root, filename);
+    const relative = path.relative(root, target);
+
+    if (
+        relative === ".." ||
+        relative.startsWith(`..${path.sep}`) ||
+        path.isAbsolute(relative)
+    ) {
+        throw new Error("Path must remain inside the base directory");
+    }
+
+    return target;
+}
+
+console.log(
+    "461:",
+    createPathInsideDirectory461("/tmp/uploads", "report.pdf")
+);
+
+
+// 462. Function to check whether a path points to a file
+const fs462 = require("node:fs/promises");
+
+async function isRegularFile462(filePath) {
+    try {
+        const stats = await fs462.stat(filePath);
+        return stats.isFile();
+    } catch {
+        return false;
+    }
+}
+
+console.log("462: Regular-file checker defined.");
+
+
+// 463. Function to check whether a path points to a directory
+const fs463 = require("node:fs/promises");
+
+async function isDirectory463(directoryPath) {
+    try {
+        const stats = await fs463.stat(directoryPath);
+        return stats.isDirectory();
+    } catch {
+        return false;
+    }
+}
+
+console.log("463: Directory checker defined.");
+
+
+// 464. Function to compare two files by size
+const fs464 = require("node:fs/promises");
+
+async function compareFileSizes464(firstPath, secondPath) {
+    try {
+        const [firstStats, secondStats] = await Promise.all([
+            fs464.stat(firstPath),
+            fs464.stat(secondPath)
+        ]);
+
+        return {
+            success: true,
+            firstSize: firstStats.size,
+            secondSize: secondStats.size,
+            sameSize: firstStats.size === secondStats.size
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.code || "FILE_COMPARISON_FAILED"
+        };
+    }
+}
+
+console.log("464: File-size comparison utility defined.");
+
+
+// 465. Function to check a file against a size limit
+const fs465 = require("node:fs/promises");
+
+async function isFileWithinSizeLimit465(filePath, maxBytes) {
+    if (!Number.isFinite(maxBytes) || maxBytes < 0) {
+        throw new Error("Maximum size must be a non-negative number");
+    }
+
+    try {
+        const stats = await fs465.stat(filePath);
+
+        if (!stats.isFile()) {
+            return {
+                valid: false,
+                message: "Path does not point to a regular file"
+            };
+        }
+
+        return {
+            valid: stats.size <= maxBytes,
+            sizeBytes: stats.size,
+            maxBytes
+        };
+    } catch (error) {
+        return {
+            valid: false,
+            message: error.code || "FILE_CHECK_FAILED"
+        };
+    }
+}
+
+console.log("465: File-size validation utility defined.");
