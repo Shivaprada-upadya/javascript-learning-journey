@@ -12021,3 +12021,240 @@ async function isFileWithinSizeLimit465(filePath, maxBytes) {
 }
 
 console.log("465: File-size validation utility defined.");
+
+// 466. Function to check whether a string contains valid JSON
+function isValidJSON466(jsonString) {
+    try {
+        JSON.parse(jsonString);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+console.log("466:", isValidJSON466('{"name":"Shiva"}'));
+
+
+// 467. Function to safely parse JSON
+function safeJSONParse467(jsonString) {
+    try {
+        return {
+            success: true,
+            data: JSON.parse(jsonString)
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+console.log("467:", safeJSONParse467('{"language":"JavaScript"}'));
+
+
+// 468. Function to convert an object into a JSON string
+function serializeObject468(data) {
+    try {
+        const jsonString = JSON.stringify(data);
+
+        if (jsonString === undefined) {
+            return {
+                success: false,
+                message: "Data cannot be serialized"
+            };
+        }
+
+        return {
+            success: true,
+            json: jsonString
+        };
+    } catch (error) {
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+console.log("468:", serializeObject468({ name: "Shiva", role: "Developer" }));
+
+
+// 469. Function to create a deep copy using JSON
+function deepCopyJSON469(data) {
+    try {
+        const jsonString = JSON.stringify(data);
+
+        if (jsonString === undefined) {
+            throw new Error("Data cannot be copied using JSON");
+        }
+
+        return JSON.parse(jsonString);
+    } catch (error) {
+        throw new Error(`Deep copy failed: ${error.message}`);
+    }
+}
+
+console.log(
+    "469:",
+    deepCopyJSON469({ user: { name: "Shiva" } })
+);
+
+
+// 470. Function to check whether a value is a plain object
+function isPlainObject470(value) {
+    if (value === null || typeof value !== "object") {
+        return false;
+    }
+
+    const prototype = Object.getPrototypeOf(value);
+
+    return prototype === Object.prototype || prototype === null;
+}
+
+console.log("470:", isPlainObject470({ name: "Shiva" }));
+
+
+// 471. Function to validate required object fields
+function validateRequiredFields471(data, requiredFields) {
+    if (
+        data === null ||
+        typeof data !== "object" ||
+        Array.isArray(data) ||
+        !Array.isArray(requiredFields)
+    ) {
+        return {
+            valid: false,
+            missingFields: [],
+            message: "Invalid input"
+        };
+    }
+
+    const missingFields = requiredFields.filter(field =>
+        typeof field !== "string" ||
+        !Object.hasOwn(data, field) ||
+        data[field] === undefined ||
+        data[field] === null ||
+        (typeof data[field] === "string" && data[field].trim() === "")
+    );
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields
+    };
+}
+
+console.log(
+    "471:",
+    validateRequiredFields471(
+        { name: "Shiva", email: "" },
+        ["name", "email"]
+    )
+);
+
+
+// 472. Function to remove undefined values from an object
+function removeUndefinedValues472(data) {
+    if (
+        data === null ||
+        typeof data !== "object" ||
+        Array.isArray(data)
+    ) {
+        throw new Error("Input must be an object");
+    }
+
+    return Object.fromEntries(
+        Object.entries(data).filter(
+            ([key, value]) => value !== undefined
+        )
+    );
+}
+
+console.log(
+    "472:",
+    removeUndefinedValues472({
+        name: "Shiva",
+        age: undefined,
+        role: "Developer"
+    })
+);
+
+
+// 473. Function to pick selected fields from an object
+function pickObjectFields473(data, fields) {
+    if (
+        data === null ||
+        typeof data !== "object" ||
+        Array.isArray(data) ||
+        !Array.isArray(fields)
+    ) {
+        throw new Error("Provide an object and an array of fields");
+    }
+
+    return Object.fromEntries(
+        fields
+            .filter(
+                field =>
+                    typeof field === "string" &&
+                    Object.hasOwn(data, field)
+            )
+            .map(field => [field, data[field]])
+    );
+}
+
+console.log(
+    "473:",
+    pickObjectFields473(
+        { name: "Shiva", age: 22, role: "Developer" },
+        ["name", "role"]
+    )
+);
+
+
+// 474. Function to omit selected fields from an object
+function omitObjectFields474(data, fieldsToOmit) {
+    if (
+        data === null ||
+        typeof data !== "object" ||
+        Array.isArray(data) ||
+        !Array.isArray(fieldsToOmit)
+    ) {
+        throw new Error("Provide an object and an array of fields");
+    }
+
+    const omittedFields = new Set(fieldsToOmit);
+
+    return Object.fromEntries(
+        Object.entries(data).filter(
+            ([key]) => !omittedFields.has(key)
+        )
+    );
+}
+
+console.log(
+    "474:",
+    omitObjectFields474(
+        { name: "Shiva", password: "secret", role: "Developer" },
+        ["password"]
+    )
+);
+
+
+// 475. Function to create a JSON response object
+function createJSONResponse475(success, data, message = "") {
+    if (typeof success !== "boolean") {
+        throw new Error("Success must be a boolean");
+    }
+
+    return {
+        success,
+        data: data ?? null,
+        message: String(message)
+    };
+}
+
+console.log(
+    "475:",
+    createJSONResponse475(true, { status: "completed" }, "Request successful")
+);
+
