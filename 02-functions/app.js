@@ -12258,3 +12258,200 @@ console.log(
     createJSONResponse475(true, { status: "completed" }, "Request successful")
 );
 
+// 476. Function to read an environment variable with a default value
+function getEnvironmentValue476(key, defaultValue = "") {
+    const value = process.env[key];
+
+    return value === undefined || value.trim() === ""
+        ? defaultValue
+        : value;
+}
+
+console.log(
+    "476:",
+    getEnvironmentValue476("APP_NAME", "My Node App")
+);
+
+
+// 477. Function to validate a port number
+function validatePort477(port) {
+    const parsedPort = Number(port);
+
+    return Number.isInteger(parsedPort) &&
+        parsedPort >= 1 &&
+        parsedPort <= 65535;
+}
+
+console.log("477:", validatePort477(3000));
+
+
+// 478. Function to validate an email format
+function validateEmail478(email) {
+    if (typeof email !== "string") {
+        return false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return emailPattern.test(email.trim());
+}
+
+console.log("478:", validateEmail478("developer@example.com"));
+
+
+// 479. Function to validate a username
+function validateUsername479(username) {
+    if (typeof username !== "string") {
+        return false;
+    }
+
+    return /^[a-zA-Z0-9_]{3,20}$/.test(username);
+}
+
+console.log("479:", validateUsername479("shiva_dev"));
+
+
+// 480. Function to validate a password's basic strength
+function validatePassword480(password) {
+    if (typeof password !== "string") {
+        return {
+            valid: false,
+            message: "Password must be a string"
+        };
+    }
+
+    const checks = {
+        minimumLength: password.length >= 8,
+        hasUppercase: /[A-Z]/.test(password),
+        hasLowercase: /[a-z]/.test(password),
+        hasNumber: /[0-9]/.test(password)
+    };
+
+    const valid = Object.values(checks).every(Boolean);
+
+    return {
+        valid,
+        checks,
+        message: valid
+            ? "Basic password requirements satisfied"
+            : "Password does not meet all requirements"
+    };
+}
+
+console.log("480:", validatePassword480("StrongPass123"));
+
+
+// 481. Function to validate a positive integer
+function validatePositiveInteger481(value) {
+    return Number.isInteger(value) && value > 0;
+}
+
+console.log("481:", validatePositiveInteger481(25));
+
+
+// 482. Function to normalize an input string
+function normalizeInput482(value) {
+    if (typeof value !== "string") {
+        throw new Error("Input must be a string");
+    }
+
+    return value.trim().replace(/\s+/g, " ");
+}
+
+console.log("482:", normalizeInput482("  Hello    JavaScript   "));
+
+
+// 483. Function to safely convert a value into a number
+function safeNumberConversion483(value) {
+    if (
+        typeof value !== "number" &&
+        typeof value !== "string"
+    ) {
+        return {
+            success: false,
+            message: "Input must be a number or string"
+        };
+    }
+
+    if (
+        typeof value === "string" &&
+        value.trim() === ""
+    ) {
+        return {
+            success: false,
+            message: "Input cannot be empty"
+        };
+    }
+
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+        return {
+            success: false,
+            message: "Invalid numeric value"
+        };
+    }
+
+    return {
+        success: true,
+        value: number
+    };
+}
+
+console.log("483:", safeNumberConversion483("125.50"));
+
+
+// 484. Function to create a standardized error object
+function createStandardError484(code, message, statusCode = 500) {
+    if (
+        typeof code !== "string" ||
+        typeof message !== "string" ||
+        !Number.isInteger(statusCode) ||
+        statusCode < 400 ||
+        statusCode > 599
+    ) {
+        throw new Error("Invalid error details");
+    }
+
+    return {
+        code,
+        message,
+        statusCode
+    };
+}
+
+console.log(
+    "484:",
+    createStandardError484(
+        "NOT_FOUND",
+        "Requested resource was not found",
+        404
+    )
+);
+
+
+// 485. Function to handle errors consistently
+function handleError485(error) {
+    const message =
+        error instanceof Error
+            ? error.message
+            : "An unexpected error occurred";
+
+    const code =
+        error && typeof error.code === "string"
+            ? error.code
+            : "INTERNAL_ERROR";
+
+    return {
+        success: false,
+        error: {
+            code,
+            message
+        }
+    };
+}
+
+console.log(
+    "485:",
+    handleError485(new Error("Something went wrong"))
+);
