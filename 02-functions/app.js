@@ -12455,3 +12455,169 @@ console.log(
     "485:",
     handleError485(new Error("Something went wrong"))
 );
+
+// 486. Function to validate an HTTP status code
+function validateHTTPStatus486(statusCode) {
+    return Number.isInteger(statusCode) &&
+        statusCode >= 100 &&
+        statusCode <= 599;
+}
+
+console.log("486:", validateHTTPStatus486(200));
+
+
+// 487. Function to identify successful HTTP responses
+function isSuccessfulHTTPStatus487(statusCode) {
+    return Number.isInteger(statusCode) &&
+        statusCode >= 200 &&
+        statusCode < 300;
+}
+
+console.log("487:", isSuccessfulHTTPStatus487(201));
+
+
+// 488. Function to identify client errors
+function isClientError488(statusCode) {
+    return Number.isInteger(statusCode) &&
+        statusCode >= 400 &&
+        statusCode < 500;
+}
+
+console.log("488:", isClientError488(404));
+
+
+// 489. Function to identify server errors
+function isServerError489(statusCode) {
+    return Number.isInteger(statusCode) &&
+        statusCode >= 500 &&
+        statusCode < 600;
+}
+
+console.log("489:", isServerError489(500));
+
+
+// 490. Function to create an HTTP response
+function createHTTPResponse490(statusCode, data, message = "") {
+    if (!validateHTTPStatus486(statusCode)) {
+        throw new Error("Invalid HTTP status code");
+    }
+
+    return {
+        statusCode,
+        success: isSuccessfulHTTPStatus487(statusCode),
+        message,
+        data: data ?? null
+    };
+}
+
+console.log(
+    "490:",
+    createHTTPResponse490(200, { name: "Shiva" }, "User fetched")
+);
+
+
+// 491. Function to validate an API request method
+function validateRequestMethod491(method) {
+    if (typeof method !== "string") {
+        return false;
+    }
+
+    const allowedMethods = [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE"
+    ];
+
+    return allowedMethods.includes(method.toUpperCase());
+}
+
+console.log("491:", validateRequestMethod491("POST"));
+
+
+// 492. Function to normalize an HTTP request method
+function normalizeRequestMethod492(method) {
+    if (typeof method !== "string") {
+        throw new Error("HTTP method must be a string");
+    }
+
+    return method.trim().toUpperCase();
+}
+
+console.log("492:", normalizeRequestMethod492(" post "));
+
+
+// 493. Function to check whether a request body is valid
+function validateRequestBody493(body) {
+    return (
+        body !== null &&
+        typeof body === "object" &&
+        !Array.isArray(body)
+    );
+}
+
+console.log(
+    "493:",
+    validateRequestBody493({ username: "shiva" })
+);
+
+
+// 494. Function to safely extract query parameters
+function extractQueryParameters494(queryString) {
+    if (typeof queryString !== "string") {
+        throw new Error("Query string must be a string");
+    }
+
+    const params = new URLSearchParams(
+        queryString.startsWith("?")
+            ? queryString.slice(1)
+            : queryString
+    );
+
+    return Object.fromEntries(params.entries());
+}
+
+console.log(
+    "494:",
+    extractQueryParameters494("?page=2&limit=10")
+);
+
+
+// 495. Function to create a paginated API response
+function createPaginatedResponse495(data, page, limit, totalItems) {
+    if (
+        !Array.isArray(data) ||
+        !Number.isInteger(page) ||
+        page < 1 ||
+        !Number.isInteger(limit) ||
+        limit < 1 ||
+        !Number.isInteger(totalItems) ||
+        totalItems < 0
+    ) {
+        throw new Error("Invalid pagination details");
+    }
+
+    return {
+        success: true,
+        data,
+        pagination: {
+            currentPage: page,
+            limit,
+            totalItems,
+            totalPages: Math.ceil(totalItems / limit),
+            hasNextPage: page * limit < totalItems,
+            hasPreviousPage: page > 1
+        }
+    };
+}
+
+console.log(
+    "495:",
+    createPaginatedResponse495(
+        ["JavaScript", "Node.js"],
+        1,
+        2,
+        10
+    )
+);
