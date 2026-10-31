@@ -12621,3 +12621,187 @@ console.log(
         10
     )
 );
+
+// 496. Function to check whether an authorization header exists
+function hasAuthorizationHeader496(headers) {
+    if (!headers || typeof headers !== "object") {
+        return false;
+    }
+
+    return Object.keys(headers).some(
+        key => key.toLowerCase() === "authorization"
+    );
+}
+
+console.log(
+    "496:",
+    hasAuthorizationHeader496({
+        Authorization: "Bearer sample-token"
+    })
+);
+
+
+// 497. Function to extract a Bearer token
+function extractBearerToken497(authorizationHeader) {
+    if (typeof authorizationHeader !== "string") {
+        return null;
+    }
+
+    const parts = authorizationHeader.trim().split(/\s+/);
+
+    if (
+        parts.length !== 2 ||
+        parts[0].toLowerCase() !== "bearer" ||
+        !parts[1]
+    ) {
+        return null;
+    }
+
+    return parts[1];
+}
+
+console.log(
+    "497:",
+    extractBearerToken497("Bearer sample-token")
+);
+
+
+// 498. Function to check whether a token is present
+function isTokenPresent498(token) {
+    return typeof token === "string" &&
+        token.trim().length > 0;
+}
+
+console.log("498:", isTokenPresent498("sample-token"));
+
+
+// 499. Function to create a basic user authentication object
+function createAuthenticationResult499(userId, role) {
+    if (
+        typeof userId !== "string" ||
+        userId.trim() === "" ||
+        typeof role !== "string" ||
+        role.trim() === ""
+    ) {
+        throw new Error("Valid user ID and role are required");
+    }
+
+    return {
+        authenticated: true,
+        user: {
+            id: userId,
+            role: role
+        }
+    };
+}
+
+console.log(
+    "499:",
+    createAuthenticationResult499("user-101", "developer")
+);
+
+
+// 500. Function to check whether a user has a required role
+function hasRequiredRole500(user, requiredRole) {
+    if (
+        !user ||
+        typeof user.role !== "string" ||
+        typeof requiredRole !== "string"
+    ) {
+        return false;
+    }
+
+    return user.role === requiredRole;
+}
+
+console.log(
+    "500:",
+    hasRequiredRole500(
+        { id: "user-101", role: "admin" },
+        "admin"
+    )
+);
+
+
+// 501. Function to check whether a user is an administrator
+function isAdministrator501(user) {
+    return hasRequiredRole500(user, "admin");
+}
+
+console.log(
+    "501:",
+    isAdministrator501({ id: "user-101", role: "admin" })
+);
+
+
+// 502. Function to check resource ownership
+function isResourceOwner502(userId, resourceOwnerId) {
+    return (
+        typeof userId === "string" &&
+        typeof resourceOwnerId === "string" &&
+        userId === resourceOwnerId
+    );
+}
+
+console.log(
+    "502:",
+    isResourceOwner502("user-101", "user-101")
+);
+
+
+// 503. Function to create a token expiration timestamp
+function createTokenExpiry503(durationInSeconds) {
+    if (
+        !Number.isFinite(durationInSeconds) ||
+        durationInSeconds <= 0
+    ) {
+        throw new Error("Duration must be a positive number");
+    }
+
+    return Math.floor(Date.now() / 1000) +
+        durationInSeconds;
+}
+
+console.log("503:", createTokenExpiry503(3600));
+
+
+// 504. Function to check whether a token has expired
+function isTokenExpired504(expiryTimestamp) {
+    if (
+        !Number.isFinite(expiryTimestamp) ||
+        expiryTimestamp <= 0
+    ) {
+        throw new Error("Invalid expiry timestamp");
+    }
+
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+
+    return currentTimestamp >= expiryTimestamp;
+}
+
+console.log(
+    "504:",
+    isTokenExpired504(
+        Math.floor(Date.now() / 1000) + 3600
+    )
+);
+
+
+// 505. Function to create an authorization result
+function createAuthorizationResult505(allowed, reason = "") {
+    if (typeof allowed !== "boolean") {
+        throw new Error("Allowed must be a boolean");
+    }
+
+    return {
+        authorized: allowed,
+        message: allowed
+            ? "Access granted"
+            : reason || "Access denied"
+    };
+}
+
+console.log(
+    "505:",
+    createAuthorizationResult505(false, "Insufficient permissions")
+);
