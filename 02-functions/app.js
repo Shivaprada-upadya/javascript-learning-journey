@@ -12805,3 +12805,195 @@ console.log(
     "505:",
     createAuthorizationResult505(false, "Insufficient permissions")
 );
+
+// 506. Function to generate a secure random token
+const crypto506 = require("node:crypto");
+
+function generateSecureToken506(byteLength = 32) {
+    if (
+        !Number.isInteger(byteLength) ||
+        byteLength < 16 ||
+        byteLength > 128
+    ) {
+        throw new Error("Token length must be between 16 and 128 bytes");
+    }
+
+    return crypto506.randomBytes(byteLength).toString("hex");
+}
+
+console.log("506:", generateSecureToken506());
+
+
+// 507. Function to generate a unique identifier
+const crypto507 = require("node:crypto");
+
+function generateUniqueId507() {
+    return crypto507.randomUUID();
+}
+
+console.log("507:", generateUniqueId507());
+
+
+// 508. Function to hash a password using scrypt
+const crypto508 = require("node:crypto");
+const util508 = require("node:util");
+
+const scryptAsync508 = util508.promisify(crypto508.scrypt);
+
+async function hashPassword508(password) {
+    if (typeof password !== "string" || password.length < 8) {
+        throw new Error("Password must contain at least 8 characters");
+    }
+
+    const salt = crypto508.randomBytes(16);
+
+    const derivedKey = await scryptAsync508(password, salt, 64);
+
+    return `${salt.toString("hex")}:${derivedKey.toString("hex")}`;
+}
+
+console.log("508: Password hashing utility defined.");
+
+
+// 509. Function to verify a password
+const crypto509 = require("node:crypto");
+const util509 = require("node:util");
+
+const scryptAsync509 = util509.promisify(crypto509.scrypt);
+
+async function verifyPassword509(password, storedHash) {
+    if (
+        typeof password !== "string" ||
+        typeof storedHash !== "string"
+    ) {
+        return false;
+    }
+
+    const parts = storedHash.split(":");
+
+    if (parts.length !== 2) {
+        return false;
+    }
+
+    const [saltHex, hashHex] = parts;
+
+    if (
+        !/^[a-f0-9]{32}$/i.test(saltHex) ||
+        !/^[a-f0-9]{128}$/i.test(hashHex)
+    ) {
+        return false;
+    }
+
+    const salt = Buffer.from(saltHex, "hex");
+    const originalHash = Buffer.from(hashHex, "hex");
+
+    const derivedKey = await scryptAsync509(
+        password,
+        salt,
+        originalHash.length
+    );
+
+    return crypto509.timingSafeEqual(originalHash, derivedKey);
+}
+
+console.log("509: Password verification utility defined.");
+
+
+// 510. Function to generate an OTP
+const crypto510 = require("node:crypto");
+
+function generateOTP510() {
+    return crypto510.randomInt(100000, 1000000).toString();
+}
+
+console.log("510:", generateOTP510());
+
+
+// 511. Function to validate an OTP format
+function validateOTP511(otp) {
+    return typeof otp === "string" && /^\d{6}$/.test(otp);
+}
+
+console.log("511:", validateOTP511("123456"));
+
+
+// 512. Function to create a session object
+function createSession512(userId, durationInSeconds = 3600) {
+    if (
+        typeof userId !== "string" ||
+        userId.trim() === "" ||
+        !Number.isInteger(durationInSeconds) ||
+        durationInSeconds <= 0
+    ) {
+        throw new Error("Invalid session details");
+    }
+
+    return {
+        userId,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + durationInSeconds * 1000,
+        active: true
+    };
+}
+
+console.log(
+    "512:",
+    createSession512("user-101")
+);
+
+
+// 513. Function to check whether a session is active
+function isSessionActive513(session) {
+    if (!session || typeof session !== "object") {
+        return false;
+    }
+
+    return (
+        session.active === true &&
+        Number.isFinite(session.expiresAt) &&
+        Date.now() < session.expiresAt
+    );
+}
+
+console.log(
+    "513:",
+    isSessionActive513({
+        active: true,
+        expiresAt: Date.now() + 3600000
+    })
+);
+
+
+// 514. Function to invalidate a session
+function invalidateSession514(session) {
+    if (!session || typeof session !== "object") {
+        throw new Error("Valid session object is required");
+    }
+
+    return {
+        ...session,
+        active: false,
+        invalidatedAt: Date.now()
+    };
+}
+
+console.log(
+    "514:",
+    invalidateSession514({
+        userId: "user-101",
+        active: true
+    })
+);
+
+
+// 515. Function to create a password reset token
+const crypto515 = require("node:crypto");
+
+function createPasswordResetToken515() {
+    return {
+        token: crypto515.randomBytes(32).toString("hex"),
+        expiresAt: Date.now() + 15 * 60 * 1000
+    };
+}
+
+console.log("515: Password reset token utility defined.");
