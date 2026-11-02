@@ -12997,3 +12997,251 @@ function createPasswordResetToken515() {
 }
 
 console.log("515: Password reset token utility defined.");
+
+// 516. Function to mask sensitive information
+function maskSensitiveData516(data, sensitiveFields = []) {
+    if (
+        data === null ||
+        typeof data !== "object" ||
+        Array.isArray(data) ||
+        !Array.isArray(sensitiveFields)
+    ) {
+        throw new Error("Invalid input");
+    }
+
+    const maskedData = { ...data };
+
+    for (const field of sensitiveFields) {
+        if (Object.hasOwn(maskedData, field)) {
+            maskedData[field] = "********";
+        }
+    }
+
+    return maskedData;
+}
+
+console.log(
+    "516:",
+    maskSensitiveData516(
+        { username: "shiva", password: "secret123" },
+        ["password"]
+    )
+);
+
+
+// 517. Function to remove sensitive headers
+function sanitizeHeaders517(headers) {
+    if (!headers || typeof headers !== "object") {
+        throw new Error("Headers must be an object");
+    }
+
+    const sensitiveHeaders = [
+        "authorization",
+        "cookie",
+        "set-cookie",
+        "x-api-key"
+    ];
+
+    return Object.fromEntries(
+        Object.entries(headers).map(([key, value]) => [
+            key,
+            sensitiveHeaders.includes(key.toLowerCase())
+                ? "********"
+                : value
+        ])
+    );
+}
+
+console.log(
+    "517:",
+    sanitizeHeaders517({
+        Authorization: "Bearer secret-token",
+        "Content-Type": "application/json"
+    })
+);
+
+
+// 518. Function to create a request log
+function createRequestLog518(method, url, statusCode, durationMs) {
+    if (
+        typeof method !== "string" ||
+        typeof url !== "string" ||
+        !Number.isInteger(statusCode) ||
+        !Number.isFinite(durationMs) ||
+        durationMs < 0
+    ) {
+        throw new Error("Invalid request log details");
+    }
+
+    return {
+        method: method.toUpperCase(),
+        url,
+        statusCode,
+        durationMs,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "518:",
+    createRequestLog518("get", "/api/users", 200, 45)
+);
+
+
+// 519. Function to create an audit log entry
+function createAuditLog519(userId, action, resource) {
+    if (
+        typeof userId !== "string" ||
+        typeof action !== "string" ||
+        typeof resource !== "string" ||
+        !userId.trim() ||
+        !action.trim() ||
+        !resource.trim()
+    ) {
+        throw new Error("Invalid audit log details");
+    }
+
+    return {
+        userId,
+        action,
+        resource,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "519:",
+    createAuditLog519("user-101", "UPDATE", "profile")
+);
+
+
+// 520. Function to calculate request duration
+function calculateRequestDuration520(startTime, endTime) {
+    if (
+        !Number.isFinite(startTime) ||
+        !Number.isFinite(endTime) ||
+        endTime < startTime
+    ) {
+        throw new Error("Invalid time values");
+    }
+
+    return endTime - startTime;
+}
+
+console.log("520:", calculateRequestDuration520(1000, 1450), "ms");
+
+
+// 521. Function to check whether a rate limit is exceeded
+function isRateLimitExceeded521(requestCount, maxRequests) {
+    if (
+        !Number.isInteger(requestCount) ||
+        !Number.isInteger(maxRequests) ||
+        requestCount < 0 ||
+        maxRequests < 1
+    ) {
+        throw new Error("Invalid rate limit values");
+    }
+
+    return requestCount >= maxRequests;
+}
+
+console.log("521:", isRateLimitExceeded521(10, 10));
+
+
+// 522. Function to calculate remaining requests
+function getRemainingRequests522(requestCount, maxRequests) {
+    if (
+        !Number.isInteger(requestCount) ||
+        !Number.isInteger(maxRequests) ||
+        requestCount < 0 ||
+        maxRequests < 1
+    ) {
+        throw new Error("Invalid rate limit values");
+    }
+
+    return Math.max(0, maxRequests - requestCount);
+}
+
+console.log("522:", getRemainingRequests522(6, 10));
+
+
+// 523. Function to calculate rate limit reset time
+function calculateRateLimitReset523(windowStart, windowMs) {
+    if (
+        !Number.isFinite(windowStart) ||
+        !Number.isFinite(windowMs) ||
+        windowMs <= 0
+    ) {
+        throw new Error("Invalid rate limit window");
+    }
+
+    return windowStart + windowMs;
+}
+
+console.log(
+    "523:",
+    new Date(calculateRateLimitReset523(Date.now(), 60000))
+        .toISOString()
+);
+
+
+// 524. Function to create a rate limit response
+function createRateLimitResponse524(
+    requestCount,
+    maxRequests,
+    retryAfterSeconds
+) {
+    if (
+        !Number.isInteger(requestCount) ||
+        !Number.isInteger(maxRequests) ||
+        !Number.isFinite(retryAfterSeconds) ||
+        requestCount < 0 ||
+        maxRequests < 1 ||
+        retryAfterSeconds < 0
+    ) {
+        throw new Error("Invalid rate limit details");
+    }
+
+    const exceeded = requestCount >= maxRequests;
+
+    return {
+        allowed: !exceeded,
+        remaining: Math.max(0, maxRequests - requestCount),
+        retryAfterSeconds: exceeded
+            ? Math.ceil(retryAfterSeconds)
+            : 0
+    };
+}
+
+console.log(
+    "524:",
+    createRateLimitResponse524(10, 10, 30)
+);
+
+
+// 525. Function to create a security event
+function createSecurityEvent525(type, description, userId = null) {
+    if (
+        typeof type !== "string" ||
+        typeof description !== "string" ||
+        (userId !== null && typeof userId !== "string")
+    ) {
+        throw new Error("Invalid security event details");
+    }
+
+    return {
+        type,
+        description,
+        userId,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "525:",
+    createSecurityEvent525(
+        "LOGIN_FAILED",
+        "Invalid login attempt",
+        "user-101"
+    )
+);
