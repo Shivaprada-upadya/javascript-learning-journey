@@ -13245,3 +13245,256 @@ console.log(
         "user-101"
     )
 );
+
+// 526. Function to validate database configuration
+function validateDatabaseConfig526(config) {
+    if (!config || typeof config !== "object") {
+        return {
+            valid: false,
+            message: "Database configuration is required"
+        };
+    }
+
+    const requiredFields = ["host", "database", "user"];
+
+    const missingFields = requiredFields.filter(
+        field =>
+            typeof config[field] !== "string" ||
+            config[field].trim() === ""
+    );
+
+    return {
+        valid: missingFields.length === 0,
+        missingFields
+    };
+}
+
+console.log(
+    "526:",
+    validateDatabaseConfig526({
+        host: "localhost",
+        database: "app_db",
+        user: "postgres"
+    })
+);
+
+
+// 527. Function to validate a database port
+function validateDatabasePort527(port) {
+    return Number.isInteger(port) &&
+        port >= 1 &&
+        port <= 65535;
+}
+
+console.log("527:", validateDatabasePort527(5432));
+
+
+// 528. Function to create a database connection configuration
+function createDatabaseConnectionConfig528(config) {
+    const validation = validateDatabaseConfig526(config);
+
+    if (!validation.valid) {
+        throw new Error(
+            `Missing database fields: ${validation.missingFields.join(", ")}`
+        );
+    }
+
+    const port = config.port ?? 5432;
+
+    if (!validateDatabasePort527(port)) {
+        throw new Error("Invalid database port");
+    }
+
+    return {
+        host: config.host,
+        port,
+        database: config.database,
+        user: config.user,
+        max: config.maxConnections ?? 10,
+        idleTimeoutMillis: config.idleTimeoutMillis ?? 30000
+    };
+}
+
+console.log(
+    "528:",
+    createDatabaseConnectionConfig528({
+        host: "localhost",
+        database: "app_db",
+        user: "postgres"
+    })
+);
+
+
+// 529. Function to validate database query duration
+function validateQueryDuration529(durationMs) {
+    return Number.isFinite(durationMs) && durationMs >= 0;
+}
+
+console.log("529:", validateQueryDuration529(125));
+
+
+// 530. Function to identify a slow database query
+function isSlowQuery530(durationMs, thresholdMs = 1000) {
+    if (
+        !validateQueryDuration529(durationMs) ||
+        !validateQueryDuration529(thresholdMs)
+    ) {
+        throw new Error("Invalid query duration");
+    }
+
+    return durationMs > thresholdMs;
+}
+
+console.log("530:", isSlowQuery530(1500, 1000));
+
+
+// 531. Function to create a database query log
+function createDatabaseQueryLog531(queryName, durationMs, rowCount) {
+    if (
+        typeof queryName !== "string" ||
+        !validateQueryDuration529(durationMs) ||
+        !Number.isInteger(rowCount) ||
+        rowCount < 0
+    ) {
+        throw new Error("Invalid database query details");
+    }
+
+    return {
+        queryName,
+        durationMs,
+        rowCount,
+        slow: isSlowQuery530(durationMs),
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "531:",
+    createDatabaseQueryLog531("getUsers", 1500, 25)
+);
+
+
+// 532. Function to validate SQL query parameters
+function validateSQLParameters532(parameters) {
+    if (!Array.isArray(parameters)) {
+        return {
+            valid: false,
+            message: "Parameters must be an array"
+        };
+    }
+
+    const valid = parameters.every(
+        value =>
+            value === null ||
+            ["string", "number", "boolean"].includes(typeof value) ||
+            value instanceof Date ||
+            Buffer.isBuffer(value)
+    );
+
+    return {
+        valid,
+        message: valid
+            ? "Parameters are valid"
+            : "Unsupported SQL parameter type"
+    };
+}
+
+console.log(
+    "532:",
+    validateSQLParameters532(["Shiva", 25, true, null])
+);
+
+
+// 533. Function to create a database transaction summary
+function createTransactionSummary533(
+    transactionId,
+    operationCount,
+    status
+) {
+    const allowedStatuses = ["COMMITTED", "ROLLED_BACK", "PENDING"];
+
+    if (
+        typeof transactionId !== "string" ||
+        transactionId.trim() === "" ||
+        !Number.isInteger(operationCount) ||
+        operationCount < 0 ||
+        !allowedStatuses.includes(status)
+    ) {
+        throw new Error("Invalid transaction details");
+    }
+
+    return {
+        transactionId,
+        operationCount,
+        status,
+        completedAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "533:",
+    createTransactionSummary533("TXN-101", 3, "COMMITTED")
+);
+
+
+// 534. Function to normalize a database error
+function normalizeDatabaseError534(error) {
+    const errorCode =
+        error && typeof error.code === "string"
+            ? error.code
+            : "DATABASE_ERROR";
+
+    const messages = {
+        "23505": "A record with this value already exists",
+        "23503": "Related record was not found",
+        "23502": "A required database field is missing",
+        "40001": "Transaction conflict occurred",
+        "ECONNREFUSED": "Database connection failed"
+    };
+
+    return {
+        code: errorCode,
+        message: messages[errorCode] || "Database operation failed"
+    };
+}
+
+console.log(
+    "534:",
+    normalizeDatabaseError534({ code: "23505" })
+);
+
+
+// 535. Function to create a database health report
+function createDatabaseHealthReport535(
+    connected,
+    responseTimeMs,
+    poolSize,
+    idleConnections
+) {
+    if (
+        typeof connected !== "boolean" ||
+        !validateQueryDuration529(responseTimeMs) ||
+        !Number.isInteger(poolSize) ||
+        !Number.isInteger(idleConnections) ||
+        poolSize < 0 ||
+        idleConnections < 0 ||
+        idleConnections > poolSize
+    ) {
+        throw new Error("Invalid database health details");
+    }
+
+    return {
+        status: connected ? "UP" : "DOWN",
+        connected,
+        responseTimeMs,
+        poolSize,
+        idleConnections,
+        activeConnections: poolSize - idleConnections,
+        checkedAt: new Date().toISOString()
+    };
+}
+
+console.log(
+    "535:",
+    createDatabaseHealthReport535(true, 45, 10, 4)
+);
