@@ -13498,3 +13498,273 @@ console.log(
     "535:",
     createDatabaseHealthReport535(true, 45, 10, 4)
 );
+
+// 536. Function to create an in-memory repository
+function createRepository536(initialData = []) {
+    if (!Array.isArray(initialData)) {
+        throw new Error("Initial data must be an array");
+    }
+
+    let records = [...initialData];
+
+    return {
+        getAll() {
+            return [...records];
+        },
+
+        getById(id) {
+            return records.find(record => record.id === id) || null;
+        },
+
+        getCount() {
+            return records.length;
+        }
+    };
+}
+
+const repository536 = createRepository536([
+    { id: 1, name: "Shiva" },
+    { id: 2, name: "Rahul" }
+]);
+
+console.log("536:", repository536.getAll());
+
+
+// 537. Function to find a record by ID
+function findRecordById537(records, id) {
+    if (!Array.isArray(records)) {
+        throw new Error("Records must be an array");
+    }
+
+    return records.find(record => record.id === id) || null;
+}
+
+console.log(
+    "537:",
+    findRecordById537(
+        [{ id: 1, name: "Shiva" }, { id: 2, name: "Rahul" }],
+        2
+    )
+);
+
+
+// 538. Function to insert a new record
+function insertRecord538(records, newRecord) {
+    if (!Array.isArray(records) || !newRecord || typeof newRecord !== "object") {
+        throw new Error("Invalid record details");
+    }
+
+    if (!Object.hasOwn(newRecord, "id")) {
+        throw new Error("Record ID is required");
+    }
+
+    if (records.some(record => record.id === newRecord.id)) {
+        throw new Error("Record ID already exists");
+    }
+
+    return [...records, { ...newRecord }];
+}
+
+console.log(
+    "538:",
+    insertRecord538(
+        [{ id: 1, name: "Shiva" }],
+        { id: 2, name: "Rahul" }
+    )
+);
+
+
+// 539. Function to update a record
+function updateRecord539(records, id, updates) {
+    if (
+        !Array.isArray(records) ||
+        !updates ||
+        typeof updates !== "object" ||
+        Array.isArray(updates)
+    ) {
+        throw new Error("Invalid update details");
+    }
+
+    return records.map(record =>
+        record.id === id
+            ? { ...record, ...updates, id: record.id }
+            : record
+    );
+}
+
+console.log(
+    "539:",
+    updateRecord539(
+        [{ id: 1, name: "Shiva", role: "Developer" }],
+        1,
+        { role: "Engineer" }
+    )
+);
+
+
+// 540. Function to delete a record
+function deleteRecord540(records, id) {
+    if (!Array.isArray(records)) {
+        throw new Error("Records must be an array");
+    }
+
+    return records.filter(record => record.id !== id);
+}
+
+console.log(
+    "540:",
+    deleteRecord540(
+        [{ id: 1, name: "Shiva" }, { id: 2, name: "Rahul" }],
+        1
+    )
+);
+
+
+// 541. Function to filter records by a field
+function filterRecords541(records, field, value) {
+    if (!Array.isArray(records) || typeof field !== "string") {
+        throw new Error("Invalid filtering details");
+    }
+
+    return records.filter(record => record[field] === value);
+}
+
+console.log(
+    "541:",
+    filterRecords541(
+        [
+            { id: 1, role: "Developer" },
+            { id: 2, role: "Tester" },
+            { id: 3, role: "Developer" }
+        ],
+        "role",
+        "Developer"
+    )
+);
+
+
+// 542. Function to sort records by a field
+function sortRecords542(records, field, direction = "asc") {
+    if (
+        !Array.isArray(records) ||
+        typeof field !== "string" ||
+        !["asc", "desc"].includes(direction)
+    ) {
+        throw new Error("Invalid sorting details");
+    }
+
+    const multiplier = direction === "asc" ? 1 : -1;
+
+    return [...records].sort((a, b) => {
+        if (a[field] === b[field]) return 0;
+        if (a[field] == null) return 1;
+        if (b[field] == null) return -1;
+
+        if (a[field] > b[field]) return multiplier;
+        return -multiplier;
+    });
+}
+
+console.log(
+    "542:",
+    sortRecords542(
+        [
+            { id: 1, name: "Rahul" },
+            { id: 2, name: "Anu" },
+            { id: 3, name: "Shiva" }
+        ],
+        "name",
+        "asc"
+    )
+);
+
+
+// 543. Function to paginate records
+function paginateRecords543(records, page, limit) {
+    if (
+        !Array.isArray(records) ||
+        !Number.isInteger(page) ||
+        !Number.isInteger(limit) ||
+        page < 1 ||
+        limit < 1
+    ) {
+        throw new Error("Invalid pagination details");
+    }
+
+    const startIndex = (page - 1) * limit;
+
+    return {
+        data: records.slice(startIndex, startIndex + limit),
+        page,
+        limit,
+        totalRecords: records.length,
+        totalPages: Math.ceil(records.length / limit)
+    };
+}
+
+console.log(
+    "543:",
+    paginateRecords543(
+        [
+            { id: 1, name: "Shiva" },
+            { id: 2, name: "Rahul" },
+            { id: 3, name: "Anu" }
+        ],
+        1,
+        2
+    )
+);
+
+
+// 544. Function to search records by text
+function searchRecords544(records, field, searchText) {
+    if (
+        !Array.isArray(records) ||
+        typeof field !== "string" ||
+        typeof searchText !== "string"
+    ) {
+        throw new Error("Invalid search details");
+    }
+
+    const query = searchText.trim().toLowerCase();
+
+    return records.filter(record =>
+        typeof record[field] === "string" &&
+        record[field].toLowerCase().includes(query)
+    );
+}
+
+console.log(
+    "544:",
+    searchRecords544(
+        [
+            { id: 1, name: "Shivaprada" },
+            { id: 2, name: "Rahul" },
+            { id: 3, name: "Shiva Kumar" }
+        ],
+        "name",
+        "shiva"
+    )
+);
+
+
+// 545. Function to count records matching a condition
+function countMatchingRecords545(records, condition) {
+    if (!Array.isArray(records) || typeof condition !== "function") {
+        throw new Error("Invalid counting details");
+    }
+
+    return records.filter(condition).length;
+}
+
+console.log(
+    "545:",
+    countMatchingRecords545(
+        [
+            { id: 1, active: true },
+            { id: 2, active: false },
+            { id: 3, active: true }
+        ],
+        record => record.active === true
+    )
+);
