@@ -13768,3 +13768,188 @@ console.log(
         record => record.active === true
     )
 );
+
+// 546. Function to normalize database errors
+function normalizeDatabaseError546(error) {
+    return {
+        code:
+            typeof error?.code === "string"
+                ? error.code
+                : "DATABASE_ERROR",
+        message:
+            error instanceof Error
+                ? error.message
+                : "Database operation failed"
+    };
+}
+
+console.log(
+    "546:",
+    normalizeDatabaseError546(new Error("Connection failed"))
+);
+
+
+// 547. Function to identify unique constraint errors
+function isUniqueConstraintError547(error) {
+    return error?.code === "23505";
+}
+
+console.log(
+    "547:",
+    isUniqueConstraintError547({ code: "23505" })
+);
+
+
+// 548. Function to identify foreign key constraint errors
+function isForeignKeyConstraintError548(error) {
+    return error?.code === "23503";
+}
+
+console.log(
+    "548:",
+    isForeignKeyConstraintError548({ code: "23503" })
+);
+
+
+// 549. Function to create a standardized database result
+function createDatabaseResult549(success, data = null, error = null) {
+    if (typeof success !== "boolean") {
+        throw new Error("Success must be a boolean");
+    }
+
+    return {
+        success,
+        data: success ? data : null,
+        error: success ? null : error,
+        timestamp: new Date().toISOString()
+    };
+}
+
+console.log(
+    "549:",
+    createDatabaseResult549(true, { id: 101, name: "Shiva" })
+);
+
+
+// 550. Function to validate a database ID
+function validateDatabaseId550(id) {
+    return (
+        (typeof id === "number" &&
+            Number.isSafeInteger(id) &&
+            id > 0) ||
+        (typeof id === "string" &&
+            /^[1-9]\d*$/.test(id))
+    );
+}
+
+console.log("550:", validateDatabaseId550(101));
+
+
+// 551. Function to build a safe SQL ORDER BY clause
+function buildSafeOrderBy551(column, direction, allowedColumns) {
+    if (
+        typeof column !== "string" ||
+        !Array.isArray(allowedColumns) ||
+        !allowedColumns.includes(column)
+    ) {
+        throw new Error("Invalid sorting column");
+    }
+
+    const normalizedDirection =
+        typeof direction === "string"
+            ? direction.toUpperCase()
+            : "";
+
+    if (!["ASC", "DESC"].includes(normalizedDirection)) {
+        throw new Error("Invalid sorting direction");
+    }
+
+    return `ORDER BY "${column}" ${normalizedDirection}`;
+}
+
+console.log(
+    "551:",
+    buildSafeOrderBy551(
+        "created_at",
+        "DESC",
+        ["id", "name", "created_at"]
+    )
+);
+
+
+// 552. Function to generate PostgreSQL placeholders for IN queries
+function buildInQueryPlaceholders552(values, startIndex = 1) {
+    if (
+        !Array.isArray(values) ||
+        values.length === 0 ||
+        !Number.isInteger(startIndex) ||
+        startIndex < 1
+    ) {
+        throw new Error("Invalid placeholder arguments");
+    }
+
+    return {
+        placeholders: values.map(
+            (_, index) => `$${startIndex + index}`
+        ).join(", "),
+        values: [...values]
+    };
+}
+
+console.log(
+    "552:",
+    buildInQueryPlaceholders552([10, 20, 30])
+);
+
+
+// 553. Function to calculate database pagination offset
+function calculateDatabaseOffset553(page, limit) {
+    if (
+        !Number.isSafeInteger(page) ||
+        !Number.isSafeInteger(limit) ||
+        page < 1 ||
+        limit < 1
+    ) {
+        throw new Error("Invalid pagination values");
+    }
+
+    const offset = (page - 1) * limit;
+
+    if (!Number.isSafeInteger(offset)) {
+        throw new Error("Pagination offset is too large");
+    }
+
+    return offset;
+}
+
+console.log("553:", calculateDatabaseOffset553(3, 10));
+
+
+// 554. Function to create a transaction state
+function createTransactionState554() {
+    return {
+        status: "PENDING",
+        startedAt: Date.now(),
+        completedAt: null
+    };
+}
+
+console.log("554:", createTransactionState554());
+
+
+// 555. Function to check whether a transaction completed successfully
+function isTransactionSuccessful555(transaction) {
+    if (!transaction || typeof transaction !== "object") {
+        return false;
+    }
+
+    return transaction.status === "COMMITTED";
+}
+
+console.log(
+    "555:",
+    isTransactionSuccessful555({
+        status: "COMMITTED"
+    })
+);
+
